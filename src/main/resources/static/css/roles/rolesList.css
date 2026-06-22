@@ -1,0 +1,268 @@
+ .role-list-page {
+        padding: 28px 32px;
+        background-color: #ffffff;
+    }
+
+    .role-page-title {
+        font-size: 26px;
+        font-weight: 500;
+        color: #111111;
+        margin: 0 0 24px 0;
+    }
+
+    .search-section {
+        border: 1px solid #dfe3f0;
+        border-radius: 8px;
+        background-color: #ffffff;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+    }
+
+    .search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+    }
+
+    .search-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: #333333;
+    }
+
+    .add-role-btn {
+        min-width: 82px;
+        height: 34px;
+        border: none;
+        border-radius: 5px;
+        background-color: #252ba3;
+        color: #ffffff;
+        font-size: 13px;
+        cursor: pointer;
+    }
+
+    .search-form-row {
+        display: grid;
+        grid-template-columns: 80px 1fr 80px 1fr 120px;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .search-form-row label {
+        font-size: 13px;
+        color: #333333;
+    }
+
+    .search-form-row input,
+    .search-form-row select {
+        height: 32px;
+        border: 1px solid #d7dbe7;
+        border-radius: 5px;
+        padding: 0 10px;
+        font-size: 13px;
+        outline: none;
+    }
+
+    .search-btn-area {
+        display: flex;
+        gap: 8px;
+        justify-content: flex-start;
+        margin-top: 12px;
+    }
+
+    .btn-basic {
+        min-width: 70px;
+        height: 32px;
+        border: 1px solid #d7dbe7;
+        border-radius: 5px;
+        background-color: #ffffff;
+        color: #333333;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background-color: #252ba3;
+        border-color: #252ba3;
+        color: #ffffff;
+    }
+
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.6fr;
+        gap: 18px;
+    }
+
+    .content-panel {
+        border: 1px solid #dfe3f0;
+        border-radius: 8px;
+        background-color: #ffffff;
+        min-height: 500px;
+        overflow: hidden;
+    }
+
+    .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 18px 10px 18px;
+        border-bottom: 1px solid #eef1f7;
+    }
+
+    .panel-title {
+        font-size: 15px;
+        font-weight: 600;
+        color: #222222;
+    }
+
+    .panel-sub-text {
+        font-size: 12px;
+        color: #777777;
+    }
+
+    .panel-body {
+        padding: 16px 18px 18px 18px;
+    }
+
+    .summary-box-wrap {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .summary-box {
+        border: 1px solid #dfe3f0;
+        border-radius: 6px;
+        background-color: #fafbfe;
+        padding: 12px 14px;
+        min-height: 64px;
+    }
+
+    .summary-label {
+        font-size: 12px;
+        color: #777777;
+        margin-bottom: 6px;
+    }
+
+    .summary-value {
+        font-size: 16px;
+        font-weight: 600;
+        color: #222222;
+    }
+
+    .role-table,
+    .member-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
+
+    .role-table thead th,
+    .member-table thead th {
+        background-color: #f5f6fb;
+        color: #333333;
+        font-weight: 500;
+        border-bottom: 1px solid #e4e8f2;
+        padding: 10px 8px;
+        text-align: center;
+    }
+
+    .role-table tbody td,
+    .member-table tbody td {
+        border-bottom: 1px solid #eef1f7;
+        padding: 10px 8px;
+        text-align: center;
+        color: #333333;
+    }
+
+    .role-name-link {
+        color: #2a4dbf;
+        text-decoration: none;
+        cursor: pointer;
+        font-weight: 500;
+    }
+
+    .role-name-link:hover {
+        text-decoration: underline;
+    }
+
+    .role-table tbody tr.active {
+        background-color: #f1f4ff;
+    }
+
+    .mini-btn {
+        min-width: 58px;
+        height: 28px;
+        border: 1px solid #d7dbe7;
+        border-radius: 4px;
+        background-color: #ffffff;
+        font-size: 12px;
+        cursor: pointer;
+        margin: 0 2px;
+    }
+
+    .mini-btn.delete {
+        border-color: #f1b6b6;
+        color: #d54a4a;
+        background-color: #fffafa;
+    }
+
+    .member-placeholder {
+        height: 360px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #888888;
+        font-size: 14px;
+        border: 1px dashed #d7dbe7;
+        border-radius: 6px;
+        background-color: #fafafa;
+    }
+
+    .selected-role-text {
+        margin-bottom: 12px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #222222;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+    }
+
+    .page-btn {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #d7dbe7;
+        border-radius: 4px;
+        background-color: #ffffff;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+    .page-btn.active {
+        background-color: #121f4d;
+        border-color: #121f4d;
+        color: #ffffff;
+    }
+
+    .role-btn-group {
+        white-space: nowrap;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    .btn-basic:hover,
+    .add-role-btn:hover,
+    .mini-btn:hover,
+    .page-btn:hover {
+        opacity: 0.9;
+    }
