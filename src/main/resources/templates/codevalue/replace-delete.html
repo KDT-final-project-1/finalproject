@@ -1,0 +1,109 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/default_layout}">
+<head>
+<meta charset="UTF-8">
+<title>코드값 대체 삭제</title>
+</head>
+
+<body>
+<div layout:fragment="Content">
+
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+                    <div class="sparkline8-list">
+
+                        <div class="sparkline8-hd">
+                            <div class="main-sparkline8-hd">
+                                <h1>코드값 대체 삭제</h1>
+                                <p>
+                                    기본값으로 설정된 코드값은 다른 코드값으로 대체한 후 삭제합니다.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="sparkline8-graph">
+
+                            <div th:if="${errorMessage}"
+                                 class="alert alert-danger"
+                                 th:text="${errorMessage}">
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <strong th:text="${deleteTarget.settingName}">삭제 대상</strong>
+                                코드값을 삭제하려면 같은 그룹의 다른 코드값을 대체값으로 선택해야 합니다.
+                            </div>
+
+                            <form th:action="@{/codevalue/delete/replace}"
+                                  method="post">
+
+                                <input type="hidden"
+                                       name="deleteSettingCodeId"
+                                       th:value="${deleteTarget.settingCodeId}">
+
+                                <div class="form-group">
+                                    <label>삭제 대상 그룹</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:value="${groupNameMap.get(deleteTarget.settingGroupName)}"
+                                           readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>삭제 대상 코드값</label>
+                                    <input type="text"
+                                           class="form-control"
+                                           th:value="${deleteTarget.settingName}"
+                                           readonly>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>대체 코드값</label>
+
+                                    <select name="replaceSettingCodeId"
+                                            class="form-control"
+                                            required>
+                                        <option value="">대체 코드값을 선택하세요</option>
+
+                                        <option th:each="replacement : ${replacementList}"
+                                                th:value="${replacement.settingCodeId}"
+                                                th:text="${replacement.settingName}">
+                                            대체값
+                                        </option>
+                                    </select>
+
+                                    <p class="help-block">
+                                        선택한 대체 코드값이 기존 기본값을 대신하게 됩니다.
+                                    </p>
+                                </div>
+
+                                <div class="form-group text-right">
+                                    <a th:href="@{/codevalue/list}"
+                                       class="btn btn-custon-four btn-default">
+                                        취소
+                                    </a>
+
+                                    <button type="submit"
+                                            class="btn btn-custon-four btn-danger">
+                                        대체 후 삭제
+                                    </button>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

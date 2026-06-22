@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pixcel.app.project.mapper.ProjectMapper">
+	<insert id="insertProject" parameterType="com.pixcel.app.project.service.ProjectVO">
+		INSERT INTO project (
+			project_id
+			, owner_id
+			, project_name
+			, identifier
+			, description
+			, project_url
+			, status_code
+			, start_date
+			, end_date
+			, created_at
+			, git_url
+			)
+		VALUES (
+			#{projectId}
+			, #{ownerId}
+			, #{projectName}
+			, #{identifier}
+			, #{description}
+			, #{projectUrl}
+			, 'a002'
+			, #{startDate}
+			, #{endDate}
+			, SYSDATE
+			, #{gitUrl}
+		)
+	</insert>
+	
+	<insert id="insertProjectModules" parameterType="com.pixcel.app.project.service.ProjectVO">
+		<if test="moduleCodes != null and moduleCodes.size > 0">
+			INSERT ALL
+			<foreach collection="moduleCodes" item="code" index="idx">
+				INTO project_module (
+					project_module_id
+					, project_id
+					, module_code
+					, module_name
+					)
+				VALUES (
+					sys_guid()
+					, #{projectId}
+					, #{code}
+					, #{moduleNames[idx]}
+				)
+			</foreach>
+			SELECT * FROM dual
+		</if>
+	</insert>
+</mapper>

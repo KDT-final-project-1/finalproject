@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+ <div th:fragment="HeaderLogoFragment">
+</div>
+        <!-- Header Top -->
+        <div class="header-advance-area">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="header-top-wraper">
+
+                            <div class="row">
+
+                                
+                                <!-- Top Menu -->
+                                <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12">
+                                    <div class="header-top-menu tabl-d-n">
+                                        <ul class="nav navbar-nav mai-top-nav">
+
+                                            <li class="nav-item">
+                                                <a th:href="@{/}" class="nav-link">프로젝트</a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a th:href="@{/about}" class="nav-link">일감</a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a th:href="@{/service}" class="nav-link">관리</a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Right Menu -->
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                    <div class="header-right-info">
+
+                                        <ul class="nav navbar-nav mai-top-nav header-right-menu">
+
+                                           
+                                            <!-- User -->
+                                            <li class="nav-item">
+
+                                                <a href="#"
+                                                   data-toggle="dropdown"
+                                                   class="nav-link dropdown-toggle">
+
+                                                    <img th:src="${loginUser != null ? loginUser.profileImage : '/img/default.png'}" alt="">
+
+                                                    <span th:text="${loginUser != null ? loginUser.name : 'Guest'}">
+                                                        USER
+                                                    </span>
+
+                                                    <i class="fa fa-angle-down edu-icon edu-down-arrow"></i>
+
+                                                </a>
+
+                                                <ul role="menu"
+                                                    class="dropdown-header-top author-log dropdown-menu animated zoomIn">
+
+                                                    <li>
+                                                        <a th:href="@{/mypage}">
+                                                            <span class="edu-icon edu-home-admin author-log-ic"></span>
+                                                            My Account
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a th:href="@{/profile}">
+                                                            <span class="edu-icon edu-user-rounded author-log-ic"></span>
+                                                            My Profile
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a th:href="@{/setting}">
+                                                            <span class="edu-icon edu-settings author-log-ic"></span>
+                                                            Settings
+                                                        </a>
+                                                    </li>
+
+                                                    <li>
+                                                        <a th:href="@{/logout}">
+                                                            <span class="edu-icon edu-locked author-log-ic"></span>
+                                                            Logout
+                                                        </a>
+                                                    </li>
+
+                                                </ul>
+
+                                            </li>
+
+
+                                            <li class="nav-item">
+                                                <a th:href="@{/}" class="nav-link">내정보</a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a th:href="@{/team}" class="nav-link">팀</a>
+                                            </li>
+
+                                            <li class="nav-item">
+                                                <a th:href="@{/logout}" class="nav-link">로그아웃</a>
+                                            </li>
+
+                                        </ul>
+                                        </ul>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+</div>
+</body>
+</html>
