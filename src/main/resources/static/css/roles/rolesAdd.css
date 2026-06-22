@@ -1,0 +1,280 @@
+.role-add-page {
+	padding: 28px 32px;
+	background-color: #ffffff;
+}
+
+.role-page-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 24px;
+}
+
+.role-page-title {
+	font-size: 26px;
+	font-weight: 500;
+	color: #111111;
+	margin: 0;
+}
+
+.role-top-btn-area {
+	display: flex;
+	gap: 10px;
+}
+
+.role-btn {
+	min-width: 70px;
+	height: 36px;
+	border: 1px solid #d7dbe7;
+	border-radius: 5px;
+	background-color: #ffffff;
+	color: #333333;
+	font-size: 13px;
+	cursor: pointer;
+}
+
+.role-btn.primary {
+	background-color: #252ba3;
+	border-color: #252ba3;
+	color: #ffffff;
+}
+
+.role-section {
+	border: 1px solid #dfe3f0;
+	border-radius: 7px;
+	background-color: #ffffff;
+	margin-bottom: 16px;
+}
+
+.role-section-inner {
+	padding: 18px 20px;
+}
+
+.section-title {
+	font-size: 15px;
+	font-weight: 500;
+	color: #333333;
+	margin-bottom: 16px;
+}
+
+.form-row {
+	display: flex;
+	align-items: center;
+}
+
+.form-row label {
+	width: 90px;
+	font-size: 13px;
+	color: #333333;
+}
+
+.form-row input {
+	width: 350px;
+	height: 32px;
+	border: 1px solid #d7dbe7;
+	border-radius: 5px;
+	padding: 0 10px;
+	font-size: 13px;
+	outline: none;
+}
+
+.form-row input:focus {
+	border-color: #252ba3;
+}
+
+.step-area {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 8px;
+	padding: 10px 12px;
+}
+
+.step-item {
+	height: 46px;
+	border: 1px solid #dfe3f0;
+	border-radius: 7px;
+	display: flex;
+	align-items: center;
+	padding: 0 14px;
+	color: #777777;
+	background-color: #ffffff;
+	font-size: 13px;
+	cursor: pointer;
+}
+
+.step-item.active {
+	border-color: #252ba3;
+	color: #252ba3;
+	font-weight: 600;
+}
+
+.step-num {
+	width: 22px;
+	height: 22px;
+	border-radius: 50%;
+	background-color: #eef0f6;
+	color: #777777;
+	font-size: 12px;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+	margin-right: 10px;
+	flex-shrink: 0;
+}
+
+.step-item.active .step-num,
+.permission-box-title .step-num {
+	background-color: #252ba3;
+	color: #ffffff;
+}
+
+.permission-wrap {
+	padding: 18px 20px;
+}
+
+.permission-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 14px;
+}
+
+.page-chip {
+	padding: 6px 12px;
+	border-radius: 16px;
+	background-color: #f2f3f7;
+	color: #555555;
+	font-size: 12px;
+}
+
+.permission-control {
+	display: flex;
+	gap: 8px;
+}
+
+.small-btn {
+	height: 32px;
+	padding: 0 14px;
+	border: 1px solid #d7dbe7;
+	border-radius: 5px;
+	background-color: #ffffff;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.permission-box {
+	border: 1px solid #dfe3f0;
+	border-radius: 7px;
+	overflow: hidden;
+}
+
+.permission-box-title {
+	height: 44px;
+	display: flex;
+	align-items: center;
+	padding: 0 16px;
+	background-color: #f5f6fb;
+	font-size: 14px;
+	font-weight: 500;
+	color: #333333;
+}
+
+.permission-content {
+	padding: 22px 18px;
+}
+
+.permission-page {
+	display: none;
+}
+
+.permission-page.active {
+	display: block;
+}
+
+.permission-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 18px;
+}
+
+.permission-grid.three {
+	grid-template-columns: repeat(3, 1fr);
+}
+
+.permission-card {
+	border: 1px solid #dfe3f0;
+	border-radius: 6px;
+	padding: 18px 20px;
+	min-height: 130px;
+}
+
+.permission-sub-title {
+	font-size: 14px;
+	font-weight: 600;
+	color: #222222;
+	margin-bottom: 18px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #eeeeee;
+}
+
+.check-row {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(120px, 1fr));
+	row-gap: 16px;
+	column-gap: 30px;
+}
+
+.check-row.one {
+	grid-template-columns: 1fr;
+}
+
+.check-row label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 13px;
+	color: #333333;
+	cursor: pointer;
+}
+
+.check-row input[type="checkbox"] {
+	width: 15px;
+	height: 15px;
+}
+
+.bottom-btn-area {
+	display: flex;
+	justify-content: flex-end;
+	gap: 8px;
+	margin-top: 18px;
+}
+
+.next-btn,
+.prev-btn {
+	width: 76px;
+	height: 38px;
+	border: none;
+	border-radius: 5px;
+	background-color: #252ba3;
+	color: #ffffff;
+	font-size: 13px;
+	cursor: pointer;
+}
+
+.prev-btn {
+	background-color: #777777;
+}
+
+.prev-btn.disabled,
+.next-btn.disabled {
+	background-color: #cccccc;
+	cursor: not-allowed;
+	opacity: 0.7;
+}
+
+.role-btn:hover,
+.small-btn:hover,
+.next-btn:hover,
+.prev-btn:hover {
+	opacity: 0.9;
+}
