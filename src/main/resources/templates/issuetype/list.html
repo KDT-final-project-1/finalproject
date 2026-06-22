@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/default_layout}">
+
+<head>
+    <title>일감유형 관리</title>
+    <link rel="stylesheet" th:href="@{/css/issuetype/issuetype.css}">
+</head>
+
+<body>
+<div layout:fragment="Content">
+
+    <div class="issuetype-area">
+        <div class="container-fluid">
+
+            <div class="issuetype-header">
+                <div>
+                    <h3>일감유형</h3>
+                    <p>일감 생성 시 사용할 유형, 적용 프로젝트, 입력 항목 설정을 관리합니다.</p>
+                </div>
+
+                <div class="header-actions">
+                    <a th:href="@{/issuetype/create}" class="btn btn-primary">유형 생성</a>
+                </div>
+            </div>
+
+            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+
+            <div class="issuetype-card">
+                <div class="issuetype-card-title">
+                    <h4>일감유형 목록</h4>
+                </div>
+
+                <div class="issuetype-table-wrap">
+                    <table class="table table-hover issuetype-table">
+                        <thead>
+                        <tr>
+                            <th style="width:70px;">번호</th>
+                            <th>유형명</th>
+                            <th>초기 상태</th>
+                            <th>적용 프로젝트</th>
+                            <th>사용 항목</th>
+                            <th>설명</th>
+                            <th style="width:120px;">생성일</th>
+                            <th style="width:150px; text-align:center;">관리</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:if="${#lists.isEmpty(issueTypeList)}">
+                            <td colspan="8" class="empty-row">등록된 일감유형이 없습니다.</td>
+                        </tr>
+
+                        <tr th:each="issueType, stat : ${issueTypeList}">
+                            <td th:text="${stat.count}">1</td>
+
+                            <td class="strong-text" th:text="${issueType.issueTypeName}">결함</td>
+
+                            <td>
+                                <span class="status-badge" th:text="${issueType.initialStatusName}">신규</span>
+                            </td>
+
+                            <td class="text-ellipsis"
+                                th:text="${issueType.projectNames != null ? issueType.projectNames : '-'}">
+                                프로젝트 A
+                            </td>
+
+                            <td class="text-ellipsis"
+                                th:text="${issueType.fieldSummary != null ? issueType.fieldSummary : '-'}">
+                                담당자, 마일스톤
+                            </td>
+
+                            <td class="text-ellipsis"
+                                th:text="${issueType.description != null ? issueType.description : '-'}">
+                                설명
+                            </td>
+
+                            <td th:text="${issueType.createdAt != null ? #dates.format(issueType.createdAt, 'yyyy-MM-dd') : '-'}">
+                                2026-06-22
+                            </td>
+
+                            <td>
+                                <div class="issuetype-actions">
+                                    <a class="btn btn-sm btn-secondary"
+                                       th:href="@{/issuetype/copy(issueTypeId=${issueType.issueTypeId})}">
+                                        복사
+                                    </a>
+
+                                    <form th:action="@{/issuetype/delete}" method="post" class="inline-form"
+                                          onsubmit="return confirm('이 일감유형을 삭제하시겠습니까? 사용 중인 일감유형은 삭제할 수 없습니다.');">
+                                        <input type="hidden" name="issueTypeId" th:value="${issueType.issueTypeId}">
+                                        <button type="submit" class="btn btn-sm btn-danger">삭제</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
