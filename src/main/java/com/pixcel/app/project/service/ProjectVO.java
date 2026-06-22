@@ -30,5 +30,5 @@ public class ProjectVO {
 	private String gitUrl;				// github URL
 	
 	private List<String> moduleCodes;	// 화면에서 넘어오는 모듈 코드 배열
-	private List<String> moduleNames;	// 화면에서 넘어오는 모듈 이름 배열
+	//private List<String> moduleNames;	// 화면에서 넘어오는 모듈 이름 배열
 }

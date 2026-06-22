@@ -2,6 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pixcel.app.project.mapper.ProjectMapper">
 	<insert id="insertProject" parameterType="com.pixcel.app.project.service.ProjectVO">
+	
+		<selectKey keyProperty="projectId"
+                   resultType="string"
+                   order="BEFORE">
+            SELECT
+                'PROJECT_ID_'
+                || to_char(sysdate, 'YYMM')
+                || '_'
+                || lpad(
+                    nvl(max(to_number(substr(project_id, -4))), 0) + 1,
+                    4,
+                    '0'
+                )
+            FROM project
+            WHERE substr(project_id, 1, 16) = 'PROJECT_ID_' || to_char(sysdate, 'YYMM') || '_'
+        </selectKey>
+	
 		INSERT INTO project (
 			project_id
 			, owner_id
@@ -26,11 +43,12 @@
 			, #{startDate}
 			, #{endDate}
 			, SYSDATE
-			, #{gitUrl}
+			, NVL(#{gitUrl, jdbcType=VARCHAR}, 'none')
 		)
 	</insert>
 	
 	<insert id="insertProjectModules" parameterType="com.pixcel.app.project.service.ProjectVO">
+	
 		<if test="moduleCodes != null and moduleCodes.size > 0">
 			INSERT ALL
 			<foreach collection="moduleCodes" item="code" index="idx">
@@ -38,13 +56,11 @@
 					project_module_id
 					, project_id
 					, module_code
-					, module_name
 					)
 				VALUES (
 					sys_guid()
 					, #{projectId}
 					, #{code}
-					, #{moduleNames[idx]}
 				)
 			</foreach>
 			SELECT * FROM dual
