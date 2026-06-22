@@ -26,7 +26,8 @@ public class DocumentVO {
 	private String statusCode;
 	private String statusName;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
-	private Date createdAt; 
+	private Date createdAt;
+	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date updatedAt;
 	private String documentVersionId;
 	
