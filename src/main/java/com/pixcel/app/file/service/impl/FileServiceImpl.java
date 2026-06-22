@@ -36,17 +36,23 @@ public class FileServiceImpl implements FileService{
 		int count = 0;
 		
 		for(MultipartFile file : files) {
-				String uuid = UUID.randomUUID().toString();
-				String originName = file.getOriginalFilename();
-				String saveName  = uuid + "_" + originName;
-				File dest = new File(fileDir, saveName);
-				
-				try {
+			try {
+					String originName = file.getOriginalFilename();
+					
+					String projectId =  req.getProjectId();
+					String fileIdentityKey = req.getFileIdentityKey();
+					int maxVersion = fileMapper.selectMaxVersion(originName, projectId, fileIdentityKey);
+					
+					int nextVersion = maxVersion + 1;
+					
+					String uuid = UUID.randomUUID().toString();
+					String saveName  = uuid + "_" + originName;
+					
+					File dest = new File(fileDir, saveName);
 					file.transferTo(dest);
 					
-					
 					FileVO vo = new FileVO();
-					vo.setProjectId(req.getProjectId());
+					vo.setProjectId(projectId);
 					vo.setVersionId(req.getVersionId());
 					vo.setFileCode(req.getFileCode());
 					vo.setOriginalName(originName);
@@ -54,6 +60,10 @@ public class FileServiceImpl implements FileService{
 					vo.setFilePath(fileDir);
 					vo.setFileSize(String.valueOf(file.getSize()));
 					vo.setUploadUserId(req.getUploadUserId());
+					vo.setFileVersion(nextVersion);
+					vo.setConnectAddress(req.getConnectAddress());
+					vo.setFileIdentityKey(fileIdentityKey);
+					
 					
 					fileMapper.insertFile(vo);
 					
