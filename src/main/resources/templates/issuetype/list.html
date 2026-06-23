@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{common/layouts/default_layout}">
+
+<head>
+<title>일감유형 관리</title>
+<link rel="stylesheet" th:href="@{/css/common-ui.css}">
+<link rel="stylesheet" th:href="@{/css/common-fliter.css}">
+<link rel="stylesheet" th:href="@{/css/issuetype/issuetype.css}">
+</head>
+
+<body>
+	<div layout:fragment="Content">
+
+		<div class="issuetype-area">
+			<div class="container-fluid">
+
+				<div class="issuetype-header">
+					<div>
+						<h3>일감유형</h3>
+						<p>일감 생성 시 사용할 유형을 관리합니다.</p>
+					</div>
+				</div>
+
+				<div class="search-section issuetype-search">
+					<div class="search-header">
+						<div class="search-title">검색조건</div>
+
+						<a th:href="@{/issuetype/create}"
+							class="btn btn-custon-rounded-four btn-primary search-action-btn">
+							유형 생성 </a>
+					</div>
+
+					<form th:action="@{/issuetype/list}" method="get">
+						<div class="search-form-row">
+
+							<div class="search-field">
+								<label for="issueTypeName">유형명</label> <input type="text"
+									id="issueTypeName" name="issueTypeName"
+									th:value="${searchVO != null ? searchVO.issueTypeName : ''}"
+									placeholder="input">
+							</div>
+
+							<div class="search-field">
+								<label for="initialStatusId">초기 상태</label> <select
+									id="initialStatusId" name="initialStatusId">
+									<option value="">선택</option>
+									<option th:each="status : ${issueStatusList}"
+										th:value="${status.issueStatusId}"
+										th:text="${status.statusName}"
+										th:selected="${searchVO != null and searchVO.initialStatusId == status.issueStatusId}">
+										신규</option>
+								</select>
+							</div>
+
+							<div class="search-field">
+								<label for="description">설명</label> <input type="text"
+									id="description" name="description"
+									th:value="${searchVO != null ? searchVO.description : ''}"
+									placeholder="input">
+							</div>
+
+						</div>
+
+						<div class="search-btn-area">
+							<a th:href="@{/issuetype/list}"
+								class="btn btn-custon-rounded-four btn-default filter-btn">
+								clean </a>
+
+							<button type="submit"
+								class="btn btn-custon-rounded-four btn-primary filter-btn">
+								apply</button>
+						</div>
+					</form>
+				</div>
+
+				<div th:if="${message}" class="page-message page-message-success"
+					th:text="${message}"></div>
+
+				<div th:if="${errorMessage}" class="page-message page-message-error"
+					th:text="${errorMessage}"></div>
+
+				<div class="issuetype-card">
+					<div class="issuetype-card-title">
+						<h4>일감유형 목록</h4>
+					</div>
+
+					<div class="issuetype-table-wrap">
+						<table class="table table-hover issuetype-table">
+							<colgroup>
+								<col style="width: 70px;">
+								<col style="width: 220px;">
+								<col style="width: 160px;">
+								<col>
+								<col style="width: 150px;">
+							</colgroup>
+
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>유형명</th>
+									<th>초기 상태</th>
+									<th>설명</th>
+									<th style="text-align: center;">관리</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr th:if="${#lists.isEmpty(issueTypeList)}">
+									<td colspan="5" class="empty-row">등록된 일감유형이 없습니다.</td>
+								</tr>
+
+								<tr th:each="issueType, stat : ${issueTypeList}">
+									<td th:text="${stat.count}">1</td>
+
+									<td><span class="strong-text"
+										th:text="${issueType.issueTypeName}"
+										th:title="${issueType.issueTypeName}"> 결함 </span></td>
+
+									<td><span class="status-badge"
+										th:text="${issueType.initialStatusName}"> 신규 </span></td>
+
+									<td><span class="ellipsis-text"
+										th:text="${issueType.description != null ? issueType.description : '-'}"
+										th:title="${issueType.description != null ? issueType.description : '-'}">
+											설명 </span></td>
+
+									<td>
+										<div class="table-actions">
+											<a class="btn btn-custon-rounded-four btn-default"
+												th:href="@{/issuetype/copy(issueTypeId=${issueType.issueTypeId})}">
+												복사 </a>
+
+											<form th:action="@{/issuetype/delete}" method="post"
+												class="inline-form"
+												onsubmit="return confirm('이 일감유형을 삭제하시겠습니까? 사용 중인 일감유형은 삭제할 수 없습니다.');">
+												<input type="hidden" name="issueTypeId"
+													th:value="${issueType.issueTypeId}">
+
+												<button type="submit"
+													class="btn btn-custon-rounded-four btn-danger">삭제
+												</button>
+											</form>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

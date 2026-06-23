@@ -1,0 +1,106 @@
+@charset "UTF-8";
+
+/* ==============================
+   공통 메시지
+   - Bootstrap alert 대신 사용
+============================== */
+
+.page-message {
+    margin-bottom: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.page-message-success {
+    border: 1px solid #d7eadf;
+    background: #f1faf5;
+    color: #1f7a45;
+}
+
+.page-message-error {
+    border: 1px solid #f1d1d1;
+    background: #fff5f5;
+    color: #c0392b;
+}
+
+.page-message-info {
+    border: 1px solid #cdddf8;
+    background: #f4f7ff;
+    color: #3157a3;
+}
+
+
+/* ==============================
+   테이블 관리 버튼 정렬
+   - 색상/기본 버튼 디자인은 buttons.css 기준
+   - 여기서는 정렬/크기만 보정
+============================== */
+
+.table-actions,
+.issuetype-actions,
+.status-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+}
+
+.table-actions form,
+.issuetype-actions form,
+.status-actions form {
+    margin: 0;
+    display: inline;
+}
+
+.table-actions .btn,
+.issuetype-actions .btn,
+.status-actions .btn {
+    min-width: 44px;
+    height: 30px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    line-height: 1;
+    text-decoration: none;
+}
+
+
+/* ==============================
+   공통 유틸
+============================== */
+
+.center {
+    text-align: center;
+}
+
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+.ellipsis-text {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.strong-text {
+    display: block;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.empty-row,
+.issue-status-empty {
+    text-align: center;
+    color: #777;
+    padding: 28px 0 !important;
+}

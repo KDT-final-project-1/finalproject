@@ -1,0 +1,366 @@
+@charset "UTF-8";
+
+/* ==============================
+   코드값 공통 영역
+============================== */
+
+.codevalue-page,
+.codevalue-form-page {
+    padding: 12px 0;
+}
+
+.codevalue-header {
+    margin-bottom: 10px;
+}
+
+.codevalue-header h1 {
+    margin: 0 0 3px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.codevalue-header p {
+    margin: 0;
+    color: #777;
+    font-size: 13px;
+}
+
+
+/* ==============================
+   코드값 조회 화면 높이 고정
+   - 메인 전체 스크롤 방지
+   - 내부 테이블만 스크롤
+============================== */
+
+.codevalue-page {
+    --codevalue-page-offset: 150px;
+
+    height: calc(100vh - var(--codevalue-page-offset));
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.codevalue-page > .container-fluid {
+    height: 100%;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.codevalue-page .codevalue-header,
+.codevalue-page .search-section,
+.codevalue-page .page-message {
+    flex: 0 0 auto;
+}
+
+
+/* ==============================
+   코드값 검색조건
+   common-fliter.css 덮어쓰기용
+============================== */
+
+.codevalue-search .search-form-row {
+    grid-template-columns: 220px 1fr 180px;
+}
+
+
+/* ==============================
+   코드값 목록 카드
+============================== */
+
+.codevalue-grid {
+    flex: 1 1 auto;
+    min-height: 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(260px, 1fr));
+    gap: 14px;
+    align-items: stretch;
+    width: 100%;
+
+    overflow: hidden;
+}
+
+.codevalue-card {
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.codevalue-card-header {
+    padding: 14px 16px 12px;
+    border-bottom: 1px solid #eeeeee;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex: 0 0 auto;
+}
+
+.codevalue-title-wrap h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.codevalue-title-wrap span {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #777;
+}
+
+.codevalue-add-btn {
+    min-width: 90px;
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+
+/* ==============================
+   코드값 테이블
+============================== */
+
+.codevalue-table-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.codevalue-table {
+    width: 100%;
+    margin-bottom: 0;
+    table-layout: fixed;
+}
+
+.codevalue-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: #f8f9fa;
+    color: #333;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd !important;
+    padding: 8px 10px !important;
+    white-space: nowrap;
+}
+
+.codevalue-table tbody td {
+    vertical-align: middle !important;
+    padding: 8px 10px !important;
+    font-size: 13px;
+    border-top: 1px solid #f1f3f5 !important;
+}
+
+.codevalue-order {
+    width: 54px;
+    text-align: center;
+    color: #777;
+}
+
+.codevalue-name {
+    display: block;
+    font-weight: 600;
+    color: #1f2937;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.codevalue-empty {
+    padding: 120px 10px !important;
+    text-align: center;
+    color: #777;
+}
+
+
+/* ==============================
+   코드값 뱃지
+============================== */
+
+.codevalue-badge-default {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    background: #eef7f1;
+    color: #2f7d4f;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.codevalue-badge-none {
+    color: #999;
+    font-size: 12px;
+}
+
+
+/* ==============================
+   코드값 관리 버튼
+   - 기본 정렬은 common-ui.css의 table-actions 사용
+   - 여기서는 코드값 카드 내부 줄바꿈만 보정
+============================== */
+
+.codevalue-actions {
+    flex-wrap: wrap;
+}
+
+
+/* ==============================
+   코드값 등록 / 대체 삭제 폼
+============================== */
+
+.codevalue-form-card {
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.codevalue-form-title {
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.codevalue-form-title h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.codevalue-form-title p {
+    margin: 3px 0 0;
+    color: #777;
+    font-size: 12px;
+}
+
+.codevalue-form-card .form-group {
+    margin-bottom: 12px;
+}
+
+.codevalue-form-card .form-group label {
+    margin-bottom: 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.codevalue-form-card .form-control {
+    width: 100%;
+    height: 34px;
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+}
+
+.codevalue-form-card .form-control[readonly] {
+    background-color: #f8f9fa;
+    cursor: default;
+}
+
+.codevalue-check-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.codevalue-check-label input[type="checkbox"] {
+    margin: 0;
+}
+
+.codevalue-form-card .help-block {
+    margin: 5px 0 0;
+    font-size: 12px;
+    color: #777;
+}
+
+.codevalue-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 6px;
+    margin-top: 14px;
+}
+
+.codevalue-form-actions .btn {
+    min-width: 70px;
+    height: 32px;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+
+/* ==============================
+   반응형
+============================== */
+
+@media (max-width: 1400px) {
+    .codevalue-grid {
+        grid-template-columns: repeat(3, minmax(230px, 1fr));
+    }
+}
+
+@media (max-width: 1100px) {
+    .codevalue-page {
+        height: auto;
+        overflow: visible;
+    }
+
+    .codevalue-page > .container-fluid {
+        height: auto;
+        display: block;
+    }
+
+    .codevalue-grid {
+        grid-template-columns: 1fr;
+        overflow: visible;
+    }
+
+    .codevalue-card {
+        height: 520px;
+        margin-bottom: 14px;
+    }
+}
+
+@media (max-width: 992px) {
+    .codevalue-search .search-form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .codevalue-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .codevalue-add-btn {
+        width: 100%;
+    }
+}

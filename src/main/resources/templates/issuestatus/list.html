@@ -1,116 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/default_layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{common/layouts/default_layout}">
+
 <head>
-<meta charset="UTF-8">
 <title>일감 상태 관리</title>
-<link rel="stylesheet" th:href="@{/css/issuestatus/list.css}">
+<link rel="stylesheet" th:href="@{/css/common-ui.css}">
+<link rel="stylesheet" th:href="@{/css/common-fliter.css}">
+<link rel="stylesheet" th:href="@{/css/issuestatus/issuestatus.css}">
 </head>
 
 <body>
-<div layout:fragment="Content">
+	<div layout:fragment="Content">
 
-    <div class="issue-status-page">
-        <div class="container-fluid">
+		<div class="issue-status-page">
+			<div class="container-fluid">
 
-            <div class="issue-status-header">
-                <div>
-                    <h1>일감 상태 관리</h1>
-                    <p>
-                        일감에서 사용할 상태를 관리합니다.
-                        사용 중인 상태는 삭제할 수 없습니다.
-                    </p>
-                </div>
+				<div class="issue-status-header">
+					<div>
+						<h1>일감 상태</h1>
+						<p>일감에서 사용할 상태를 관리합니다.</p>
+					</div>
+				</div>
 
-                <a class="btn btn-primary issue-status-add-btn"
-                   th:href="@{/issuestatus/create}">
-                    + 새 상태 등록
-                </a>
-            </div>
+				<div class="search-section issuestatus-search">
+					<div class="search-header">
+						<div class="search-title">검색조건</div>
 
-            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+						<a th:href="@{/issuestatus/create}"
+							class="btn btn-custon-rounded-four btn-primary search-action-btn">
+							상태 추가 </a>
+					</div>
 
-            <div class="static-table-area">
-                <div class="issue-status-card">
-                    <div class="static-table-list issue-status-table-wrap">
+					<form th:action="@{/issuestatus/list}" method="get">
+						<div class="search-form-row">
 
-                        <table class="table issue-status-table">
-                            <thead>
-                            <tr>
-                                <th style="width:80px;">순서</th>
-                                <th style="width:200px;">상태명</th>
-                                <th>설명</th>
-                                <th style="width:120px;">종료 여부</th>
-                                <th style="width:160px; text-align:center;">관리</th>
-                            </tr>
-                            </thead>
+							<div class="search-field">
+								<label for="statusName">상태명</label> <input type="text"
+									id="statusName" name="statusName"
+									th:value="${searchVO != null ? searchVO.statusName : ''}"
+									placeholder="input">
+							</div>
 
-                            <tbody>
-                            <tr th:if="${#lists.isEmpty(issueStatusList)}">
-                                <td colspan="5" class="issue-status-empty">
-                                    등록된 일감 상태가 없습니다.
-                                </td>
-                            </tr>
+							<div class="search-field">
+								<label for="closedYn">종료 여부</label> <select id="closedYn"
+									name="closedYn">
+									<option value="">선택</option>
+									<option value="N"
+										th:selected="${searchVO != null and searchVO.closedYn == 'N'}">
+										진행</option>
+									<option value="Y"
+										th:selected="${searchVO != null and searchVO.closedYn == 'Y'}">
+										종료</option>
+								</select>
+							</div>
 
-                            <tr th:each="status, stat : ${issueStatusList}">
-                                <td th:text="${stat.count}">1</td>
+						</div>
 
-                                <td class="status-name" th:text="${status.statusName}">
-                                    신규
-                                </td>
+						<div class="search-btn-area">
+							<a th:href="@{/issuestatus/list}"
+								class="btn btn-custon-rounded-four btn-default filter-btn">
+								clean </a>
 
-                                <td class="status-desc"
-                                    th:text="${status.statusAnswer != null and status.statusAnswer != '' ? status.statusAnswer : '-'}">
-                                    설명
-                                </td>
+							<button type="submit"
+								class="btn btn-custon-rounded-four btn-primary filter-btn">
+								apply</button>
+						</div>
+					</form>
+				</div>
 
-                                <td>
-                                    <span th:if="${status.closedYn == 'Y'}"
-                                          class="status-badge-closed">
-                                        종료
-                                    </span>
+				<div th:if="${message}" class="page-message page-message-success"
+					th:text="${message}"></div>
 
-                                    <span th:unless="${status.closedYn == 'Y'}"
-                                          class="status-badge-open">
-                                        진행
-                                    </span>
-                                </td>
+				<div th:if="${errorMessage}" class="page-message page-message-error"
+					th:text="${errorMessage}"></div>
 
-                                <td>
-                                    <div class="status-actions">
+				<div class="issue-status-card">
+					<div class="issue-status-table-wrap">
+						<table class="table table-hover issue-status-table">
+							<thead>
+								<tr>
+									<th style="width: 70px;">번호</th>
+									<th style="width: 220px;">상태명</th>
+									<th>설명</th>
+									<th style="width: 130px; text-align: center;">종료 여부</th>
+									<th style="width: 160px; text-align: center;">관리</th>
+								</tr>
+							</thead>
 
-                                        <a class="status-action-btn"
-                                           th:href="@{/issuestatus/update(issueStatusId=${status.issueStatusId})}">
-                                            수정
-                                        </a>
+							<tbody>
+								<tr th:if="${#lists.isEmpty(issueStatusList)}">
+									<td colspan="5" class="issue-status-empty">등록된 일감 상태가
+										없습니다.</td>
+								</tr>
 
-                                        <form th:action="@{/issuestatus/delete}"
-                                              method="post"
-                                              onsubmit="return confirm('해당 일감 상태를 삭제하시겠습니까?');">
-                                            <input type="hidden"
-                                                   name="issueStatusId"
-                                                   th:value="${status.issueStatusId}">
-                                            <button type="submit"
-                                                    class="status-action-btn status-action-danger">
-                                                삭제
-                                            </button>
-                                        </form>
+								<tr th:each="status, stat : ${issueStatusList}">
+									<td th:text="${stat.count}">1</td>
 
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+									<td><span class="status-name"
+										th:text="${status.statusName}"> 신규 </span></td>
 
-                    </div>
-                </div>
-            </div>
+									<td><span class="status-desc"
+										th:text="${status.statusAnswer != null ? status.statusAnswer : '-'}">
+											설명 </span></td>
 
-        </div>
-    </div>
+									<td class="center"><span th:if="${status.closedYn == 'Y'}"
+										class="status-badge-closed"> 종료 </span> <span
+										th:if="${status.closedYn != 'Y'}" class="status-badge-open">
+											진행 </span></td>
 
-</div>
+									<td>
+										<div class="table-actions">
+											<a class="btn btn-custon-rounded-four btn-default"
+												th:href="@{/issuestatus/update(issueStatusId=${status.issueStatusId})}">
+												수정 </a>
+
+											<form th:action="@{/issuestatus/delete}" method="post"
+												onsubmit="return confirm('이 일감 상태를 삭제하시겠습니까? 사용 중인 상태는 삭제할 수 없습니다.');">
+												<input type="hidden" name="issueStatusId"
+													th:value="${status.issueStatusId}">
+
+												<button type="submit"
+													class="btn btn-custon-rounded-four btn-danger">삭제
+												</button>
+											</form>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+	</div>
 </body>
 </html>
