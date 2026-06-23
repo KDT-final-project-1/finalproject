@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.pixcel.app.issuetype.mapper.IssueTypeMapper">
+
+	<!-- 검색조건에 맞는 사용자별 일감유형 목록 조회 -->
+	<select id="selectIssueTypeList" parameterType="IssueTypeVO"
+		resultType="IssueTypeVO">
+		select
+		it.issue_type_id,
+		it.initial_status_id,
+		ist.status_name as
+		initial_status_name,
+		it.issue_type_name,
+		it.roadmap_yn,
+		it.description,
+		it.created_at,
+		it.updated_at,
+		it.user_id
+		from issue_type it
+		join
+		issue_status ist
+		on it.initial_status_id = ist.issue_status_id
+		where
+		it.user_id = #{userId}
+		and ist.user_id = #{userId}
+
+		<if test="issueTypeName != null and issueTypeName != ''">
+			and upper(it.issue_type_name) like '%' ||
+			upper(#{issueTypeName}) || '%'
+		</if>
+
+		<if test="initialStatusId != null and initialStatusId != ''">
+			and it.initial_status_id = #{initialStatusId}
+		</if>
+
+		<if test="description != null and description != ''">
+			and it.description is not null
+			<!-- CLOB라서 LIKE 바로 쓰기보다 DBMS_LOB.SUBSTR로 잘라서 검색하게 했음 -->
+			and upper(dbms_lob.substr(it.description, 4000, 1)) like '%' ||
+			upper(#{description}) || '%'
+		</if>
+
+
+		order by it.created_at desc, it.issue_type_id desc
+	</select>
+
+	<!-- 사용자별 일감유형 상세 조회 -->
+	<select id="selectIssueTypeDetail" resultType="IssueTypeVO">
+		select
+		it.issue_type_id,
+		it.initial_status_id,
+		ist.status_name as
+		initial_status_name,
+		it.issue_type_name,
+		it.roadmap_yn,
+		it.description,
+		it.created_at,
+		it.updated_at,
+		it.user_id
+		from issue_type it
+		join
+		issue_status ist
+		on it.initial_status_id = ist.issue_status_id
+		where
+		it.issue_type_id = #{issueTypeId}
+		and it.user_id = #{userId}
+		and
+		ist.user_id = #{userId}
+	</select>
+
+	<!-- 현재 사용자가 소유한 프로젝트 목록 조회 -->
+	<select id="selectProjectList" resultType="IssueTypeVO">
+		select
+		project_id,
+		project_name
+		from project
+		where owner_id = #{userId}
+		order by created_at
+		desc, project_name
+	</select>
+
+	<!-- 일감유형에 적용된 프로젝트 ID 목록 조회 -->
+	<select id="selectAppliedProjectIdList" resultType="string">
+		select
+		itp.project_id
+		from issue_type_project itp
+		join issue_type it
+		on
+		itp.issue_type_id = it.issue_type_id
+		join project p
+		on itp.project_id =
+		p.project_id
+		where itp.issue_type_id = #{issueTypeId}
+		and it.user_id =
+		#{userId}
+		and p.owner_id = #{userId}
+		order by itp.project_id
+	</select>
+
+	<!-- 일감유형에서 사용 처리된 항목 코드 조회 -->
+	<select id="selectUsedFieldCodeList" resultType="string">
+		select
+		case
+		fs.field_code
+		when 'i001' then 'ASSIGNEE'
+		when 'i002' then 'MILESTONE'
+		when 'i003' then 'PARENT_ISSUE'
+		when 'i004' then 'START_DATE'
+		when
+		'i005' then 'DUE_DATE'
+		when 'i006' then 'ESTIMATED_HOURS'
+		else
+		fs.field_code
+		end as field_code
+		from issue_type_field_setting fs
+		join
+		issue_type it
+		on fs.issue_type_id = it.issue_type_id
+		where
+		fs.issue_type_id = #{issueTypeId}
+		and it.user_id = #{userId}
+		and
+		fs.use_yn = 'Y'
+		order by case fs.field_code
+		when 'i001' then 1
+		when
+		'i002' then 2
+		when 'i003' then 3
+		when 'i004' then 4
+		when 'i005' then 5
+		when 'i006' then 6
+		when 'ASSIGNEE' then 1
+		when 'MILESTONE' then 2
+		when
+		'PARENT_ISSUE' then 3
+		when 'START_DATE' then 4
+		when 'DUE_DATE' then 5
+		when 'ESTIMATED_HOURS' then 6
+		else 99
+		end
+	</select>
+
+	<!-- 일감유형에서 필수 처리된 항목 코드 조회 -->
+	<select id="selectRequiredFieldCodeList" resultType="string">
+		select
+		case
+		fs.field_code
+		when 'i001' then 'ASSIGNEE'
+		when 'i002' then 'MILESTONE'
+		when 'i003' then 'PARENT_ISSUE'
+		when 'i004' then 'START_DATE'
+		when
+		'i005' then 'DUE_DATE'
+		when 'i006' then 'ESTIMATED_HOURS'
+		else
+		fs.field_code
+		end as field_code
+		from issue_type_field_setting fs
+		join
+		issue_type it
+		on fs.issue_type_id = it.issue_type_id
+		where
+		fs.issue_type_id = #{issueTypeId}
+		and it.user_id = #{userId}
+		and
+		fs.required_yn = 'Y'
+		order by case fs.field_code
+		when 'i001' then 1
+		when
+		'i002' then 2
+		when 'i003' then 3
+		when 'i004' then 4
+		when 'i005' then 5
+		when 'i006' then 6
+		when 'ASSIGNEE' then 1
+		when 'MILESTONE' then 2
+		when
+		'PARENT_ISSUE' then 3
+		when 'START_DATE' then 4
+		when 'DUE_DATE' then 5
+		when 'ESTIMATED_HOURS' then 6
+		else 99
+		end
+	</select>
+
+	<!-- 일감유형 등록 -->
+	<insert id="insertIssueType" parameterType="IssueTypeVO">
+
+		<selectKey keyProperty="issueTypeId" resultType="string"
+			order="BEFORE">
+			select
+			'ISSUE_TYPE_'
+			|| to_char(sysdate, 'YYMM')
+			|| '_'
+			|| lpad(
+			nvl(max(to_number(substr(issue_type_id, -4))), 0) + 1,
+			4,
+			'0'
+			)
+			from
+			issue_type
+			where substr(issue_type_id, 1, 16) =
+			'ISSUE_TYPE_' ||
+			to_char(sysdate, 'YYMM') || '_'
+		</selectKey>
+
+		insert into issue_type (
+		issue_type_id,
+		initial_status_id,
+		issue_type_name,
+		roadmap_yn,
+		description,
+		created_at,
+		updated_at,
+		user_id
+		)
+		values (
+		#{issueTypeId},
+		#{initialStatusId},
+		#{issueTypeName},
+		null,
+		#{description},
+		sysdate,
+		null,
+		#{userId}
+		)
+	</insert>
+
+	<!-- 일감유형 적용 프로젝트 등록 -->
+	<insert id="insertIssueTypeProject" parameterType="IssueTypeVO">
+
+		<selectKey keyProperty="issueTypeProjectId"
+			resultType="string" order="BEFORE">
+			select
+			'ISSUE_TYPE_PROJECT_'
+			||
+			to_char(sysdate, 'YYMM')
+			|| '_'
+			|| lpad(
+			nvl(max(to_number(substr(issue_type_project_id, -4))), 0) + 1,
+			4,
+			'0'
+			)
+			from issue_type_project
+			where substr(issue_type_project_id, 1, 24) =
+			'ISSUE_TYPE_PROJECT_' || to_char(sysdate, 'YYMM') || '_'
+		</selectKey>
+
+		insert into issue_type_project (
+		issue_type_project_id,
+		issue_type_id,
+		project_id,
+		created_at
+		) values (
+		#{issueTypeProjectId},
+		#{issueTypeId},
+		#{projectId},
+		sysdate
+		)
+	</insert>
+
+	<!-- 일감유형 항목 설정 등록 -->
+	<insert id="insertIssueTypeFieldSetting"
+		parameterType="IssueTypeVO">
+
+		<selectKey keyProperty="fieldSettingId" resultType="string"
+			order="BEFORE">
+			select
+			'FIELD_SETTING_'
+			|| to_char(sysdate, 'YYMM')
+			|| '_'
+			|| lpad(
+			nvl(max(to_number(substr(field_setting_id, -4))), 0) + 1,
+			4,
+			'0'
+			)
+			from issue_type_field_setting
+			where substr(field_setting_id, 1, 19) =
+			'FIELD_SETTING_' || to_char(sysdate, 'YYMM') || '_'
+		</selectKey>
+
+		insert into issue_type_field_setting (
+		field_setting_id,
+		issue_type_id,
+		field_code,
+		use_yn,
+		required_yn,
+		created_at,
+		updated_at
+		) values (
+		#{fieldSettingId},
+		#{issueTypeId},
+		case #{fieldCode}
+		when 'ASSIGNEE' then 'i001'
+		when 'MILESTONE' then 'i002'
+		when 'PARENT_ISSUE' then 'i003'
+		when 'START_DATE' then 'i004'
+		when 'DUE_DATE' then 'i005'
+		when 'ESTIMATED_HOURS' then 'i006'
+		else #{fieldCode}
+		end,
+		#{useYn},
+		#{requiredYn},
+		sysdate,
+		null
+		)
+	</insert>
+
+	<!-- 사용자별 일감유형명 중복 검사 -->
+	<select id="countDuplicateIssueTypeName" resultType="int">
+		select
+		count(*)
+		from issue_type
+		where user_id = #{userId}
+		and issue_type_name =
+		#{issueTypeName}
+	</select>
+
+	<!-- 초기 상태 소유자 검사 -->
+	<select id="countInitialStatusByUser" resultType="int">
+		select count(*)
+		from issue_status
+		where issue_status_id = #{initialStatusId}
+		and user_id
+		= #{userId}
+	</select>
+
+	<!-- 선택한 프로젝트 소유자 검사 -->
+	<select id="countSelectedProjectByUser" resultType="int">
+		select count(distinct project_id)
+		from project
+		where owner_id =
+		#{userId}
+		<choose>
+			<when test="projectIdList != null and projectIdList.size() > 0">
+				and project_id in
+				<foreach collection="projectIdList" item="projectId"
+					open="(" separator="," close=")">
+					#{projectId}
+				</foreach>
+			</when>
+			<otherwise>
+				and 1 = 0
+			</otherwise>
+		</choose>
+	</select>
+
+	<!-- 일감유형 사용 여부 검사 -->
+	<select id="countUsedIssueType" resultType="int">
+		select count(*)
+		from (
+		select issue_type_id
+		from issue
+		where issue_type_id = #{issueTypeId}
+
+		union all
+
+		select issue_type_id
+		from workflow_transition
+		where
+		issue_type_id = #{issueTypeId}
+		)
+	</select>
+
+	<!-- 일감유형 적용 프로젝트 삭제 -->
+	<delete id="deleteIssueTypeProjectByIssueTypeId">
+		delete from issue_type_project
+		where issue_type_id in
+		(
+		select issue_type_id
+		from issue_type
+		where issue_type_id =
+		#{issueTypeId}
+		and user_id = #{userId}
+		)
+	</delete>
+
+	<!-- 일감유형 항목 설정 삭제 -->
+	<delete id="deleteIssueTypeFieldSettingByIssueTypeId">
+		delete from issue_type_field_setting
+		where
+		issue_type_id in (
+		select issue_type_id
+		from issue_type
+		where
+		issue_type_id = #{issueTypeId}
+		and user_id = #{userId}
+		)
+	</delete>
+
+	<!-- 일감유형 삭제 -->
+	<delete id="deleteIssueType">
+		delete from issue_type
+		where issue_type_id =
+		#{issueTypeId}
+		and user_id = #{userId}
+	</delete>
+
+</mapper>

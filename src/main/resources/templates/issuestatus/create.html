@@ -1,98 +1,74 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/default_layout}">
-      <link rel="stylesheet" th:href="@{/css/issuestatus/create.css}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{common/layouts/default_layout}">
+
 <head>
-<meta charset="UTF-8">
 <title>일감 상태 등록</title>
 
+<link rel="stylesheet" th:href="@{/css/common-ui.css}">
+<link rel="stylesheet" th:href="@{/css/issuestatus/issuestatus.css}">
 </head>
 
 <body>
-<div layout:fragment="Content">
+	<div layout:fragment="Content">
 
-    <div class="issue-status-form-page">
-        <div class="container-fluid">
+		<div class="issue-status-form-page">
+			<div class="container-fluid">
 
-            <div class="row">
-                <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12">
+				<div class="issue-status-header">
+					<div>
+						<h1>일감 상태 등록</h1>
+						<p>일감에서 사용할 상태를 새로 등록합니다.</p>
+					</div>
+				</div>
 
-                    <div class="single-pro-review-area">
-                        <div class="issue-status-form-card">
+				<div th:if="${errorMessage}" class="page-message page-message-error"
+					th:text="${errorMessage}"></div>
 
-                            <div class="issue-status-form-title">
-                                <h1>일감 상태 등록</h1>
-                                <p>
-                                    일감에서 사용할 상태명을 등록합니다.
-                                    종료 상태로 체크하면 완료/종료 상태로 분류됩니다.
-                                </p>
-                            </div>
+				<div class="issue-status-form-card">
+					<div class="issue-status-form-title">
+						<h1>기본 정보</h1>
+						<p>상태명, 설명, 종료 여부를 입력합니다.</p>
+					</div>
 
-                            <div th:if="${errorMessage}"
-                                 class="alert alert-danger"
-                                 th:text="${errorMessage}">
-                            </div>
+					<form th:action="@{/issuestatus/create}" method="post"
+						th:object="${issueStatus}">
 
-                            <div class="review-content-section">
-                                <form th:action="@{/issuestatus/create}"
-                                      th:object="${issueStatus}"
-                                      method="post">
+						<div class="form-group">
+							<label for="statusName">상태명</label> <input type="text"
+								id="statusName" th:field="*{statusName}" class="form-control"
+								placeholder="상태명을 입력하세요">
+						</div>
 
-                                    <div class="form-group">
-                                        <label>상태명</label>
-                                        <input type="text"
-                                               class="form-control"
-                                               th:field="*{statusName}"
-                                               placeholder="예: 신규, 진행, 해결, 종료"
-                                               required>
-                                    </div>
+						<div class="form-group">
+							<label for="statusAnswer">상태 설명</label>
+							<textarea id="statusAnswer" th:field="*{statusAnswer}"
+								class="form-control" placeholder="상태 설명을 입력하세요"></textarea>
+						</div>
 
-                                    <div class="form-group">
-                                        <label>상태 설명</label>
-                                        <textarea class="form-control"
-                                                  th:field="*{statusAnswer}"
-                                                  rows="5"
-                                                  placeholder="상태에 대한 설명을 입력하세요"></textarea>
-                                    </div>
+						<div class="form-group">
+							<label for="closedYn">종료 상태 여부</label> <select id="closedYn"
+								th:field="*{closedYn}" class="form-control">
+								<option value="N">진행</option>
+								<option value="Y">종료</option>
+							</select>
+						</div>
 
-                                    <div class="form-group">
-                                        <label>
-                                            <input type="checkbox"
-                                                   name="closedYn"
-                                                   value="Y"
-                                                   th:checked="${issueStatus.closedYn == 'Y'}">
-                                            종료 상태로 설정
-                                        </label>
-                                        <p class="help-block">
-                                            체크 시 해당 상태는 완료/종료 상태로 처리됩니다.
-                                        </p>
-                                    </div>
+						<div class="issue-status-form-actions">
+							<a th:href="@{/issuestatus/list}"
+								class="btn btn-custon-rounded-four btn-default"> 취소 </a>
 
-                                    <div class="issue-status-form-actions">
-                                        <a th:href="@{/issuestatus/list}"
-                                           class="btn btn-default">
-                                            취소
-                                        </a>
+							<button type="submit"
+								class="btn btn-custon-rounded-four btn-primary">등록</button>
+						</div>
 
-                                        <button type="submit"
-                                                class="btn btn-primary">
-                                            등록
-                                        </button>
-                                    </div>
+					</form>
+				</div>
 
-                                </form>
-                            </div>
+			</div>
+		</div>
 
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</div>
+	</div>
 </body>
 </html>
