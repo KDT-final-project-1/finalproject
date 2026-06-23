@@ -2,6 +2,7 @@ package com.pixcel.app.issuetype.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,43 +21,49 @@ public class IssueTypeController {
     private final IssueTypeService issueTypeService;
     private final IssueStatusService issueStatusService;
 
-    private static final String TEMP_LOGIN_USER_ID = "USERS_0001";
-
     // 일감유형 목록 화면으로 이동한다.
     @GetMapping("/issuetype/list")
-    public String issueTypeList(Model model) {
+    public String issueTypeList(@CookieValue(value = "userId", required = false) String userId,
+                                IssueTypeVO searchVO,
+                                Model model) {
 
-        String userId = getLoginUserId();
+        String loginUserId = getLoginUserId(userId);
 
-        model.addAttribute("issueTypeList", issueTypeService.getIssueTypeList(userId));
+        searchVO.setUserId(loginUserId);
+
+        model.addAttribute("searchVO", searchVO);
+        model.addAttribute("issueTypeList", issueTypeService.getIssueTypeList(searchVO));
+        model.addAttribute("issueStatusList", issueStatusService.getIssueStatusList(loginUserId));
 
         return "issuetype/list";
     }
 
     // 일감유형 생성 화면으로 이동한다.
     @GetMapping("/issuetype/create")
-    public String issueTypeCreateForm(Model model) {
+    public String issueTypeCreateForm(@CookieValue(value = "userId", required = false) String userId,
+                                      Model model) {
 
-        String userId = getLoginUserId();
+        String loginUserId = getLoginUserId(userId);
 
         if (!model.containsAttribute("issueType")) {
             model.addAttribute("issueType", new IssueTypeVO());
         }
 
-        addFormModel(model, userId);
+        addFormModel(model, loginUserId);
 
         return "issuetype/create";
     }
 
     // 신규 일감유형을 등록한다.
     @PostMapping("/issuetype/create")
-    public String issueTypeCreate(IssueTypeVO issueType,
+    public String issueTypeCreate(@CookieValue(value = "userId", required = false) String userId,
+                                  IssueTypeVO issueType,
                                   RedirectAttributes redirectAttributes) {
 
-        String userId = getLoginUserId();
+        String loginUserId = getLoginUserId(userId);
 
         try {
-            issueTypeService.createIssueType(issueType, userId);
+            issueTypeService.createIssueType(issueType, loginUserId);
             redirectAttributes.addFlashAttribute("message", "일감유형이 등록되었습니다.");
 
             return "redirect:/issuetype/list";
@@ -71,20 +78,21 @@ public class IssueTypeController {
 
     // 일감유형 복사 화면으로 이동한다.
     @GetMapping("/issuetype/copy")
-    public String issueTypeCopyForm(@RequestParam("issueTypeId") String issueTypeId,
+    public String issueTypeCopyForm(@CookieValue(value = "userId", required = false) String userId,
+                                    @RequestParam("issueTypeId") String issueTypeId,
                                     Model model,
                                     RedirectAttributes redirectAttributes) {
 
-        String userId = getLoginUserId();
+        String loginUserId = getLoginUserId(userId);
 
         try {
-            IssueTypeVO issueType = issueTypeService.getIssueTypeDetail(issueTypeId, userId);
+            IssueTypeVO issueType = issueTypeService.getIssueTypeDetail(issueTypeId, loginUserId);
 
             issueType.setIssueTypeId(null);
             issueType.setIssueTypeName(issueType.getIssueTypeName() + " - 복사");
 
             model.addAttribute("issueType", issueType);
-            addFormModel(model, userId);
+            addFormModel(model, loginUserId);
 
             return "issuetype/copy";
 
@@ -97,13 +105,14 @@ public class IssueTypeController {
 
     // 기존 일감유형을 복사하여 신규 일감유형으로 등록한다.
     @PostMapping("/issuetype/copy")
-    public String issueTypeCopy(IssueTypeVO issueType,
+    public String issueTypeCopy(@CookieValue(value = "userId", required = false) String userId,
+                                IssueTypeVO issueType,
                                 RedirectAttributes redirectAttributes) {
 
-        String userId = getLoginUserId();
+        String loginUserId = getLoginUserId(userId);
 
         try {
-            issueTypeService.copyIssueType(issueType, userId);
+            issueTypeService.copyIssueType(issueType, loginUserId);
             redirectAttributes.addFlashAttribute("message", "일감유형이 복사되었습니다.");
 
             return "redirect:/issuetype/list";
@@ -118,13 +127,14 @@ public class IssueTypeController {
 
     // 사용 중이지 않은 일감유형을 삭제한다.
     @PostMapping("/issuetype/delete")
-    public String issueTypeDelete(@RequestParam("issueTypeId") String issueTypeId,
+    public String issueTypeDelete(@CookieValue(value = "userId", required = false) String userId,
+                                  @RequestParam("issueTypeId") String issueTypeId,
                                   RedirectAttributes redirectAttributes) {
 
-        String userId = getLoginUserId();
+        String loginUserId = getLoginUserId(userId);
 
         try {
-            issueTypeService.removeIssueType(issueTypeId, userId);
+            issueTypeService.removeIssueType(issueTypeId, loginUserId);
             redirectAttributes.addFlashAttribute("message", "일감유형이 삭제되었습니다.");
 
         } catch (IllegalArgumentException e) {
@@ -142,7 +152,12 @@ public class IssueTypeController {
     }
 
     // 현재 로그인 사용자 ID를 반환한다.
-    private String getLoginUserId() {
-        return TEMP_LOGIN_USER_ID;
+    private String getLoginUserId(String userId) {
+
+        if (userId == null || userId.trim().isEmpty()) {
+            throw new IllegalArgumentException("로그인 정보가 없습니다.");
+        }
+
+        return userId;
     }
 }

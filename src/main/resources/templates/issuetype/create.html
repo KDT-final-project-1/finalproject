@@ -1,217 +1,193 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{common/layouts/default_layout}">
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{common/layouts/default_layout}">
 
 <head>
-    <title>일감유형 생성</title>
-    <link rel="stylesheet" th:href="@{/css/issuetype/issuetype.css}">
+<title>일감유형 생성</title>
+<link rel="stylesheet" th:href="@{/css/common-ui.css}">
+<link rel="stylesheet" th:href="@{/css/issuetype/issuetype.css}">
 </head>
 
 <body>
-<div layout:fragment="Content">
+	<div layout:fragment="Content">
 
-    <div class="issuetype-area">
-        <div class="container-fluid">
+		<div class="issuetype-area">
+			<div class="container-fluid">
 
-            <div class="issuetype-header">
-                <div>
-                    <h3>일감유형 생성</h3>
-                    <p>기본 정보, 적용 프로젝트, 입력 항목 사용/필수 여부를 설정합니다.</p>
-                </div>
+				<div class="issuetype-header">
+					<div>
+						<h3>일감유형 생성</h3>
+						<p>일감 생성 시 사용할 유형과 항목 설정을 등록합니다.</p>
+					</div>
+				</div>
 
-                <a th:href="@{/issuetype/list}" class="btn btn-default">목록</a>
-            </div>
+				<div th:if="${errorMessage}" class="page-message page-message-error"
+					th:text="${errorMessage}"></div>
 
-            <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+				<form th:action="@{/issuetype/create}" method="post"
+					th:object="${issueType}">
 
-            <div th:if="${#lists.isEmpty(issueStatusList)}" class="alert alert-warning">
-                등록된 일감 상태가 없습니다. 일감유형을 생성하려면 먼저 일감 상태를 등록해야 합니다.
-            </div>
+					<div class="issuetype-form-layout">
 
-            <div th:if="${#lists.isEmpty(projectList)}" class="alert alert-warning">
-                등록된 프로젝트가 없습니다. 일감유형을 생성하려면 먼저 프로젝트가 필요합니다.
-            </div>
+						<div class="issuetype-main-column">
 
-            <form th:action="@{/issuetype/create}" th:object="${issueType}" method="post">
+							<div class="issuetype-card">
+								<div class="issuetype-card-title">
+									<h4>기본 정보</h4>
+									<p>유형명, 초기 상태, 설명을 입력합니다.</p>
+								</div>
 
-                <div class="issuetype-card">
-                    <div class="issuetype-card-title">
-                        <h4>기본 정보</h4>
-                    </div>
+								<div class="form-grid">
+									<div class="form-group">
+										<label for="issueTypeName">유형명 <span class="required">*</span></label>
+										<input type="text" id="issueTypeName"
+											th:field="*{issueTypeName}" class="form-control"
+											placeholder="유형명을 입력하세요">
+									</div>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="issueTypeName">일감유형명 <span class="required">*</span></label>
-                            <input type="text"
-                                   id="issueTypeName"
-                                   th:field="*{issueTypeName}"
-                                   class="form-control"
-                                   placeholder="예: 결함, 새 기능, 요구사항">
-                        </div>
+									<div class="form-group">
+										<label for="initialStatusId">초기 상태 <span
+											class="required">*</span></label> <select id="initialStatusId"
+											th:field="*{initialStatusId}" class="form-control">
+											<option value="">선택</option>
+											<option th:each="status : ${issueStatusList}"
+												th:value="${status.issueStatusId}"
+												th:text="${status.statusName}">신규</option>
+										</select>
+									</div>
+								</div>
 
-                        <div class="form-group">
-                            <label for="initialStatusId">초기 상태 <span class="required">*</span></label>
-                            <select id="initialStatusId"
-                                    th:field="*{initialStatusId}"
-                                    class="form-control">
-                                <option value="">초기 상태 선택</option>
-                                <option th:each="status : ${issueStatusList}"
-                                        th:value="${status.issueStatusId}"
-                                        th:text="${status.statusName}">
-                                    신규
-                                </option>
-                            </select>
-                        </div>
-                    </div>
+								<div class="form-group">
+									<label for="description">설명</label>
+									<textarea id="description" th:field="*{description}"
+										class="form-control" placeholder="유형 설명을 입력하세요"></textarea>
+								</div>
+							</div>
 
-                    <div class="form-group">
-                        <label for="description">설명</label>
-                        <textarea id="description"
-                                  th:field="*{description}"
-                                  class="form-control"
-                                  rows="4"
-                                  placeholder="일감유형에 대한 설명을 입력하세요."></textarea>
-                    </div>
-                </div>
+							<div class="issuetype-card">
+								<div class="issuetype-card-title">
+									<h4>표준 항목 설정</h4>
+									<p>일감 등록 화면에서 사용할 항목과 필수 여부를 설정합니다.</p>
+								</div>
 
-                <div class="issuetype-card">
-                    <div class="issuetype-card-title">
-                        <h4>적용 프로젝트 <span class="required">*</span></h4>
-                        <p>이 일감유형을 사용할 프로젝트를 선택합니다.</p>
-                    </div>
+								<div class="field-setting-table-wrap">
+									<table class="table table-hover field-setting-table">
+										<thead>
+											<tr>
+												<th>항목</th>
+												<th style="width: 90px;" class="center">사용</th>
+												<th style="width: 90px;" class="center">필수</th>
+											</tr>
+										</thead>
 
-                    <div class="project-check-list">
-                        <label class="check-card"
-                               th:each="project : ${projectList}">
-                            <input type="checkbox"
-                                   name="projectIdList"
-                                   th:value="${project.projectId}"
-                                   th:checked="${issueType.projectIdList != null and issueType.projectIdList.contains(project.projectId)}">
-                            <span th:text="${project.projectName}">프로젝트명</span>
-                        </label>
-                    </div>
-                </div>
+										<tbody>
+											<tr>
+												<td><span class="strong-text">담당자</span></td>
+												<td class="center"><input type="checkbox"
+													name="fieldCodeList" value="ASSIGNEE"></td>
+												<td class="center"><input type="checkbox"
+													name="requiredFieldCodeList" value="ASSIGNEE"></td>
+											</tr>
 
-                <div class="issuetype-card">
-                    <div class="issuetype-card-title">
-                        <h4>표준 항목 설정</h4>
-                        <p>일감 등록 화면에서 사용할 항목과 필수 여부를 설정합니다.</p>
-                    </div>
+											<tr>
+												<td><span class="strong-text">마일스톤</span></td>
+												<td class="center"><input type="checkbox"
+													name="fieldCodeList" value="MILESTONE"></td>
+												<td class="center"><input type="checkbox"
+													name="requiredFieldCodeList" value="MILESTONE"></td>
+											</tr>
 
-                    <div class="field-setting-table-wrap">
-                        <table class="table field-setting-table">
-                            <thead>
-                            <tr>
-                                <th>항목</th>
-                                <th>설명</th>
-                                <th style="width:100px; text-align:center;">사용</th>
-                                <th style="width:100px; text-align:center;">필수</th>
-                            </tr>
-                            </thead>
-                            <tbody>
+											<tr>
+												<td><span class="strong-text">상위일감</span></td>
+												<td class="center"><input type="checkbox"
+													name="fieldCodeList" value="PARENT_ISSUE"></td>
+												<td class="center"><input type="checkbox"
+													name="requiredFieldCodeList" value="PARENT_ISSUE">
+												</td>
+											</tr>
 
-                            <tr>
-                                <td class="strong-text">담당자</td>
-                                <td>일감을 배정받을 담당자를 선택합니다.</td>
-                                <td class="center">
-                                    <input type="checkbox" name="fieldCodeList" value="ASSIGNEE"
-                                           th:checked="${issueType.fieldCodeList != null and issueType.fieldCodeList.contains('ASSIGNEE')}">
-                                </td>
-                                <td class="center">
-                                    <input type="checkbox" name="requiredFieldCodeList" value="ASSIGNEE"
-                                           th:checked="${issueType.requiredFieldCodeList != null and issueType.requiredFieldCodeList.contains('ASSIGNEE')}">
-                                </td>
-                            </tr>
+											<tr>
+												<td><span class="strong-text">시작일</span></td>
+												<td class="center"><input type="checkbox"
+													name="fieldCodeList" value="START_DATE"></td>
+												<td class="center"><input type="checkbox"
+													name="requiredFieldCodeList" value="START_DATE"></td>
+											</tr>
 
-                            <tr>
-                                <td class="strong-text">마일스톤</td>
-                                <td>일감을 마일스톤별로 구분합니다.</td>
-                                <td class="center">
-                                    <input type="checkbox" name="fieldCodeList" value="MILESTONE"
-                                           th:checked="${issueType.fieldCodeList != null and issueType.fieldCodeList.contains('MILESTONE')}">
-                                </td>
-                                <td class="center">
-                                    <input type="checkbox" name="requiredFieldCodeList" value="MILESTONE"
-                                           th:checked="${issueType.requiredFieldCodeList != null and issueType.requiredFieldCodeList.contains('MILESTONE')}">
-                                </td>
-                            </tr>
+											<tr>
+												<td><span class="strong-text">완료기한</span></td>
+												<td class="center"><input type="checkbox"
+													name="fieldCodeList" value="DUE_DATE"></td>
+												<td class="center"><input type="checkbox"
+													name="requiredFieldCodeList" value="DUE_DATE"></td>
+											</tr>
 
-                            <tr>
-                                <td class="strong-text">상위일감</td>
-                                <td>상하 관계가 있는 일감을 연결합니다.</td>
-                                <td class="center">
-                                    <input type="checkbox" name="fieldCodeList" value="PARENT_ISSUE"
-                                           th:checked="${issueType.fieldCodeList != null and issueType.fieldCodeList.contains('PARENT_ISSUE')}">
-                                </td>
-                                <td class="center">
-                                    <input type="checkbox" name="requiredFieldCodeList" value="PARENT_ISSUE"
-                                           th:checked="${issueType.requiredFieldCodeList != null and issueType.requiredFieldCodeList.contains('PARENT_ISSUE')}">
-                                </td>
-                            </tr>
+											<tr>
+												<td><span class="strong-text">추정시간</span></td>
+												<td class="center"><input type="checkbox"
+													name="fieldCodeList" value="ESTIMATED_HOURS"></td>
+												<td class="center"><input type="checkbox"
+													name="requiredFieldCodeList" value="ESTIMATED_HOURS">
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
 
-                            <tr>
-                                <td class="strong-text">시작일</td>
-                                <td>일감의 시작일을 입력합니다.</td>
-                                <td class="center">
-                                    <input type="checkbox" name="fieldCodeList" value="START_DATE"
-                                           th:checked="${issueType.fieldCodeList != null and issueType.fieldCodeList.contains('START_DATE')}">
-                                </td>
-                                <td class="center">
-                                    <input type="checkbox" name="requiredFieldCodeList" value="START_DATE"
-                                           th:checked="${issueType.requiredFieldCodeList != null and issueType.requiredFieldCodeList.contains('START_DATE')}">
-                                </td>
-                            </tr>
+								<div class="setting-help">필수 항목은 반드시 사용 항목에도 포함되어야 합니다.</div>
+							</div>
 
-                            <tr>
-                                <td class="strong-text">완료기한</td>
-                                <td>일감의 완료기한을 입력합니다.</td>
-                                <td class="center">
-                                    <input type="checkbox" name="fieldCodeList" value="DUE_DATE"
-                                           th:checked="${issueType.fieldCodeList != null and issueType.fieldCodeList.contains('DUE_DATE')}">
-                                </td>
-                                <td class="center">
-                                    <input type="checkbox" name="requiredFieldCodeList" value="DUE_DATE"
-                                           th:checked="${issueType.requiredFieldCodeList != null and issueType.requiredFieldCodeList.contains('DUE_DATE')}">
-                                </td>
-                            </tr>
+						</div>
 
-                            <tr>
-                                <td class="strong-text">추정시간</td>
-                                <td>일감 완료까지 예상되는 시간을 입력합니다.</td>
-                                <td class="center">
-                                    <input type="checkbox" name="fieldCodeList" value="ESTIMATED_HOURS"
-                                           th:checked="${issueType.fieldCodeList != null and issueType.fieldCodeList.contains('ESTIMATED_HOURS')}">
-                                </td>
-                                <td class="center">
-                                    <input type="checkbox" name="requiredFieldCodeList" value="ESTIMATED_HOURS"
-                                           th:checked="${issueType.requiredFieldCodeList != null and issueType.requiredFieldCodeList.contains('ESTIMATED_HOURS')}">
-                                </td>
-                            </tr>
+						<div class="issuetype-side-column">
+							<div class="issuetype-card project-card">
+								<div class="issuetype-card-title">
+									<h4>적용 프로젝트</h4>
+									<p>이 일감유형을 사용할 프로젝트를 선택합니다.</p>
+								</div>
 
-                            </tbody>
-                        </table>
-                    </div>
+								<div class="project-select-wrap">
+									<table class="table table-hover project-select-table">
+										<thead>
+											<tr>
+												<th style="width: 50px;" class="center">선택</th>
+												<th>프로젝트명</th>
+											</tr>
+										</thead>
 
-                    <div class="setting-help">
-                        필수 항목은 반드시 사용 항목에도 체크되어야 합니다.
-                    </div>
-                </div>
+										<tbody>
+											<tr th:if="${#lists.isEmpty(projectList)}">
+												<td colspan="2" class="empty-row">적용 가능한 프로젝트가 없습니다.</td>
+											</tr>
 
-                <div class="form-actions">
-                    <a th:href="@{/issuetype/list}" class="btn btn-default">취소</a>
-                    <button type="submit"
-                            class="btn btn-primary"
-                            th:disabled="${#lists.isEmpty(issueStatusList) or #lists.isEmpty(projectList)}">
-                        저장
-                    </button>
-                </div>
+											<tr th:each="project : ${projectList}">
+												<td class="center"><input type="checkbox"
+													name="projectIdList" th:value="${project.projectId}">
+												</td>
+												<td th:text="${project.projectName}">프로젝트명</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
 
-            </form>
+					</div>
 
-        </div>
-    </div>
+					<div class="form-actions">
+						<a th:href="@{/issuetype/list}"
+							class="btn btn-custon-rounded-four btn-default"> 취소 </a>
 
-</div>
+						<button type="submit"
+							class="btn btn-custon-rounded-four btn-primary">등록</button>
+					</div>
+
+				</form>
+
+			</div>
+		</div>
+
+	</div>
 </body>
 </html>

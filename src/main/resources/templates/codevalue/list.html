@@ -2,36 +2,117 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{common/layouts/default_layout}">
-<head>
-<meta charset="UTF-8">
-<title>코드값 관리</title>
 
-<link rel="stylesheet" th:href="@{/css/codevalue/list.css}">
+<head>
+    <meta charset="UTF-8">
+    <title>코드값 관리</title>
+
+    <link rel="stylesheet" th:href="@{/css/common-ui.css}">
+    <link rel="stylesheet" th:href="@{/css/common-fliter.css}">
+    <link rel="stylesheet" th:href="@{/css/codevalue/codevalue.css}">
 </head>
 
 <body>
 <div layout:fragment="Content">
 
     <div class="codevalue-page">
-        <div class="container-fluid codevalue-layout">
+        <div class="container-fluid">
 
             <div class="codevalue-header">
-                <h1>코드값 관리</h1>
-                <p>
-                    프로젝트에서 사용하는 작업분류, 일감 우선순위, 문서유형 코드값을 그룹별로 관리합니다.
-                    기본값은 각 그룹마다 하나만 설정할 수 있습니다.
-                </p>
+                <div>
+                    <h1>코드값 관리</h1>
+                    <p>
+                        프로젝트에서 사용하는 작업분류, 일감 우선순위, 문서유형 코드값을 그룹별로 관리합니다.
+                        기본값은 각 그룹마다 하나만 설정할 수 있습니다.
+                    </p>
+                </div>
             </div>
 
-            <div class="codevalue-alert-wrap">
-                <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
-                <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+            <div class="search-section codevalue-search">
+                <div class="search-header">
+                    <div class="search-title">검색조건</div>
+                </div>
+
+                <form th:action="@{/codevalue/list}" method="get">
+                    <div class="search-form-row">
+
+                        <div class="search-field">
+                            <label for="settingGroupName">그룹</label>
+                            <select id="settingGroupName" name="settingGroupName">
+                                <option value="">전체</option>
+                                <option value="g001"
+                                        th:selected="${searchVO != null and searchVO.settingGroupName == 'g001'}">
+                                    작업분류
+                                </option>
+                                <option value="g002"
+                                        th:selected="${searchVO != null and searchVO.settingGroupName == 'g002'}">
+                                    일감 우선순위
+                                </option>
+                                <option value="g003"
+                                        th:selected="${searchVO != null and searchVO.settingGroupName == 'g003'}">
+                                    문서유형
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="search-field">
+                            <label for="settingName">코드값명</label>
+                            <input type="text"
+                                   id="settingName"
+                                   name="settingName"
+                                   th:value="${searchVO != null ? searchVO.settingName : ''}"
+                                   placeholder="input">
+                        </div>
+
+                        <div class="search-field">
+                            <label for="defaultYn">기본값 여부</label>
+                            <select id="defaultYn" name="defaultYn">
+                                <option value="">선택</option>
+                                <option value="Y"
+                                        th:selected="${searchVO != null and searchVO.defaultYn == 'Y'}">
+                                    기본값
+                                </option>
+                                <option value="N"
+                                        th:selected="${searchVO != null and searchVO.defaultYn == 'N'}">
+                                    일반값
+                                </option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <div class="search-btn-area">
+                        <a th:href="@{/codevalue/list}"
+                           class="btn btn-custon-rounded-four btn-default filter-btn">
+                            clean
+                        </a>
+
+                        <button type="submit"
+                                class="btn btn-custon-rounded-four btn-primary filter-btn">
+                            apply
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div th:if="${message}"
+                 class="page-message page-message-success"
+                 th:text="${message}">
+            </div>
+
+            <div th:if="${errorMessage}"
+                 class="page-message page-message-error"
+                 th:text="${errorMessage}">
             </div>
 
             <div class="codevalue-grid">
 
                 <div class="codevalue-card"
-                     th:each="entry : ${codeValueGroupMap}">
+                     th:each="entry : ${codeValueGroupMap}"
+                     th:if="${searchVO == null
+                             or searchVO.settingGroupName == null
+                             or searchVO.settingGroupName == ''
+                             or searchVO.settingGroupName == entry.key}">
 
                     <div class="codevalue-card-header">
                         <div class="codevalue-title-wrap">
@@ -43,20 +124,20 @@
                             </span>
                         </div>
 
-                        <a class="btn btn-primary codevalue-add-btn"
-                           th:href="@{/codevalue/create(settingGroupName=${entry.key})}">
+                        <a th:href="@{/codevalue/create(settingGroupName=${entry.key})}"
+                           class="btn btn-custon-rounded-four btn-primary codevalue-add-btn">
                             + 새 코드값
                         </a>
                     </div>
 
                     <div class="codevalue-table-scroll">
-                        <table class="table codevalue-table">
+                        <table class="table table-hover codevalue-table">
                             <thead>
                             <tr>
                                 <th class="codevalue-order">순서</th>
                                 <th>이름</th>
-                                <th style="width:85px;">기본값</th>
-                                <th style="width:150px; text-align:right;">관리</th>
+                                <th style="width: 85px;">기본값</th>
+                                <th style="width: 170px; text-align: center;">관리</th>
                             </tr>
                             </thead>
 
@@ -70,8 +151,12 @@
                             <tr th:each="codeValue, stat : ${entry.value}">
                                 <td class="codevalue-order" th:text="${stat.count}">1</td>
 
-                                <td class="codevalue-name" th:text="${codeValue.settingName}">
-                                    코드값명
+                                <td>
+                                    <span class="codevalue-name"
+                                          th:text="${codeValue.settingName}"
+                                          th:title="${codeValue.settingName}">
+                                        코드값명
+                                    </span>
                                 </td>
 
                                 <td>
@@ -87,7 +172,7 @@
                                 </td>
 
                                 <td>
-                                    <div class="codevalue-actions">
+                                    <div class="table-actions codevalue-actions">
 
                                         <form th:if="${codeValue.defaultYn != 'Y'}"
                                               th:action="@{/codevalue/default/set}"
@@ -95,8 +180,9 @@
                                             <input type="hidden"
                                                    name="settingCodeId"
                                                    th:value="${codeValue.settingCodeId}">
+
                                             <button type="submit"
-                                                    class="codevalue-action-btn">
+                                                    class="btn btn-custon-rounded-four btn-default">
                                                 기본
                                             </button>
                                         </form>
@@ -107,8 +193,9 @@
                                             <input type="hidden"
                                                    name="settingCodeId"
                                                    th:value="${codeValue.settingCodeId}">
+
                                             <button type="submit"
-                                                    class="codevalue-action-btn">
+                                                    class="btn btn-custon-rounded-four btn-default">
                                                 취소
                                             </button>
                                         </form>
@@ -119,8 +206,9 @@
                                             <input type="hidden"
                                                    name="settingCodeId"
                                                    th:value="${codeValue.settingCodeId}">
+
                                             <button type="submit"
-                                                    class="codevalue-action-btn codevalue-action-danger">
+                                                    class="btn btn-custon-rounded-four btn-danger">
                                                 삭제
                                             </button>
                                         </form>

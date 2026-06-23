@@ -8,8 +8,8 @@ import com.pixcel.app.issuetype.service.IssueTypeVO;
 
 public interface IssueTypeMapper {
 
-    // 사용자별 일감유형 전체 목록을 조회한다.
-    List<IssueTypeVO> selectIssueTypeList(@Param("userId") String userId);
+	// 검색조건에 맞는 사용자별 일감유형 목록을 조회한다.
+	List<IssueTypeVO> selectIssueTypeList(IssueTypeVO searchVO);
 
     // 사용자별 일감유형 상세 정보를 조회한다.
     IssueTypeVO selectIssueTypeDetail(

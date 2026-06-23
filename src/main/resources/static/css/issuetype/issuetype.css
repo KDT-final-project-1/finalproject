@@ -1,6 +1,11 @@
 @charset "UTF-8";
+
+/* ==============================
+   공통 영역
+============================== */
+
 .issuetype-area {
-    padding: 24px 0;
+    padding: 12px 0;
 }
 
 .issuetype-header {
@@ -8,17 +13,19 @@
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
-    margin-bottom: 18px;
+    margin-bottom: 10px;
 }
 
 .issuetype-header h3 {
-    margin: 0 0 6px;
+    margin: 0 0 3px;
+    font-size: 22px;
     font-weight: 700;
 }
 
 .issuetype-header p {
     margin: 0;
     color: #777;
+    font-size: 13px;
 }
 
 .header-actions {
@@ -30,79 +37,58 @@
     background: #fff;
     border: 1px solid #e7e7e7;
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 18px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .issuetype-card-title {
-    margin-bottom: 16px;
-    padding-bottom: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #eee;
 }
 
 .issuetype-card-title h4 {
     margin: 0;
+    font-size: 17px;
     font-weight: 600;
 }
 
 .issuetype-card-title p {
-    margin: 6px 0 0;
+    margin: 3px 0 0;
     color: #777;
+    font-size: 12px;
 }
 
-.issuetype-table-wrap,
-.field-setting-table-wrap {
+.required {
+    color: #d9534f;
+}
+
+
+/* ==============================
+   전체조회 테이블
+============================== */
+
+.issuetype-table-wrap {
     width: 100%;
     overflow-x: auto;
 }
 
-.issuetype-table,
-.field-setting-table {
+.issuetype-table {
+    width: 100%;
     margin-bottom: 0;
+    table-layout: fixed;
 }
 
-.issuetype-table thead th,
-.field-setting-table thead th {
+.issuetype-table thead th {
     background: #f8f9fa;
     font-weight: 600;
     border-bottom: 1px solid #ddd;
     white-space: nowrap;
 }
 
-.issuetype-table td,
-.field-setting-table td {
+.issuetype-table td {
     vertical-align: middle;
-}
-
-.strong-text {
-    font-weight: 600;
-}
-
-.text-ellipsis {
-    max-width: 260px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #555;
-}
-
-.empty-row {
-    text-align: center;
-    color: #777;
-    padding: 32px 0 !important;
-}
-
-.issuetype-actions {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-}
-
-.inline-form {
-    display: inline;
-    margin: 0;
 }
 
 .status-badge {
@@ -115,87 +101,218 @@
     font-weight: 600;
 }
 
+
+/* ==============================
+   생성 / 복사 레이아웃
+============================== */
+
+.issuetype-form-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 12px;
+    align-items: start;
+}
+
+.issuetype-main-column {
+    min-width: 0;
+}
+
+.issuetype-side-column {
+    min-width: 0;
+}
+
+.issuetype-side-column .issuetype-card {
+    margin-bottom: 0;
+}
+
+.project-card {
+    position: sticky;
+    top: 12px;
+}
+
+
+/* ==============================
+   Form
+============================== */
+
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
-}
-
-.required {
-    color: #d9534f;
-}
-
-.project-check-list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(180px, 1fr));
     gap: 10px;
 }
 
-.check-card {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 42px;
-    padding: 10px 12px;
-    border: 1px solid #e2e2e2;
-    border-radius: 6px;
-    cursor: pointer;
-    background: #fafafa;
+.form-group {
+    margin-bottom: 10px;
 }
 
-.check-card:hover {
-    background: #f3f6ff;
-    border-color: #bfc9ff;
-}
-
-.check-card input {
-    margin: 0;
-}
-
-.center {
-    text-align: center;
-}
-
-.setting-help {
-    margin-top: 12px;
-    padding: 10px 12px;
-    border-radius: 6px;
-    background: #f8f9fa;
-    color: #666;
+.form-group label {
+    margin-bottom: 4px;
     font-size: 13px;
+    font-weight: 600;
+}
+
+.form-control {
+    height: 32px;
+    padding: 5px 10px;
+    font-size: 13px;
+}
+
+textarea.form-control {
+    height: 72px;
+    min-height: 72px;
+    resize: none;
 }
 
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: 6px;
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
-.form-group label {
+.form-actions .btn,
+.issuetype-header .btn {
+    padding: 5px 12px;
+    font-size: 13px;
+}
+
+
+/* ==============================
+   표준 항목 설정 테이블
+============================== */
+
+.field-setting-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.field-setting-table {
+    margin-bottom: 0;
+}
+
+.field-setting-table thead th {
+    background: #f8f9fa;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.field-setting-table th,
+.field-setting-table td {
+    padding: 6px 8px !important;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.field-setting-table td {
+    height: 34px;
+}
+
+.field-setting-table .strong-text {
     font-weight: 600;
 }
 
-.alert {
-    margin-bottom: 16px;
+.field-setting-table input[type="checkbox"] {
+    margin: 0;
+}
+
+.field-setting-table input:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+}
+
+.setting-help {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    color: #666;
+    font-size: 12px;
+}
+
+
+/* ==============================
+   적용 프로젝트 영역
+============================== */
+
+.project-select-wrap {
+    width: 100%;
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.project-select-table {
+    margin-bottom: 0;
+}
+
+.project-select-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #f8f9fa;
+    font-weight: 600;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+.project-select-table th,
+.project-select-table td {
+    padding: 6px 8px !important;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.project-select-table td {
+    height: 34px;
+}
+
+.project-select-table input[type="checkbox"] {
+    margin: 0;
+}
+
+
+/* ==============================
+   일감유형 검색조건
+   common-fliter.css 덮어쓰기용
+============================== */
+
+.issuetype-search .search-form-row {
+    grid-template-columns: 1fr 220px 1fr;
+}
+
+
+/* ==============================
+   반응형
+============================== */
+
+@media (max-width: 1200px) {
+    .issuetype-form-layout {
+        grid-template-columns: minmax(0, 1fr) 320px;
+    }
 }
 
 @media (max-width: 992px) {
+    .issuetype-form-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .project-card {
+        position: static;
+    }
+
     .form-grid {
         grid-template-columns: 1fr;
     }
 
-    .project-check-list {
-        grid-template-columns: 1fr 1fr;
+    .issuetype-search .search-form-row {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 640px) {
     .issuetype-header {
         flex-direction: column;
-    }
-
-    .project-check-list {
-        grid-template-columns: 1fr;
     }
 }

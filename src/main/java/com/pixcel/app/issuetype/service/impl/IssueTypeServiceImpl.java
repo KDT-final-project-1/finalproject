@@ -29,12 +29,13 @@ public class IssueTypeServiceImpl implements IssueTypeService {
             "ESTIMATED_HOURS"
     );
 
-    // 사용자별 일감유형 전체 목록을 조회한다.
+ // 검색조건에 맞는 사용자별 일감유형 목록을 조회한다.
     @Override
-    public List<IssueTypeVO> getIssueTypeList(String userId) {
-        validateUserId(userId);
+    public List<IssueTypeVO> getIssueTypeList(IssueTypeVO searchVO) {
 
-        return issueTypeMapper.selectIssueTypeList(userId);
+        validateUserId(searchVO.getUserId());
+
+        return issueTypeMapper.selectIssueTypeList(searchVO);
     }
 
     // 사용자별 일감유형 상세 정보를 조회한다.
