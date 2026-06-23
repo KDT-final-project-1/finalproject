@@ -2,6 +2,8 @@ package com.pixcel.app.project.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,8 @@ public class ProjectController {
 	 */
 	
 	@GetMapping("/register")
-	public String registerForm() {
+	public String registerForm(Model model, @CookieValue(value = "userId", required = false) String userId) {
+		model.addAttribute("userId", userId);
 		// src/main/resources/templates/project/register.html 파일을 찾아감
 		return "project/project";	// 팀 폴더 구조에 맞게 경로 수정
 	}
@@ -33,7 +36,11 @@ public class ProjectController {
 	// 프로젝트 등록 실행 (데이터 저장 처리)
 	@PostMapping("/register")
 	@ResponseBody
-	public int registerProject(ProjectVO projectVO) {
+	public int registerProject(ProjectVO projectVO, @CookieValue(value = "userId", required = false) String userId) {
+		if (projectVO.getOwnerId() == null || projectVO.getOwnerId().isEmpty()) {
+			projectVO.setOwnerId(userId);
+		}
+		
 		return projectService.registerProject(projectVO);
 	}
 }

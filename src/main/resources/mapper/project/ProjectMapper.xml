@@ -7,7 +7,7 @@
                    resultType="string"
                    order="BEFORE">
             SELECT
-                'PROJECT_ID_'
+                'PROJECT_'
                 || to_char(sysdate, 'YYMM')
                 || '_'
                 || lpad(
@@ -16,7 +16,7 @@
                     '0'
                 )
             FROM project
-            WHERE substr(project_id, 1, 16) = 'PROJECT_ID_' || to_char(sysdate, 'YYMM') || '_'
+            WHERE substr(project_id, 1, 13) = 'PROJECT_' || to_char(sysdate, 'YYMM') || '_'
         </selectKey>
 	
 		INSERT INTO project (

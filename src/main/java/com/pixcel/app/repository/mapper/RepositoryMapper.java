@@ -6,7 +6,7 @@ import com.pixcel.app.repository.service.RepositoryVO;
 
 public interface RepositoryMapper {
 	// 1. 자료실 전체 조회
-	public List<RepositoryVO> selectRepositoryList();
+	public List<RepositoryVO> selectRepositoryList(RepositoryVO searchVO);
 	// 2. 자료실 등록한 사람의 자료 상세조회
 	public List<RepositoryVO> selectRepositoryListByUserId(String uploadUserId);
 	// 3. 자료실 상세조회
