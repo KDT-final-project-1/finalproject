@@ -1,0 +1,124 @@
+/* roadmap-list.css */
+
+/* 검색 폼 레이아웃 보정 */
+.filter-form {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding: 15px;
+}
+.filter-group input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 250px;
+}
+
+/* 로드맵 아이템 (1단) */
+.roadmap-item {
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+.roadmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    cursor: pointer;
+    background-color: #fcfcfc;
+    border-bottom: 1px solid #eee;
+}
+.roadmap-header:hover {
+    background-color: #f5f7fa;
+}
+.roadmap-header .title-area h3 {
+    display: inline-block;
+    margin: 0 15px 0 10px;
+    font-size: 18px;
+}
+.badge-default {
+    background-color: #ffc107;
+    color: #000;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* 프로그레스 바 보정 */
+.progress {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+}
+.progress-bar {
+    background-color: #28a745; /* 초록색 막대 */
+    height: 100%;
+}
+.progress-text {
+    margin-left: 10px;
+    font-weight: bold;
+    color: #555;
+}
+.toggle-icon {
+    margin-left: 20px;
+    transition: transform 0.3s ease;
+}
+.roadmap-header.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* 마일스톤 (2단) */
+.roadmap-body {
+    padding: 20px;
+}
+.milestone-item {
+    border-left: 3px solid #006df0;
+    margin-bottom: 20px;
+    padding-left: 15px;
+}
+.milestone-header {
+    display: flex;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+.milestone-header:hover {
+    background-color: #f1f1f1;
+}
+.m-title { font-weight: bold; font-size: 15px; }
+.m-date { color: #777; font-size: 13px; }
+
+/* 일감 (3단) */
+.issue-list {
+    padding-left: 20px;
+}
+.issue-item {
+    padding: 8px 10px;
+    border-bottom: 1px dashed #eee;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.issue-item:hover {
+    background-color: #fdfdfd;
+}
+.issue-info i { margin-right: 8px; color: #888; }
+.issue-status {
+    font-size: 12px;
+    background: #eee;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 10px;
+}
+
+.empty-msg {
+    color: #999;
+    font-size: 13px;
+    padding: 10px 0;
+}
