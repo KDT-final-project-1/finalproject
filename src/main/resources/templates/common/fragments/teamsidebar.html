@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<th:block th:fragment="SiderAdminFragment">
+<th:block th:fragment="SiderTeamFragment">
 	<!-- Start Left menu area -->
 	<nav id="sidebar" class="">
 		<div class="left-custom-menu-adp-wrap comment-scrollbar">
 			<nav class="sidebar-nav left-sidebar-menu-pro">
-				<!-- 사이드바 상단: 타이틀 + 토글 버튼 -->
-                <div style="display:flex; justify-content:space-between; align-items:center; 
+				<!-- Sidebar Button -->
+				<div style="display:flex; justify-content:space-between; align-items:center; 
             		padding:5px 15px; border-bottom:1px solid #eee;">
-   				<span style="font-weight:bold; font-size:15px; color:#333;">관리 메뉴</span>
+   				<span style="font-weight:bold; font-size:15px; color:#333;">팀 메뉴</span>
     			<button type="button" id="sidebarCollapse"
         			style="background:none; border:none; cursor:pointer; padding:0; font-size:18px; color:#555;">
         			<i class="fa fa-bars"></i>
     			</button>
 				</div>
 				<ul class="metismenu" id="menu1">
-					<!-- 프로젝트 -->
-					<li><a th:href="@{/project/list}"> <span
+					<!-- 팀 관리 -->
+					<li><a th:href="@{/team/list}"> <span
 							class="educate-icon educate-event icon-wrap"></span> <span
-							class="mini-click-non">프로젝트</span>
+							class="mini-click-non">팀 관리</span>
 					</a></li>
 
-					<!-- 구성원 -->
+					<!-- 신청현황 -->
 					<li><a th:href="@{/members/list}"> <span
 							class="educate-icon educate-event icon-wrap"></span> <span
-							class="mini-click-non">구성원</span>
+							class="mini-click-non">신청현황</span>
 					</a></li>
 
 					<!-- 역할 및 권한 -->
@@ -34,7 +34,7 @@
 					</a></li>
 
 					<!-- 일감유형 -->
-					<li><a th:href="@{/issuetype/list}"> <span
+					<li><a th:href="@{/issuetyoe/list}"> <span
 							class="educate-icon educate-event icon-wrap"></span> <span
 							class="mini-click-non">일감유형</span>
 					</a></li>

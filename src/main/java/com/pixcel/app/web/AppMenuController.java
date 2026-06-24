@@ -1,26 +1,32 @@
 package com.pixcel.app.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AppMenuController {
 	
 	@GetMapping("/dashboard/list")
-	public String dashboardList(HttpSession session) {
+	public String dashboardList(Model model) {
 
-	    session.setAttribute("menu", "project");
+	    model.addAttribute("menuType", "project");
 
-	    return "dashboard/list";
+	    return "project/projectList";
 	}
-	
 	@GetMapping("/admin/list")
-	public String adminList(HttpSession session) {
+	public String adminList(Model model) {
 
-	    session.setAttribute("menu", "admin");
+	    model.addAttribute("menuType", "admin");
 
 	    return "codevalue/list";
+	}
+	
+	@GetMapping("/teams/list")
+	public String teamList(Model model) {
+
+	    model.addAttribute("menuType", "team");
+
+	    return "team/list";
 	}
 }

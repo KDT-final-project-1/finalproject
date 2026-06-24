@@ -40,10 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    document.querySelector("form").addEventListener("submit", () => {
+    document.getElementById("documentForm").addEventListener("submit", () => {
         const dt = new DataTransfer();
         selectedFiles.forEach(file => dt.items.add(file));
         fileInput.files = dt.files;
+		
+		console.log("selectedFiles =", selectedFiles);
+		    console.log("fileInput.files =", fileInput.files);
+		    console.log("fileInput.files.length =", fileInput.files.length);
     });
 
 });

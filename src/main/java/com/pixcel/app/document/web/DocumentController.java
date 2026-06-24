@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,11 +16,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.pixcel.app.codevalue.service.CodeValueService;
 import com.pixcel.app.codevalue.service.CodeValueVO;
+import com.pixcel.app.document.service.DocumentCategoryVO;
 import com.pixcel.app.document.service.DocumentService;
 import com.pixcel.app.document.service.DocumentVO;
 import com.pixcel.app.file.service.FileDTO;
 import com.pixcel.app.file.service.FileService;
-import com.pixcel.app.milestones.service.MilestoneListResponseDTO;
 import com.pixcel.app.milestones.service.MilestoneSearchVO;
 import com.pixcel.app.milestones.service.MilestonesService;
 import com.pixcel.app.milestones.service.MilestonesVO;
@@ -38,8 +39,22 @@ public class DocumentController {
 	private final CodeValueService codeValueService;
 	
 	@GetMapping("/list")
-    public String documentList(Model model) {
+    public String documentList(Model model, @CookieValue(value="userId", required =false)String userId) {
+	    List<DocumentCategoryVO> categoryList = documentService.selectCategoryAll();
+	    model.addAttribute("categoryList",categoryList);
+	    
+	    List<DocumentVO> categoryNoList = documentService.selectNoCategory();
+	    model.addAttribute("categoryNoList",categoryNoList);
         return "document/documentList";
+    }
+	
+	@GetMapping("/list/{categoryId}")
+    public String documentCategoryList(Model model, @CookieValue(value="userId", required =false)String userId, @PathVariable String categoryId) {
+		System.out.println(categoryId);
+	    
+	    List<DocumentVO> categorydocList = documentService.selectCategorydoc();
+	    model.addAttribute("categorydocList",categorydocList);
+        return "document/documentCategoryList";
     }
 	
 	@GetMapping("/add")
@@ -52,6 +67,12 @@ public class DocumentController {
 	    
 	    List<CodeValueVO> codeValueList = codeValueService.getCodeValueListByGroup(userId,"g003");
 	    model.addAttribute("codeValueList", codeValueList);
+	    
+	    List<DocumentCategoryVO> categoryList = documentService.selectCategoryAll();
+	    model.addAttribute("categoryList",categoryList);
+	    
+	    
+	    
         return "document/documentAdd";
     }
 	
