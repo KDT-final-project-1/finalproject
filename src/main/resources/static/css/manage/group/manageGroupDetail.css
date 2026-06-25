@@ -1,0 +1,412 @@
+.manage-group-detail-page {
+    padding: 30px;
+    background-color: #f5f7fb;
+    min-height: calc(100vh - 80px);
+    box-sizing: border-box;
+}
+
+/* 상단 */
+.detail-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.detail-page-title {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #222;
+}
+
+.detail-page-sub-title {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: #777;
+}
+
+.detail-user-info {
+    min-width: 220px;
+    padding: 14px 18px;
+    border-radius: 10px;
+    background-color: #fff;
+    border: 1px solid #e1e6ef;
+    box-shadow: 0 2px 8px rgba(20, 35, 60, 0.04);
+}
+
+.detail-user-info span {
+    display: block;
+    font-size: 12px;
+    color: #777;
+    margin-bottom: 6px;
+}
+
+.detail-user-info strong {
+    font-size: 15px;
+    color: #222;
+}
+
+/* 메시지 */
+.message-box {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: #fff8e5;
+    border: 1px solid #f3dc9c;
+    color: #8a6500;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* 섹션 */
+.detail-section {
+    background-color: #fff;
+    border: 1px solid #e1e6ef;
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(20, 35, 60, 0.04);
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #222;
+}
+
+.section-sub-text {
+    margin-top: 6px;
+    font-size: 13px;
+    color: #777;
+}
+
+/* 폼 */
+.form-grid {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 20px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-field.full {
+    grid-column: 1 / span 2;
+}
+
+.form-field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #444;
+}
+
+.required {
+    color: #d93025;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    border: 1px solid #d7dde8;
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.form-field input,
+.form-field select {
+    height: 40px;
+}
+
+.form-field input[readonly] {
+    background-color: #f5f7fb;
+    color: #666;
+}
+
+.form-field textarea {
+    padding-top: 10px;
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+    border-color: #2f6fed;
+    box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.12);
+}
+
+/* 버튼 */
+.form-btn-area {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+.btn-basic {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 18px;
+    border: 1px solid #d6dce8;
+    background-color: #fff;
+    color: #333;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.15s;
+    font-size: 14px;
+    text-decoration: none;
+    box-sizing: border-box;
+    white-space: nowrap;
+}
+
+.btn-basic:hover {
+    background-color: #eef3ff;
+    border-color: #9bbcff;
+}
+
+.btn-basic.btn-primary {
+    background-color: #2f6fed;
+    border-color: #2f6fed;
+    color: #fff;
+}
+
+.btn-basic.btn-primary:hover {
+    background-color: #245fd0;
+    border-color: #245fd0;
+}
+
+/* 구성원 영역 */
+.member-section {
+    margin-top: 8px;
+}
+
+.member-section-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.member-count-box {
+    margin-bottom: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background-color: #f8faff;
+    border: 1px solid #e2e7f0;
+    font-size: 14px;
+    color: #555;
+}
+
+.member-count-box strong {
+    color: #2f6fed;
+    font-size: 18px;
+    margin: 0 4px;
+}
+
+/* 구성원 테이블 */
+.member-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #e2e7f0;
+    border-radius: 10px;
+}
+
+.member-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    min-width: 980px;
+}
+
+.member-table thead {
+    background-color: #f1f4f9;
+}
+
+.member-table th {
+    height: 44px;
+    padding: 0 12px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #444;
+    text-align: left;
+    border-bottom: 1px solid #dfe5ef;
+    white-space: nowrap;
+}
+
+.member-table td {
+    height: 56px;
+    padding: 0 12px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #edf0f5;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.member-table tbody tr:hover {
+    background-color: #f7faff;
+}
+
+/* 역할 form */
+.member-role-form {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.member-role-select {
+    height: 34px;
+    min-width: 150px;
+    border: 1px solid #d7dde8;
+    border-radius: 6px;
+    padding: 0 8px;
+    font-size: 13px;
+    color: #333;
+    background-color: #fff;
+    outline: none;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.member-role-select:hover {
+    border-color: #9bbcff;
+}
+
+.member-role-select:focus {
+    border-color: #2f6fed;
+    box-shadow: 0 0 0 3px rgba(47, 111, 237, 0.12);
+}
+
+/* 역할 변경 버튼 영역 */
+.member-role-change-area {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+/* 작은 버튼 */
+.mini-btn {
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid #d6dce8;
+    background-color: #fff;
+    color: #333;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.15s;
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.mini-btn:hover {
+    background-color: #eef3ff;
+    border-color: #9bbcff;
+}
+
+.mini-btn.delete {
+    border-color: #f1b8b8;
+    color: #d93025;
+}
+
+.mini-btn.delete:hover {
+    background-color: #fff1f1;
+    border-color: #e58a8a;
+}
+
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+/* empty */
+.empty-row {
+    height: 90px !important;
+    text-align: center !important;
+    color: #888 !important;
+}
+
+/* 삭제 */
+.delete-form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+}
+
+.btn-delete {
+    height: 36px;
+    padding: 0 18px;
+    border: 1px solid #f1b8b8;
+    background-color: #fff;
+    color: #d93025;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.15s;
+    font-size: 14px;
+}
+
+.btn-delete:hover {
+    background-color: #fff1f1;
+    border-color: #e58a8a;
+}
+
+/* 반응형 */
+@media (max-width: 900px) {
+    .member-table {
+        min-width: 1000px;
+    }
+}
+
+@media (max-width: 768px) {
+    .manage-group-detail-page {
+        padding: 18px;
+    }
+
+    .detail-page-header {
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .detail-user-info {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-field.full {
+        grid-column: auto;
+    }
+
+    .member-section-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .form-btn-area,
+    .delete-form,
+    .member-role-change-area {
+        justify-content: stretch;
+    }
+
+    .btn-basic,
+    .btn-delete {
+        width: 100%;
+    }
+}

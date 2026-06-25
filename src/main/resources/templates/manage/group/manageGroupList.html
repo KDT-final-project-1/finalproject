@@ -29,6 +29,11 @@
             </div>
         </div>
 
+        <!-- 메시지 -->
+        <div th:if="${message != null}" class="message-box">
+            <span th:text="${message}">메시지</span>
+        </div>
+
         <!-- 검색 조건 -->
         <div class="search-section">
             <div class="search-header">
@@ -48,6 +53,7 @@
                         <label for="projectId">프로젝트</label>
                         <select id="projectId" name="projectId">
                             <option value="">전체</option>
+
                             <option th:each="project : ${myProjectList}"
                                     th:value="${project.projectId}"
                                     th:text="${project.projectName}">
@@ -92,7 +98,7 @@
         <div class="project-summary-section">
             <div class="section-title">내 프로젝트 목록</div>
             <div class="section-sub-text">
-                그룹 생성 시 아래 프로젝트 중 하나를 선택하게 됩니다.
+                본인이 생성한 프로젝트 목록입니다. 그룹 생성 시 아래 프로젝트 중 하나를 선택합니다.
             </div>
 
             <div class="project-chip-wrap">
@@ -183,13 +189,20 @@
                                     상세
                                 </button>
 
-                                <button type="button"
-                                        class="mini-btn delete"
-                                        th:data-project-group-id="${group.projectGroupId}"
-                                        th:data-group-name="${group.groupName}"
-                                        onclick="deleteGroup(this)">
-                                    삭제
-                                </button>
+                                <form th:action="@{/manage/groups/delete}"
+                                      method="post"
+                                      class="inline-delete-form"
+                                      onsubmit="return confirm('그룹을 삭제하시겠습니까?');">
+
+                                    <input type="hidden"
+                                           name="projectGroupId"
+                                           th:value="${group.projectGroupId}">
+
+                                    <button type="submit"
+                                            class="mini-btn delete">
+                                        삭제
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>
@@ -209,25 +222,6 @@
             }
 
             location.href = "/manage/groups/" + encodeURIComponent(projectGroupId);
-        }
-
-        function deleteGroup(button) {
-            const projectGroupId = button.dataset.projectGroupId;
-            const groupName = button.dataset.groupName;
-
-            if (!projectGroupId) {
-                return;
-            }
-
-            if (!confirm("'" + groupName + "' 그룹을 삭제하시겠습니까?")) {
-                return;
-            }
-
-            console.log("삭제 대상 projectGroupId =", projectGroupId);
-
-            /*
-                다음 단계에서 POST 삭제 연결
-            */
         }
     </script>
 
