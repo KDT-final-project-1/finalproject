@@ -29,7 +29,7 @@ public interface MilestonesMapper {
 	
 	public int deleteMilestone(String mileStoneId);	  //마일스톤 삭제
 	
-    public List<MilestonesVO> getMilestoneList(MilestoneSearchVO searchVO);
+    public List<MilestonesVO> getMilestoneList(String projectId);
     
     public List<IssuesVO> selectConnectedIssues(String milestoneId);
 }

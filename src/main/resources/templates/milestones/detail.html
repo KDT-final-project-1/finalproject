@@ -30,12 +30,12 @@
                 <h2 th:text="${milestone.title}">마일스톤 제목</h2>
                 <!-- 상태 뱃지 -->
                 <span class="status-badge" 
-      					th:classappend="${milestone.statusCode == 'TODO' ? 'status-todo' : (milestone.statusCode == 'IN_PROGRESS' ? 'status-inpg' : (milestone.statusCode == 'DONE' ? 'status-done' : ''))}"
-     					 th:switch="${milestone.statusCode}">
+				th:classappend="${'status-' + (milestone.statusCode == 'L001' ? 'todo' : (milestone.statusCode == 'L002' ? 'inpg' : 'done'))}"
+				th:switch="${milestone.statusCode}">
     
-    			<th:block th:case="'TODO'">진행 예정</th:block>
-   				<th:block th:case="'IN_PROGRESS'">진행 중</th:block>
-    			<th:block th:case="'DONE'">완료</th:block>
+    			<th:block th:case="'L001'">진행 예정</th:block>
+   				<th:block th:case="'L002'">진행 중</th:block>
+    			<th:block th:case="'L003'">완료</th:block>
     			<th:block th:case="*">[[${milestone.statusName}]]</th:block>
 				</span>
             </div>
@@ -122,7 +122,7 @@
                     </div>
                     <div class="meta-item">
                         <span class="meta-label">버전 정보</span>
-                        <span class="meta-value" th:text="${milestone.versionId}">V-1.0</span>
+                        <span class="meta-value" th:text="${milestone.versionName}">V-1.0</span>
                     </div>
                 </div>
             </div>

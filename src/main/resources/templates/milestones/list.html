@@ -14,73 +14,115 @@
     <div class="kiaalap-wrapper">
         <div class="milestone-container">
             
-            <div class="kiaalap-panel filter-panel">
-                <div class="filter-header">
+            <div class="kiaalap-panel main-box">
+                
+                <div class="main-header">
                     <h2>마일스톤</h2>
                     <button type="button" class="btn btn-primary" id="btnCreateMilestone">마일스톤 생성</button>
                 </div>
-                <form class="filter-form" th:action="@{/milestones/list}" method="get">
-                    </form>
-            </div>
 
-            <div class="milestone-list-area">
-                <div th:if="${#lists.isEmpty(milestoneList)}" class="kiaalap-panel empty-msg" style="text-align: center; padding: 50px;">
-                    조회된 마일스톤이 없습니다.
-                </div>
+                <hr class="section-divider" />
 
-                <div class="kiaalap-panel milestone-item" th:each="milestone : ${milestoneList}" th:data-milestone-id="${milestone.milestoneId}">
+                <div class="filter-section">
+                    <h3>마일스톤 필터</h3>
                     
-                    <div class="milestone-item-header toggle-accordion">
-                        <div class="title-area">
-                            <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                            <h3>
-                                <a th:href="@{/milestones/detail(id=${milestone.milestoneId})}" class="title-link no-accordion" th:text="${milestone.title}">마일스톤 제목</a>
-                            </h3>
-                            <span class="status-badge"
-                                  th:classappend="${milestone.statusCode == 'TODO' ? 'status-todo' : (milestone.statusCode == 'IN_PROGRESS' ? 'status-inpg' : (milestone.statusCode == 'DONE' ? 'status-done' : ''))}"
-                                  th:switch="${milestone.statusCode}">
-                                <th:block th:case="'TODO'">진행 예정</th:block>
-                                <th:block th:case="'IN_PROGRESS'">진행 중</th:block>
-                                <th:block th:case="'DONE'">완료</th:block>
-                                <th:block th:case="*">[[${milestone.statusCode}]]</th:block>
-                            </span>
-                        </div>
-                        <div class="date-area">
-                            <span th:text="${milestone.startDate}">2026-01-01</span> ~ <span th:text="${milestone.endDate}">2026-12-31</span>
-                        </div>
-                    </div>
+					<div class="js-filter-row">
+					    <div class="js-filter-group">
+					        <label><i class="fas fa-code-branch"></i> 버전</label>
+					        <select id="jsVersionFilter">
+					            <option value="">전체 로드맵(버전)</option>
+					        </select>
+					    </div>
 
-                    <div class="milestone-body" style="display: none;">
-                        
-                        <div class="progress-wrap">
-                            <div class="progress">
-                                <div class="progress-bar" th:style="'width: ' + ${milestone.totalProgressRate} + '%;'"></div>
-                            </div>
-                            <div class="progress-text">
-                                담당자: <span th:text="${milestone.managerName}">홍길동</span> - <span th:text="${milestone.totalProgressRate}">0</span>% 완료
-                            </div>
+					    <div class="js-filter-group">
+					        <label><i class="fas fa-cube"></i> 마일스톤</label>
+					        <select id="jsMilestoneFilter">
+					            <option value="">전체 마일스톤</option>
+					        </select>
+					    </div>
+
+					    <div class="js-filter-group search-group">
+					        <label><i class="fas fa-search"></i> 일감 검색</label>
+					        <input type="text" id="jsIssueSearch" placeholder="일감 제목 입력..." autocomplete="off" />
+					    </div>
+
+					    <div class="js-filter-group date-group">
+					        <label><i class="far fa-calendar-alt"></i> 기간</label>
+					        <div class="date-inputs">
+					            <input type="date" id="jsStartDate" />
+					            <span>~</span>
+					            <input type="date" id="jsEndDate" />
+					        </div>
+					    </div>
+					</div>
+
+                <hr class="section-divider" />
+
+                <div class="list-section">
+                    <h3>마일스톤 목록</h3>
+                    
+                    <div class="milestone-list-area" id="milestoneListArea">
+                        <div th:if="${#lists.isEmpty(milestoneList)}" class="empty-msg">
+                            조회된 마일스톤이 없습니다.
                         </div>
 
-                        <div class="issue-list">
-                            <div th:if="${#lists.isEmpty(milestone.issueList)}" class="empty-issue">
-                                등록된 하위 일감이 없습니다.
-                            </div>
-
-                            <div class="issue-item" th:each="issue : ${milestone.issueList}">
-                                <div class="issue-main">
-                                    <span class="issue-badge dynamic-badge" th:data-status="${issue.issueStatusName ?: '상태미상'}" th:text="${issue.issueStatusName ?: '상태미상'}">상태</span>
-                                    
-                                    <a href="#" class="issue-title hover-primary" th:text="${issue.title}">일감 제목</a>
+                        <div class="milestone-item" 
+                             th:each="milestone : ${milestoneList}" 
+                             th:data-milestone-id="${milestone.milestoneId}"
+                             th:data-milestone-title="${milestone.title}"
+                             th:data-version-name="${milestone.versionName ?: '버전없음'}"
+                             th:data-start-date="${milestone.startDate}"
+                             th:data-end-date="${milestone.endDate}">
+                            
+                            <div class="milestone-item-header toggle-accordion">
+                                <div class="title-area">
+                                    <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
+                                    <span class="version-tag" th:text="${milestone.versionName ?: '버전없음'}">버전명</span>
+                                    <h4 style="margin:0; font-size: 17px; font-weight: 500;">
+                                        <a th:href="@{/milestones/detail(id=${milestone.milestoneId})}" class="title-link no-accordion" th:text="${milestone.title}">마일스톤 제목</a>
+                                    </h4>
+									<span class="status-badge"
+									      th:classappend="${'status-' + (milestone.statusCode == 'L001' ? 'todo' : (milestone.statusCode == 'L002' ? 'inpg' : 'done'))}"
+									      th:switch="${milestone.statusCode}">
+									    <span th:case="'L001'">진행 예정</span>
+									    <span th:case="'L002'">진행 중</span>
+									    <span th:case="'L003'">완료</span>
+									    <span th:case="*" th:text="${milestone.statusCode}">코드</span>
+									</span>
                                 </div>
-                                
-                                <div class="issue-meta">
-                                    <span class="meta-item" title="담당자"><i class="fas fa-user"></i> [[${issue.assigneeName ?: '미정'}]]</span>
-                                    <span class="meta-item" title="기한"><i class="far fa-calendar-alt"></i> [[${issue.dueDate ?: '미정'}]]</span>
-                                    <span class="meta-item" title="진행률"><i class="fas fa-tasks"></i> [[${issue.progressRate}]]%</span>
+                                <div class="date-area">
+                                    <i class="far fa-calendar-alt"></i> <span th:text="${milestone.startDate}"></span> ~ <span th:text="${milestone.endDate}"></span>
+                                </div>
+                            </div>
+
+                            <div class="milestone-body" style="display: none;">
+                                <div class="progress-wrap">
+                                    <div class="progress">
+                                        <div class="progress-bar" th:style="'width: ' + ${milestone.totalProgressRate} + '%;'"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        담당자: <span th:text="${milestone.managerName}">홍길동</span> &nbsp;|&nbsp; <strong><span th:text="${milestone.totalProgressRate}">0</span>% 완료</strong>
+                                    </div>
+                                </div>
+
+                                <div class="issue-list">
+                                    <div th:if="${#lists.isEmpty(milestone.issueList)}" class="empty-issue">
+                                        등록된 하위 일감이 없습니다.
+                                    </div>
+                                    <div class="issue-item" th:each="issue : ${milestone.issueList}">
+                                        <div class="issue-main">
+                                            <span class="dynamic-badge" th:data-status="${issue.issueStatusName ?: '상태미상'}" th:text="${issue.issueStatusName ?: '상태미상'}">상태</span>
+                                            <a href="#" class="issue-title hover-primary js-issue-title" th:text="${issue.title}">일감 제목</a>
+                                        </div>
+                                        <div class="issue-meta">
+                                            <span class="meta-item"><i class="fas fa-user"></i> [[${issue.assigneeName ?: '미정'}]]</span>
+                                            <span class="meta-item"><i class="far fa-calendar-alt"></i> [[${issue.dueDate ?: '미정'}]]</span>
+                                            <span class="meta-item"><i class="fas fa-tasks"></i> [[${issue.progressRate}]]%</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>

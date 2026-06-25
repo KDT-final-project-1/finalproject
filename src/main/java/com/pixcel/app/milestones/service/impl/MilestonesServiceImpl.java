@@ -68,8 +68,8 @@ public class MilestonesServiceImpl implements MilestonesService {
     
     //7. 목록조회
     @Override
-    public  List<MilestonesVO> getMilestoneList(MilestoneSearchVO searchVO){
-    	return milestonesMapper.getMilestoneList(searchVO);
+    public  List<MilestonesVO> getMilestoneList(String projectId){
+    	return milestonesMapper.getMilestoneList(projectId);
     };
     
     //8. 등록된 일감목록
