@@ -16,7 +16,6 @@ import com.pixcel.app.file.service.FileDTO;
 import com.pixcel.app.file.service.FileService;
 import com.pixcel.app.issues.service.IssuesService;
 import com.pixcel.app.issues.service.IssuesVO;
-import com.pixcel.app.web.LoginRequiredException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class IssuesController {
 
 	private final IssuesService issuesService;
-	private final CommonFileService commonFileService;
+	private final FileService fileService;
 
 	// ==============================
 	// 일감 생성 URL 구조 수정
@@ -104,14 +103,14 @@ public class IssuesController {
 			return 0;
 		}
 
-		CommonFileUploadDTO uploadDTO = new CommonFileUploadDTO();
+		FileDTO uploadDTO = new FileDTO();
 		uploadDTO.setProjectId(issue.getProjectId());
 		uploadDTO.setVersionId(issue.getVersionId());
 		uploadDTO.setFileCode("f001");
 		uploadDTO.setUploadUserId(userId);
 		uploadDTO.setConnectAddress(issue.getIssueId());
 
-		return commonFileService.uploadFiles(uploadFiles, uploadDTO);
+		return fileService.uploadFile(uploadFiles, uploadDTO);
 	}
 
 	private int countSelectedFiles(List<MultipartFile> files) {
@@ -178,9 +177,8 @@ public class IssuesController {
 
 	// 현재 로그인 사용자 ID를 반환한다.
 	private String getLoginUserId(String userId) {
-
 		if (userId == null || userId.trim().isEmpty()) {
-			throw new LoginRequiredException();
+			throw new IllegalArgumentException("로그인이 필요합니다.");
 		}
 
 		return userId;
