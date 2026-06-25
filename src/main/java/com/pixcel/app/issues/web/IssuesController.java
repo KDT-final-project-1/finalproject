@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.pixcel.app.commonfile.service.CommonFileService;
-import com.pixcel.app.commonfile.service.CommonFileUploadDTO;
+import com.pixcel.app.file.service.FileDTO;
+import com.pixcel.app.file.service.FileService;
 import com.pixcel.app.issues.service.IssuesService;
 import com.pixcel.app.issues.service.IssuesVO;
 import com.pixcel.app.web.LoginRequiredException;
