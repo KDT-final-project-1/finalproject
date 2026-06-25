@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import jakarta.servlet.http.Cookie;
@@ -22,7 +23,7 @@ public class GlobalControllerAdvice {
     // project 사이드바 URL 목록
     private static final List<String> PROJECT_URIS = List.of(
         "/document", "/issues", "/kanban", "/members", 
-        "/milestones", "/roadmap", "/roles", "/repository"
+        "/milestones", "/roadmap", "/roles", "/repository","/project"
     );
     
  // project 사이드바 URL 목록
@@ -72,5 +73,10 @@ public class GlobalControllerAdvice {
                 }
             }
         }
+    }
+
+    @ExceptionHandler(LoginRequiredException.class)
+    public String handleLoginRequiredException() {
+        return "redirect:/login";
     }
 }

@@ -123,4 +123,24 @@ public class RoadmapController {
             return "redirect:/roadmap/roadmap_list";
         }
     }
+    
+    @GetMapping("/roadmap_list_full")
+    public String getRoadmapList(HttpSession session, Model model) {
+    	// ✅ 수정 완료: 직접 꺼내지 않고 공통 헬퍼 메서드 사용
+        String projectId = getProjectIdFromSession(session);
+        
+        // 이 시점에서 projectId는 무조건 존재합니다. (더미 값이든 실제 값이든)
+        log.info("조회할 프로젝트 ID: {}", projectId);
+        
+        // 3단 계층 데이터 조회
+        List<RoadmapVO> roadmapList = roadmapService.getRoadmapFull(projectId);
+        
+        // 화면에 데이터 전달
+        model.addAttribute("roadmapList", roadmapList);
+        model.addAttribute("projectId", projectId);
+        
+        return "roadmap/roadmap_list_full";
+    }
+
+    
 }
