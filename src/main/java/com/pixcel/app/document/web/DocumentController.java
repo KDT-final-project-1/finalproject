@@ -65,7 +65,7 @@ public class DocumentController {
     public String documentAdd(Model model, @CookieValue(value="userId", required =false)String userId) {
 		MilestoneSearchVO vo = new MilestoneSearchVO();
 		vo.setProjectId("PROJECT_ID_2606_0001");
-		List<MilestonesVO> milestoneList = milestonesService.getMilestoneList(vo);
+		List<MilestonesVO> milestoneList = milestonesService.getMilestoneList(vo.getProjectId());
 
 	    model.addAttribute("milestoneList", milestoneList);
 	    
