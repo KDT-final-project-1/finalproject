@@ -1,5 +1,4 @@
 package com.pixcel.app.issues.web;
-
 import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +14,6 @@ import com.pixcel.app.file.service.FileService;
 import com.pixcel.app.issues.service.IssuesService;
 import com.pixcel.app.issues.service.IssuesVO;
 import lombok.RequiredArgsConstructor;
-
 @Controller
 @RequiredArgsConstructor
 public class IssuesController {
@@ -30,7 +28,6 @@ public class IssuesController {
 	public String issues() {
 		return "redirect:/project/list";
 	}
-
 	// ==============================
 	// 일감 생성 URL 구조 수정
 	// 프로젝트 상세 URL 기준으로 일감 등록 화면으로 이동한다.
@@ -43,7 +40,6 @@ public class IssuesController {
 		addCreateFormModel(model, loginUserId, projectId);
 		return "issues/create";
 	}
-
 	// ==============================
 	// 일감 생성 URL 구조 수정
 	// URL의 projectId를 일감의 projectId로 강제 세팅한다.
@@ -73,7 +69,6 @@ public class IssuesController {
 			return "redirect:/project/" + projectId + "/issues/create";
 		}
 	}
-
 	// 기존 file 모듈은 건드리지 않고, issues 전용 commonfile 경로로 일감 첨부파일을 연결한다.
 	private int uploadIssueFiles(IssuesVO issue, String userId, List<MultipartFile> files) {
 		if (files == null || files.isEmpty()) {
@@ -91,14 +86,12 @@ public class IssuesController {
 		uploadDTO.setConnectAddress(issue.getIssueId());
 		return fileService.uploadFile(uploadFiles, uploadDTO);
 	}
-
 	private int countSelectedFiles(List<MultipartFile> files) {
 		if (files == null || files.isEmpty()) {
 			return 0;
 		}
 		return (int) files.stream().filter(file -> file != null && !file.isEmpty()).count();
 	}
-
 	// ==============================
 	// 일감 생성 URL 구조 수정
 	// 프로젝트 선택 목록을 제거하고 URL의 projectId 기준으로 화면 데이터를 구성한다.
@@ -143,7 +136,6 @@ public class IssuesController {
 			issue.setProjectId(projectId);
 		}
 	}
-
 	// 현재 로그인 사용자 ID를 반환한다.
 	private String getLoginUserId(String userId) {
 		if (userId == null || userId.trim().isEmpty()) {
@@ -152,3 +144,4 @@ public class IssuesController {
 		return userId;
 	}
 }
+
