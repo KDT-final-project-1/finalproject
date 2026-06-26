@@ -7,13 +7,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class RedisPublisher {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
-
-    public void publish(String channel, byte[] message) {
-
-        System.out.println("Publish : " + channel);
-
-        redisTemplate.convertAndSend(channel, message);
-    }
+//    @Autowired
+//    private RedisTemplate<String, Object> redisTemplate;
+//
+//    public void publish(String channel, byte[] message) {
+//
+//        System.out.println("Publish : " + channel);
+//
+//        redisTemplate.convertAndSend(channel, message);
+//    }
 }
