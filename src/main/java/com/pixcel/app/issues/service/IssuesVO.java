@@ -102,6 +102,8 @@ public class IssuesVO {
 	private Integer endRow;
 	private Integer totalCount;
 	private Integer totalPage;
-	
+
+ // TIME_LOG 조회용
+    private Integer hours;
 	
 }
