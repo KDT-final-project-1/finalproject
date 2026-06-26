@@ -10,8 +10,8 @@ public interface DocumentService {
 	public int addDocumentHistory(DocumentHistoryVO documentHistoryVO);
 	public int updateDocument(DocumentVO documentVO);
 	public int selectNextDocumentVersion(String documentId);
-	public List<DocumentCategoryVO> selectCategoryAll();
-	public List<DocumentVO> selectNoCategory();
+	public List<DocumentCategoryVO> selectCategoryAll(String projectId);
+	public List<DocumentVO> selectNoCategory(String projectId);
 	public List<DocumentVO> selectCategorydoc(String categoryId);
 	public DocumentVO selectDetail(String documentId);
 	public DocumentVO selectHistoryDetail(String documentHistoryId);

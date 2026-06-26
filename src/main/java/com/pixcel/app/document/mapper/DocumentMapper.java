@@ -15,8 +15,8 @@ public interface DocumentMapper {
 	public int updateDocument(DocumentVO documentVO);
 	public int selectNextDocumentVersion(String documentId);
 	public List<DocumentHistoryVO> selectHistoryAll(String documentId);
-	public List<DocumentCategoryVO> selectCategoryAll();
-	public List<DocumentVO> selectNoCategory();
+	public List<DocumentCategoryVO> selectCategoryAll(String projectId);
+	public List<DocumentVO> selectNoCategory(String projectId);
 	public List<DocumentVO> selectCategorydoc(String categoryId);
 	public DocumentVO selectDetail(String documentId);
 	public int insertCategory(DocumentCategoryVO documentCategoryVO);

@@ -36,5 +36,6 @@ public class DocumentVO {
 	private Date updatedAt;
 	private int documentVersionId;
 	private int nextVersion;
+	private int totalCnt;
 	
 }

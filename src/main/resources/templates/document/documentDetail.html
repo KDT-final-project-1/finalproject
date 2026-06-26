@@ -131,18 +131,6 @@
     </div>
 </div>
  
-<script th:inline="javascript">
-    function confirmDelete() {
-        if (confirm('정말 삭제하시겠습니까?')) {
-            const documentId = /*[[${docDetail.documentId}]]*/ '';
-            fetch('/document/delete/' + documentId, { method: 'POST' })
-                .then(res => {
-                    if (res.ok) window.location.href = '/document/list';
-                    else alert('삭제 중 오류가 발생했습니다.');
-                });
-        }
-    }
-</script>
 
 </div>
 </body>

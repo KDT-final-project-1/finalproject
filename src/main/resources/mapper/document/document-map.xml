@@ -39,6 +39,7 @@
     <!-- 문서에 카테고리 없는 파일조회 -->
     <select id="selectNoCategory" resultType="DocumentVO">
         select
+        	count(*) over() as total_cnt,
             d.document_id,
             d.project_id,
             d.document_category_id,
@@ -58,6 +59,7 @@
         LEFT JOIN project_version v ON d.version_id = v.version_id
         LEFT JOIN users u ON d.created_by = u.user_id
         WHERE document_category_id IS NULL
+        AND project_id = #{projectId}
     </select>
     
     <!-- 문서에 카테고리있는 파일 목록조회 -->
@@ -148,6 +150,7 @@
             project_id,
             category_name
         from document_category
+        WHERE project_id = #{projectId}
     </select>
 
 
@@ -190,7 +193,7 @@
             
         ) values (
             #{documentId},
-            'PROJECT_ID_2606_0006',
+            #{projectId},
             #{documentCategoryId},
             #{versionId},
             #{milestoneId},
@@ -234,7 +237,7 @@
             category_name
         ) values (
             #{documentCategoryId},
-            'PROJECT_ID_2606_0006',
+            #{projectId},
             #{categoryName}
         )
     </insert>
