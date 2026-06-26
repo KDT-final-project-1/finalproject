@@ -6,7 +6,6 @@ import com.pixcel.app.milestones.service.MilestonesVO;
 import jakarta.servlet.http.HttpSession;
 
 import com.pixcel.app.issues.service.IssuesVO;
-import com.pixcel.app.milestones.service.MilestoneSearchVO;
 import com.pixcel.app.milestones.service.MilestonesMemberDTO;
 
 import lombok.RequiredArgsConstructor;

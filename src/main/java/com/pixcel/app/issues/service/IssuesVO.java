@@ -72,4 +72,9 @@ public class IssuesVO {
     private String fieldCode;
     private String useYn;
     private String requiredYn;
+    
+    /*
+     * TIME_LOG 조회용
+     */
+    private Integer hours;
 }

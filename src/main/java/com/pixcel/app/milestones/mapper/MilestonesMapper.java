@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.pixcel.app.milestones.service.MilestonesMemberDTO;
 import com.pixcel.app.issues.service.IssuesVO;
-import com.pixcel.app.milestones.service.MilestoneSearchVO;
 import com.pixcel.app.milestones.service.MilestonesVO;
 
 @Mapper

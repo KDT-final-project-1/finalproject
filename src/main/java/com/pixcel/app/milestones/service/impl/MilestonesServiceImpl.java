@@ -2,7 +2,6 @@ package com.pixcel.app.milestones.service.impl;
 
 import com.pixcel.app.milestones.service.MilestonesService;
 import com.pixcel.app.milestones.service.MilestonesVO;
-import com.pixcel.app.milestones.service.MilestoneSearchVO;
 import com.pixcel.app.milestones.service.MilestonesMemberDTO; // DTO 임포트 확인
 import com.pixcel.app.issues.service.IssuesVO;
 import com.pixcel.app.milestones.mapper.MilestonesMapper;

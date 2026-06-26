@@ -33,7 +33,7 @@
             #{defaultYn}
         ) }
     </update>
-<select id="getRoadmapDetail" resultType="RoadmapVO">
+<select id="getsettingDetail" resultType="RoadmapVO">
     SELECT
         version_id,
         version_name,
@@ -51,15 +51,18 @@
         ) }
 </delete>
 
-<resultMap id="issueResultMap" type="IssuesVO">
-        <id property="issueId" column="ISSUE_ID" />
-        <result property="milestoneId" column="MILESTONE_ID" />
+<resultMap id="issueResultMap" type="IssuesVO"> <!--id는 말그대로 id값 type은 사용할 VO-->
+        <id property="issueId" column="ISSUE_ID" /><!-- resultMap에서 ID값은 PK값이라는걸 mybatis에게 알려줌 -->
+        <result property="milestoneId" column="MILESTONE_ID" /><!-- property는 VO의 값 colum은 sql의 값 -->
         <result property="title" column="ISSUE_TITLE" />
         <result property="issueStatusId" column="ISSUE_STATUS_ID" />
-        <result property="startDate" column="ISSUE_START_DATE" />
-        <result property="dueDate" column="ISSUE_DUE_DATE" />
         <result property="issueStatusName" column="issueStatusName" />
         <result property="progressRate" column="progressRate" />
+        <result property="startDate" column="ISSUE_START_DATE" />
+        <result property="dueDate" column="ISSUE_DUE_DATE" />
+        <result property="estimatedHours" column="ESTIMATED_HOURS" />
+        <result property="hours" column="HOURS"/>
+        <result property="assigneeName" column="ASSIGNEE_NAME"/> 
     </resultMap>
 
     <resultMap id="milestoneResultMap" type="MilestonesVO">
@@ -69,8 +72,11 @@
         <result property="statusCode" column="MILESTONE_STATUS" />
         <result property="startDate" column="START_DATE" />
         <result property="endDate" column="END_DATE" />
+        <result property="totalProgressRate" column="TOTAL_PROGRESS_RATE"/>
+        <result property="totalEstimateHours" column="TOTAL_ESTIMATED_HOURS"/>
+        <result property="totalHours" column="TOTAL_HOURS"/>
         
-        <collection property="issueList" resultMap="issueResultMap" />
+        <collection property="issueList" resultMap="issueResultMap" /><!-- VO안에 LIST<값> 이 들어갈때 사용 장점(JOIN 결과를 객체 구조로 만들어준다) -->
     </resultMap>
 
     <resultMap id="roadmapResultMap" type="RoadmapVO">
@@ -79,12 +85,14 @@
         <result property="versionName" column="VERSION_NAME" />
         <result property="statusCode" column="VERSION_STATUS" />
         <result property="defaultYn" column="DEFAULT_YN" />
+        <result property="description" column="DESCRIPTION" />
+        
         
         <collection property="milestoneList" resultMap="milestoneResultMap" />
     </resultMap>
 
     <select id="getRoadmapFull" resultMap="roadmapResultMap">
-    SELECT 
+    	SELECT 
         v.VERSION_ID,
         v.PROJECT_ID,
         v.VERSION_NAME,
@@ -140,5 +148,87 @@
     ORDER BY VERSION_ID DESC, START_DATE ASC NULLS LAST, ISSUE_ID ASC
 </select>
 
+
+	<select id="getRoadmapDetail" resultMap="roadmapResultMap">
+		SELECT
+		
+		    V.VERSION_ID,
+		    V.PROJECT_ID,
+		    V.VERSION_NAME,
+		    V.STATUS_CODE AS VERSION_STATUS,
+		    V.DESCRIPTION,
+		    V.DEFAULT_YN,
+		
+		    NVL(M.MILESTONE_ID, 'UNASSIGNED_' || V.VERSION_ID) AS MILESTONE_ID,
+		    NVL(M.TITLE, '마일스톤 미지정') AS MILESTONE_TITLE,
+		    M.STATUS_CODE AS MILESTONE_STATUS,
+		    M.START_DATE,
+		    M.END_DATE,
+		
+		    /* 마일스톤 평균 진행률 */
+		    (
+		        SELECT NVL(ROUND(AVG(PROGRESS_RATE)),0)
+		        FROM ISSUE
+		        WHERE MILESTONE_ID = M.MILESTONE_ID
+		    ) AS TOTAL_PROGRESS_RATE,
+		
+		    /* 마일스톤 예상 소요시간 */
+		    (
+		        SELECT NVL(SUM(ESTIMATED_HOURS),0)
+		        FROM ISSUE
+		        WHERE MILESTONE_ID = M.MILESTONE_ID
+		    ) AS TOTAL_ESTIMATED_HOURS,
+		
+		    /* 마일스톤 실제 소요시간 */
+		    (
+		        SELECT NVL(SUM(T.HOURS),0)
+		        FROM ISSUE I2
+		        JOIN TIME_LOG T
+		          ON I2.ISSUE_ID = T.ISSUE_ID
+		        WHERE I2.MILESTONE_ID = M.MILESTONE_ID
+		    ) AS TOTAL_HOURS,
+		
+		    /* 일감 정보 */
+		    I.ISSUE_ID,
+		    I.MILESTONE_ID,
+		    I.TITLE AS ISSUE_TITLE,
+		    I.ISSUE_STATUS_ID,
+		    G.STATUS_NAME AS issueStatusName,
+		    I.START_DATE AS ISSUE_START_DATE,
+		    I.DUE_DATE AS ISSUE_DUE_DATE,
+		    I.PROGRESS_RATE AS progressRate,
+		    I.ESTIMATED_HOURS,
+		    U2.USER_NAME AS ASSIGNEE_NAME,
+		
+		    /* 일감 실제 소요시간 */
+		    (
+		        SELECT NVL(SUM(HOURS),0)
+		        FROM TIME_LOG
+		        WHERE ISSUE_ID = I.ISSUE_ID
+		    ) AS HOURS
+		
+		FROM PROJECT_VERSION V
+		
+		LEFT JOIN ISSUE I
+		    ON V.VERSION_ID = I.VERSION_ID
+		   AND V.PROJECT_ID = I.PROJECT_ID
+		
+		LEFT JOIN MILESTONE M
+		    ON I.MILESTONE_ID = M.MILESTONE_ID
+		   AND I.VERSION_ID = M.VERSION_ID
+		   AND I.PROJECT_ID = M.PROJECT_ID
+		
+		LEFT JOIN ISSUE_STATUS G
+		    ON I.ISSUE_STATUS_ID = G.ISSUE_STATUS_ID
+		LEFT OUTER JOIN USERS U2 ON I.ASSIGNEE_ID = U2.USER_ID
+		
+		WHERE V.PROJECT_ID = #{projectId}
+		  AND V.VERSION_ID = #{versionId}
+		
+		ORDER BY
+		    NVL(M.START_DATE, DATE '9999-12-31'),
+		    I.ISSUE_ID
+		
+		</select>
 
 </mapper>

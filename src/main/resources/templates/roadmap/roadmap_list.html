@@ -68,7 +68,7 @@
                                 <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
                                 <span th:if="${roadmap.defaultYn == 'Y'}" class="badge-default">★ 기본</span>
                                 <h4 style="margin:0; font-size: 17px; font-weight: 500;">
-                                    <a th:href="@{/roadmap/detail(id=${roadmap.versionId})}" class="title-link no-accordion" th:text="${roadmap.versionName}">1.0.0</a>
+                                    <a th:href="@{/roadmap/roadmap_detail(versionId=${roadmap.versionId})}" class="title-link no-accordion" th:text="${roadmap.versionName}">1.0.0</a>
                                 </h4>
 								<span class="status-badge"
 								      th:classappend="${roadmap.statusCode == 'k001' ? 'status-k001' : (roadmap.statusCode == 'k002' ? 'status-k002' : 'status-k003')}"

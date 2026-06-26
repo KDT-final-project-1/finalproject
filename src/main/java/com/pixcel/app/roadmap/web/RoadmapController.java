@@ -60,7 +60,7 @@ public class RoadmapController {
     public String getRoadmapList(@ModelAttribute RoadmapVO roadmapVO, Model model, HttpSession session) {
     	String projectId = getProjectIdFromSession(session);
     	roadmapVO.setProjectId(projectId);
-    	List<RoadmapVO> roadmapList = roadmapService.getRoadmapList(roadmapVO);
+    	List<RoadmapVO> roadmapList = roadmapService.getSettingList(roadmapVO);
     	model.addAttribute("roadmapList", roadmapList);
     	return "roadmap/setting_list";
     	
@@ -70,7 +70,7 @@ public class RoadmapController {
         String projectId = getProjectIdFromSession(session);
         
         // 2. 기존 로드맵 데이터 단건 조회 (본인 프로젝트의 데이터인지 확인 포함)
-        RoadmapVO roadmap = roadmapService.getRoadmapDetail(versionId, projectId);
+        RoadmapVO roadmap = roadmapService.getsettingDetail(versionId, projectId);
         
         // 3. 보안 검증: 데이터가 없거나 다른 프로젝트의 버전에 접근하려 할 때 차단
         if (roadmap == null) {
@@ -126,13 +126,7 @@ public class RoadmapController {
     
     @GetMapping("/roadmap_list")
     public String getRoadmapList(HttpSession session, Model model) {
-    	// ✅ 수정 완료: 직접 꺼내지 않고 공통 헬퍼 메서드 사용
         String projectId = getProjectIdFromSession(session);
-        
-        // 이 시점에서 projectId는 무조건 존재합니다. (더미 값이든 실제 값이든)
-        log.info("조회할 프로젝트 ID: {}", projectId);
-        
-        // 3단 계층 데이터 조회
         List<RoadmapVO> roadmapList = roadmapService.getRoadmapFull(projectId);
         
         // 화면에 데이터 전달
@@ -140,6 +134,20 @@ public class RoadmapController {
         model.addAttribute("projectId", projectId);
         
         return "roadmap/roadmap_list";
+    }
+    
+    @GetMapping("/roadmap_detail")
+    public String getRoadmapDetail(
+            @RequestParam String versionId,
+    		HttpSession session, Model model) {
+    	String projectId = getProjectIdFromSession(session);
+    	RoadmapVO roadmap = roadmapService.getRoadmapDetail(projectId, versionId);
+
+        model.addAttribute("roadmap", roadmap);
+        
+
+        return "roadmap/roadmap_detail";
+    	
     }
 
     
