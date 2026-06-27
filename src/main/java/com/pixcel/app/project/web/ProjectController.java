@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+//import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pixcel.app.project.service.ProjectMemberVO;
@@ -43,13 +43,14 @@ public class ProjectController {
 	
 	// 프로젝트 등록 실행 (데이터 저장 처리)
 	@PostMapping("/project/register")
-	@ResponseBody
-	public int registerProject(ProjectVO projectVO, @CookieValue(value = "userId", required = false) String userId) {
+	public String registerProject(ProjectVO projectVO, @CookieValue(value = "userId", required = false) String userId) {
 		if (projectVO.getOwnerId() == null || projectVO.getOwnerId().isEmpty()) {
 			projectVO.setOwnerId(userId);
 		}
 		
-		return projectService.registerProject(projectVO);
+		projectService.registerProject(projectVO);
+		
+		return "redirect:/project/list";
 	}
 	
 	
