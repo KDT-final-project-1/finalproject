@@ -41,7 +41,7 @@ public class WikiController {
         return ResponseEntity.ok(vo);
     }
     // 위키 목록 페이지
-    @GetMapping("/")
+    @GetMapping("/list")
     public String wikiList(Model model, @PathVariable String projectId) {
         model.addAttribute("projectId", projectId);
         model.addAttribute("wikiList", wikiService.getWikiList(projectId));
