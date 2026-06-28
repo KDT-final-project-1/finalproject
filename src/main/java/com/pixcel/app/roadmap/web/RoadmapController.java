@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.pixcel.app.milestones.service.MilestonesVO;
 import com.pixcel.app.roadmap.service.RoadmapService;
 import com.pixcel.app.roadmap.service.RoadmapVO;
+import com.pixcel.app.user.security.CustomUserDetails;
 import com.pixcel.app.web.AllProjectController;
 
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,11 @@ public class RoadmapController {
     private final RoadmapService roadmapService;
     
     @GetMapping("/setting_create")
-    public String createRoadmapForm(@AuthenticationPrincipal String userId, 
+    public String createRoadmapForm(@AuthenticationPrincipal CustomUserDetails userDetails, 
                                     @PathVariable("projectId") String projectId,
                                     Model model) {
         model.addAttribute("projectId", projectId);
+        
         return "roadmap/setting_create"; 
     }
 
@@ -46,7 +48,7 @@ public class RoadmapController {
         
         roadmapService.insertRoadmap(roadmapVO);
         // 💡 핵심 2: 404 에러 방지를 위해 리다이렉트는 무조건 절대 경로(풀 주소)로 적습니다.
-        return "redirect:/project/{projectId}/roadmap/setting_list"; 
+        return "redirect:/project/" + projectId + "/roadmap/setting_list"; 
     }
 
     @GetMapping("/setting_list")
@@ -69,7 +71,7 @@ public class RoadmapController {
         
         if (roadmap == null) {
             log.warn("권한 없는 접근!");
-            return "redirect:/project/{projectId}/roadmap/setting_list?error=unauthorized";
+            return "redirect:/project/" + projectId + "/roadmap/setting_list?error=unauthorized";
         }
         
         model.addAttribute("roadmap", roadmap);      
@@ -90,7 +92,7 @@ public class RoadmapController {
         
         roadmapService.updateRoadmap(roadmapVO);
         
-        return "redirect:/project/{projectId}/roadmap/setting_list";
+        return "redirect:/project/" + projectId + "/roadmap/setting_list";
     }
 
     @PostMapping("/setting_delete")
@@ -108,7 +110,7 @@ public class RoadmapController {
             rttr.addFlashAttribute("errorMessage", "로드맵 삭제 중 알 수 없는 오류가 발생했습니다.");
         }
         
-        return "redirect:/project/{projectId}/roadmap/setting_list";
+        return "redirect:/project/" + projectId + "/roadmap/setting_list";
     }
     
     @GetMapping("/roadmap_list")

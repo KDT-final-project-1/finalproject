@@ -47,8 +47,8 @@ public class RoadmapServicelmpl implements RoadmapService {
         return roadmapList;
     }
 	@Override
-	public RoadmapVO getRoadmapDetail(String versionId, String projectId){
-	        return roadmapMapper.getRoadmapDetail(projectId, versionId);
+	public RoadmapVO getRoadmapDetail(String projectId, String versionId){
+	        return roadmapMapper.getRoadmapDetail(versionId, projectId);
 	};
 	@Override
     public List<MilestonesVO> getRoadmapMilestones(String projectId, String versionId) {

@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const startDateInput = document.getElementById("startDate");
     const endDateInput = document.getElementById("endDate");
     const dateErrorDiv = document.getElementById("dateError");
-    const startDatePastError = document.getElementById("startDatePastError"); // 추가된 에러 메시지 요소
+    const startDatePastError = document.getElementById("startDatePastError"); 
 	const projectId = document.getElementById('projectId').value;
     // [상태 관리 변수]
     let selectedIssueIds = new Set();
@@ -17,49 +17,86 @@ document.addEventListener("DOMContentLoaded", function() {
     let lockedVersionId = versionIdInput.value || null; 
     let searchTimeout = null; 
 
-    // --- [오늘 날짜 구하기 및 달력 과거 날짜 차단] ---
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    const todayStr = `${yyyy}-${mm}-${dd}`;
-
-    if (startDateInput) {
-        startDateInput.setAttribute('min', todayStr); // 달력 UI에서 오늘 이전 날짜 비활성화
+    // --- [날짜 선후 관계 설정] ---
+    if (startDateInput && endDateInput) {
+ 
+        if (startDateInput.value) {
+            endDateInput.setAttribute('min', startDateInput.value);
+        }
+        
+        // 시작일을 선택(변경)했을 때, 목표일자의 최소 선택 가능 날짜를 시작일로 동기화
+        startDateInput.addEventListener('change', function() {
+            endDateInput.setAttribute('min', this.value); 
+            
+            // 만약 이미 선택해둔 목표일자가 새로 바꾼 시작일보다 빠르다면, 목표일자 초기화
+            if (endDateInput.value && endDateInput.value < this.value) {
+                endDateInput.value = '';
+            }
+        });
     }
-    // ------------------------------------------------
-	if (endDateInput) {
-	      endDateInput.setAttribute('min', todayStr); // 목표일자 달력도 기본적으로 과거 차단
-	  }
-
-	  // 시작일을 선택(변경)했을 때, 목표일자의 최소 선택 가능 날짜를 시작일로 동기화
-	  if (startDateInput && endDateInput) {
-	      startDateInput.addEventListener('change', function() {
-	          endDateInput.setAttribute('min', this.value); 
-	          
-	          // 만약 이미 선택해둔 목표일자가 새로 바꾼 시작일보다 빠르다면, 목표일자 초기화
-	          if (endDateInput.value && endDateInput.value < this.value) {
-	              endDateInput.value = '';
-	          }
-	      });
-	  }
 	  
 	  const statusSelect = document.getElementById("statusCode");
 
 	      function toggleStartDateLock() {
-	          if (statusSelect && startDateInput) {
-	              // 'L002' (진행 중) 인 경우
-	              if (statusSelect.value === 'L002') { 
-	                  startDateInput.readOnly = true; // 읽기 전용으로 변경
-	                  startDateInput.style.backgroundColor = '#e9ecef'; // 회색 배경으로 변경 (비활성화 느낌)
-	                  startDateInput.style.pointerEvents = 'none'; // 달력 아이콘 클릭 원천 차단
-	                  startDateInput.title = '진행 중인 마일스톤의 시작일은 변경할 수 없습니다.';
-	              } else {
-	                  // 그 외 상태 (진행 예정 등) 일 경우 잠금 해제
+	          if (statusSelect && startDateInput && endDateInput) {
+	              const status = statusSelect.value;
+	              const allCheckboxes = document.querySelectorAll(".issue-checkbox");
+
+	              if (status === 'L003') { // [완료 상태일 때]
+	                  // A. 날짜 필드 전체 락 (시작일 + 목표일)
+	                  startDateInput.readOnly = true;
+	                  startDateInput.style.backgroundColor = '#e9ecef';
+	                  startDateInput.style.pointerEvents = 'none';
+	                  
+	                  endDateInput.readOnly = true;
+	                  endDateInput.style.backgroundColor = '#e9ecef';
+	                  endDateInput.style.pointerEvents = 'none';
+
+	                  // B. 일감 추가 검색창 잠금
+	                  if (issueSearchInput) {
+	                      issueSearchInput.disabled = true;
+	                      issueSearchInput.style.backgroundColor = '#e9ecef';
+	                      issueSearchInput.placeholder = '완료된 마일스톤에는 일감을 추가할 수 없습니다.';
+	                  }
+
+	                  // C. 기존 연결된 일감 체크박스 해제 잠금 (연동 해제 방지)
+	                  allCheckboxes.forEach(cb => {
+	                      cb.disabled = true;
+	                  });
+
+	              } else if (status === 'L002') { // [진행 중 상태일 때]
+	                  // 시작일만 락, 목표일은 변경 허용
+	                  startDateInput.readOnly = true;
+	                  startDateInput.style.backgroundColor = '#e9ecef';
+	                  startDateInput.style.pointerEvents = 'none';
+	                  
+	                  endDateInput.readOnly = false;
+	                  endDateInput.style.backgroundColor = '';
+	                  endDateInput.style.pointerEvents = 'auto';
+
+	                  if (issueSearchInput) {
+	                      issueSearchInput.disabled = false;
+	                      issueSearchInput.style.backgroundColor = '';
+	                      issueSearchInput.placeholder = '일감 제목 또는 버전 입력...';
+	                  }
+	                  updateCheckboxUI(); // 일반적인 버전 체크박스 UI 잠금 상태로 갱신
+
+	              } else { // [진행 예정(L001) 등 대기 상태일 때]
+	                  // 모든 락 해제
 	                  startDateInput.readOnly = false;
 	                  startDateInput.style.backgroundColor = '';
 	                  startDateInput.style.pointerEvents = 'auto';
-	                  startDateInput.title = '';
+	                  
+	                  endDateInput.readOnly = false;
+	                  endDateInput.style.backgroundColor = '';
+	                  endDateInput.style.pointerEvents = 'auto';
+
+	                  if (issueSearchInput) {
+	                      issueSearchInput.disabled = false;
+	                      issueSearchInput.style.backgroundColor = '';
+	                      issueSearchInput.placeholder = '일감 제목 또는 버전 입력...';
+	                  }
+	                  updateCheckboxUI(); // 일반적인 버전 체크박스 UI 잠금 상태로 갱신
 	              }
 	          }
 	      }
@@ -267,29 +304,17 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
 
-        // 2. 날짜 논리 검증
-        if (startDateInput.value) {
-            // 과거 날짜 입력 차단
-            if (startDateInput.value < todayStr) {
+        // 2. 날짜 논리 검증 (시작일이 목표일보다 늦을 수 없음)
+        if (startDateInput.value && endDateInput.value) {
+            if (startDateInput.value > endDateInput.value) { 
                 startDateInput.classList.add('error-border');
-                if (startDatePastError) startDatePastError.style.display = "block";
-                isValid = false;
+                endDateInput.classList.add('error-border');
+                dateErrorDiv.style.display = "block"; 
+                isValid = false; 
             } else {
                 startDateInput.classList.remove('error-border');
-                if (startDatePastError) startDatePastError.style.display = "none";
-            }
-            
-            // 목표 일자와의 선후 관계 검증
-            if (endDateInput.value) {
-                if (startDateInput.value > endDateInput.value) { 
-                    startDateInput.classList.add('error-border');
-                    endDateInput.classList.add('error-border');
-                    dateErrorDiv.style.display = "block"; 
-                    isValid = false; 
-                } else {
-                    endDateInput.classList.remove('error-border');
-                    dateErrorDiv.style.display = "none"; 
-                }
+                endDateInput.classList.remove('error-border');
+                dateErrorDiv.style.display = "none"; 
             }
         }
 

@@ -14,6 +14,6 @@ public interface RoadmapService {
 	public RoadmapVO getsettingDetail(String versionId, String projectId);
 	public int deleteRoadmap(String versionId, String projectId);
 	public List<RoadmapVO> getRoadmapFull(String projectId);
-	public RoadmapVO getRoadmapDetail(String versionId, String projectId);
+	public RoadmapVO getRoadmapDetail(String projectId, String versionId);
 	public List<MilestonesVO> getRoadmapMilestones(String projectId, String versionId);
 }

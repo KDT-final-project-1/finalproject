@@ -17,32 +17,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let lockedVersionId = null;       
   let searchTimeout = null;
 
-  // --- [신규 추가: 오늘 날짜 구하기 및 달력 과거 날짜 차단] ---
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const todayStr = `${yyyy}-${mm}-${dd}`;
-
-  if (startDateInput) {
-      startDateInput.setAttribute('min', todayStr); // 달력 UI에서 오늘 이전 날짜 비활성화
+  // --- [날짜 선후 관계 설정] ---
+  if (startDateInput && endDateInput) {
+  
+      if (startDateInput.value) {
+          endDateInput.setAttribute('min', startDateInput.value);
+      }
+      
+      // 시작일을 선택(변경)했을 때, 목표일자의 최소 선택 가능 날짜를 시작일로 동기화
+      startDateInput.addEventListener('change', function() {
+          endDateInput.setAttribute('min', this.value); 
+          
+          // 만약 이미 선택해둔 목표일자가 새로 바꾼 시작일보다 빠르다면, 목표일자 초기화
+          if (endDateInput.value && endDateInput.value < this.value) {
+              endDateInput.value = '';
+          }
+      });
   }
-  // -------------------------------------------------------------
-  if (endDateInput) {
-        endDateInput.setAttribute('min', todayStr); // 목표일자 달력도 기본적으로 과거 차단
-    }
-
-    // 시작일을 선택(변경)했을 때, 목표일자의 최소 선택 가능 날짜를 시작일로 동기화
-    if (startDateInput && endDateInput) {
-        startDateInput.addEventListener('change', function() {
-            endDateInput.setAttribute('min', this.value); 
-            
-            // 만약 이미 선택해둔 목표일자가 새로 바꾼 시작일보다 빠르다면, 목표일자 초기화
-            if (endDateInput.value && endDateInput.value < this.value) {
-                endDateInput.value = '';
-            }
-        });
-    }
   // 일감 검색 API 호출 함수
   function fetchAndShowIssues(keyword) {
     let apiUrl = `/project/${projectId}/milestones/api/issues/search?keyword=${keyword}`;
@@ -229,29 +220,16 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
-    // 2. 날짜 검증 로직
-    if (startDateInput.value) {
-        // [추가됨] 과거 날짜 입력 차단
-        if (startDateInput.value < todayStr) {
-            startDateInput.classList.add('error-border');
-            if (startDatePastError) startDatePastError.style.display = "block";
+    // 2. 날짜 논리 검증 (시작일이 목표일보다 늦을 수 없음)
+    if (startDateInput.value && endDateInput.value) {
+        if (startDateInput.value > endDateInput.value) {
+            startDateInput.classList.add("error-border");
+            endDateInput.classList.add("error-border");
+            dateErrorDiv.style.display = "block";
             isValid = false;
         } else {
-            startDateInput.classList.remove('error-border');
-            if (startDatePastError) startDatePastError.style.display = "none";
-        }
-
-        // 선후 관계 검증 (시작일 vs 종료일)
-        if (endDateInput.value) {
-            if (startDateInput.value > endDateInput.value) {
-                startDateInput.classList.add("error-border");
-                endDateInput.classList.add("error-border");
-                dateErrorDiv.style.display = "block";
-                isValid = false;
-            } else {
-                endDateInput.classList.remove("error-border");
-                dateErrorDiv.style.display = "none";
-            }
+            endDateInput.classList.remove("error-border");
+            dateErrorDiv.style.display = "none";
         }
     }
 

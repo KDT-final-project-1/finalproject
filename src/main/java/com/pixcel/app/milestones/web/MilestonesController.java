@@ -2,6 +2,7 @@ package com.pixcel.app.milestones.web;
 
 import com.pixcel.app.milestones.service.MilestonesService;
 import com.pixcel.app.milestones.service.MilestonesVO;
+import com.pixcel.app.user.security.CustomUserDetails;
 import com.pixcel.app.web.AllProjectController;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,7 +39,7 @@ public class MilestonesController {
     
     //마일스톤 생성화면
     @GetMapping("/create")
-    public String createMilestoneForm(@AuthenticationPrincipal String userId,
+    public String createMilestoneForm(@AuthenticationPrincipal CustomUserDetails userDetails,
     								  @PathVariable("projectId") String projectId
     									,Model model) {
   
