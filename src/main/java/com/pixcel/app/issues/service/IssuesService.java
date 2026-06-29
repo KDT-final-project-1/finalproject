@@ -47,6 +47,10 @@ public interface IssuesService {
 
 	void updateIssue(IssuesVO issue, String userId);
 
+	void recordIssueFileAddHistory(String issueId, String userId, int uploadCount);
+
+	void deleteIssueFile(String projectId, String issueId, String fileId, String userId);
+
 	// 일감 전체조회에서 선택한 일감을 삭제한다.
 	void deleteIssue(String projectId, String issueId, String userId);
 

@@ -45,6 +45,7 @@ public class IssuesController {
 
 		String loginUserId = getLoginUserId(userId);
 
+		normalizeIssueListDateSearch(searchVO, model);
 		addListModel(model, loginUserId, projectId, searchVO);
 
 		return "issues/list";
@@ -131,6 +132,8 @@ public class IssuesController {
 			@PathVariable("projectId") String projectId,
 			@PathVariable("issueId") String issueId,
 			IssuesVO issue,
+			@RequestParam(value = "files", required = false) List<MultipartFile> files,
+			@RequestParam(value = "deleteFileIds", required = false) List<String> deleteFileIds,
 			RedirectAttributes redirectAttributes) {
 
 		String loginUserId = getLoginUserId(userId);
@@ -139,7 +142,16 @@ public class IssuesController {
 
 		try {
 			issuesService.updateIssue(issue, loginUserId);
-			redirectAttributes.addFlashAttribute("message", "일감을 수정했습니다.");
+			int selectedFileCount = countSelectedFiles(files);
+			int uploadFileCount = uploadIssueFiles(issue, loginUserId, files);
+			int deleteFileCount = deleteIssueFiles(projectId, issueId, loginUserId, deleteFileIds);
+
+			issuesService.recordIssueFileAddHistory(issueId, loginUserId, uploadFileCount);
+			redirectAttributes.addFlashAttribute("message", buildUpdateMessage(uploadFileCount, deleteFileCount));
+
+			if (selectedFileCount > uploadFileCount) {
+				redirectAttributes.addFlashAttribute("fileWarning", "일감은 수정되었지만 일부 첨부파일을 저장하지 못했습니다.");
+			}
 		} catch (IllegalArgumentException e) {
 			redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
 			redirectAttributes.addFlashAttribute("issueForm", issue);
@@ -267,11 +279,23 @@ public class IssuesController {
 		model.addAttribute("canCreateMilestone", pageData.get("canCreateMilestone"));
 	}
 
+	private void normalizeIssueListDateSearch(IssuesVO searchVO, Model model) {
+		if (searchVO == null || searchVO.getStartDate() == null || searchVO.getDueDate() == null) {
+			return;
+		}
+
+		if (searchVO.getDueDate().isBefore(searchVO.getStartDate())) {
+			searchVO.setDueDate(null);
+			model.addAttribute("errorMessage", "완료기한은 시작일보다 빠를 수 없습니다.");
+		}
+	}
+
 	private void addDetailModel(Model model, String userId, String projectId, String issueId) {
 		Map<String, Object> pageData = issuesService.getIssueDetailPageData(projectId, issueId, userId);
 		IssuesVO issue = (IssuesVO) pageData.get("issue");
+		boolean deletedIssue = Boolean.TRUE.equals(pageData.get("deletedIssue"));
 
-		if (model.containsAttribute("issueForm") && model.asMap().get("issueForm") instanceof IssuesVO) {
+		if (!deletedIssue && model.containsAttribute("issueForm") && model.asMap().get("issueForm") instanceof IssuesVO) {
 			IssuesVO issueForm = (IssuesVO) model.asMap().get("issueForm");
 			issueForm.setProjectId(projectId);
 			issueForm.setIssueId(issueId);
@@ -300,6 +324,9 @@ public class IssuesController {
 		model.addAttribute("milestoneList", pageData.get("milestoneList"));
 		model.addAttribute("parentIssueList", pageData.get("parentIssueList"));
 		model.addAttribute("historyList", pageData.get("historyList"));
+		model.addAttribute("historyGroupList", pageData.get("historyGroupList"));
+		model.addAttribute("deletedIssue", deletedIssue);
+		model.addAttribute("deletedIssueMessage", pageData.get("deletedIssueMessage"));
 		model.addAttribute("canUpdateIssue", pageData.get("canUpdateIssue"));
 		model.addAttribute("canDeleteIssue", pageData.get("canDeleteIssue"));
 	}
@@ -431,6 +458,40 @@ public class IssuesController {
 		}
 
 		return (int) files.stream().filter(file -> file != null && !file.isEmpty()).count();
+	}
+
+	private int deleteIssueFiles(String projectId, String issueId, String userId, List<String> deleteFileIds) {
+		if (deleteFileIds == null || deleteFileIds.isEmpty()) {
+			return 0;
+		}
+
+		int deleteCount = 0;
+
+		for (String fileId : deleteFileIds) {
+			if (fileId == null || fileId.trim().isEmpty()) {
+				continue;
+			}
+
+			issuesService.deleteIssueFile(projectId, issueId, fileId, userId);
+			deleteCount++;
+		}
+
+		return deleteCount;
+	}
+
+	private String buildUpdateMessage(int uploadFileCount, int deleteFileCount) {
+		List<String> messageList = new ArrayList<>();
+		messageList.add("일감을 수정했습니다.");
+
+		if (uploadFileCount > 0) {
+			messageList.add("첨부파일 " + uploadFileCount + "개를 추가했습니다.");
+		}
+
+		if (deleteFileCount > 0) {
+			messageList.add("첨부파일 " + deleteFileCount + "개를 삭제했습니다.");
+		}
+
+		return String.join(" ", messageList);
 	}
 
 	private boolean isIssueFile(String issueId, String fileId) {

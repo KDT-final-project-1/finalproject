@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.pixcel.app.file.service.FileVO;
 import com.pixcel.app.issues.service.IssuesVO;
 
 public interface IssuesMapper {
@@ -38,10 +39,6 @@ public interface IssuesMapper {
 
 	List<IssuesVO> selectIssueList(IssuesVO searchVO);
 
-	List<IssuesVO> selectIssueListPageBlockRows(IssuesVO searchVO);
-
-	List<IssuesVO> selectIssueListByPageIds(IssuesVO searchVO);
-
 	List<IssuesVO> selectIssueStatusList(@Param("projectId") String projectId);
 
 	IssuesVO selectIssueDetail(@Param("projectId") String projectId, @Param("issueId") String issueId,
@@ -53,6 +50,10 @@ public interface IssuesMapper {
 
 	List<IssuesVO> selectIssueDetailRows(@Param("projectId") String projectId,
 			@Param("issueId") String issueId, @Param("userId") String userId);
+
+	List<IssuesVO> selectIssueHistoryRows(@Param("issueId") String issueId);
+
+	int countIssueHistory(@Param("issueId") String issueId);
 
 	List<IssuesVO> selectAvailableStatusList(@Param("projectId") String projectId,
 			@Param("issueId") String issueId, @Param("userId") String userId);
@@ -123,13 +124,15 @@ public interface IssuesMapper {
 	int updateIssue(IssuesVO issue);
 
 	int insertIssueHistoryByProcedure(IssuesVO history);
+
+	FileVO selectIssueFile(@Param("issueId") String issueId, @Param("fileId") String fileId);
+
+	int deleteIssueFile(@Param("issueId") String issueId, @Param("fileId") String fileId);
 	
 	int countChildIssue(
 	        @Param("projectId") String projectId,
 	        @Param("issueId") String issueId
 	);
-
-	int deleteIssueHistory(@Param("issueId") String issueId);
 
 	int deleteIssue(@Param("projectId") String projectId, @Param("issueId") String issueId);
 }

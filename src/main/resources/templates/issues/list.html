@@ -32,17 +32,9 @@
 							th:href="@{/project/{projectId}/milestones/create(projectId=${selectedProjectId})}"
 							class="btn btn-custon-rounded-four btn-default"> 마일스톤 생성 </a>
 
-						<button th:unless="${canCreateMilestone}" type="button"
-							class="btn btn-custon-rounded-four btn-default" disabled
-							title="마일스톤 생성 권한이 없습니다.">마일스톤 생성</button>
-
 						<a th:if="${canCreateIssue}"
 							th:href="@{/project/{projectId}/issues/create(projectId=${selectedProjectId})}"
 							class="btn btn-custon-rounded-four btn-primary"> 일감 생성 </a>
-
-						<button th:unless="${canCreateIssue}" type="button"
-							class="btn btn-custon-rounded-four btn-primary" disabled
-							title="일감 생성 권한이 없습니다.">일감 생성</button>
 					</div>
 				</div>
 
@@ -57,7 +49,7 @@
 						<div class="search-title">검색조건</div>
 					</div>
 
-					<form
+					<form id="issueSearchForm"
 						th:action="@{/project/{projectId}/issues(projectId=${selectedProjectId})}"
 						method="get">
 
@@ -420,6 +412,9 @@
 				document.body.classList.add('issues-list-body');
 
 				var filterOptionUrl = /*[[@{/project/{projectId}/issues/filter-options(projectId=${selectedProjectId})}]]*/ '';
+				var searchForm = document.getElementById('issueSearchForm');
+				var startDateInput = document.getElementById('startDate');
+				var dueDateInput = document.getElementById('dueDate');
 				var optionConfig = {
 					issueType : {
 						listName : 'issueTypeList',
@@ -635,6 +630,17 @@
 						}
 					});
 				});
+
+				if (searchForm && startDateInput && dueDateInput) {
+					searchForm.addEventListener('submit', function(event) {
+						if (startDateInput.value && dueDateInput.value
+								&& dueDateInput.value < startDateInput.value) {
+							event.preventDefault();
+							alert('완료기한은 시작일보다 빠를 수 없습니다.');
+							dueDateInput.focus();
+						}
+					});
+				}
 
 				loadFilterOptions();
 			})();

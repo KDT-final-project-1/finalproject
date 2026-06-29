@@ -110,7 +110,8 @@ public class IssuesVO {
 	private String keyword;
 
 	/*
-	 * 일감유형별 표준항목 설정 조회용 ISSUE 테이블 컬럼이 아님
+	 * 일감유형별 표준항목 설정 조회용 필드.
+	 * 작업내역 조회에서는 변경된 필드 코드로도 재사용한다.
 	 */
 	private String fieldSettingId;
 	private String fieldCode;
@@ -132,10 +133,12 @@ public class IssuesVO {
 	 * ISSUE_HISTORY fields
 	 */
 	private String historyId;
+	private String historyGroupId;
 	private String changedBy;
 	private String changedByName;
 	private String changeTypeCode;
-	private String changeTypeName;
+	private String changeTypeDisplayName;
+	private String fieldName;
 	private String reason;
 	private String historyReason;
 	private String beforeValue;
@@ -148,16 +151,10 @@ public class IssuesVO {
 	private Integer pageSize;
 	private Integer startRow;
 	private Integer endRow;
-	private Integer pageBlockStartRow;
-	private Integer pageBlockProbeEndRow;
 	private Integer rowNo;
-	private Integer totalCount;
-	private Integer totalPage;
 	private Boolean hasPreviousPage;
 	private Boolean hasNextPage;
-	private Boolean hasNextPageBlock;
 	private List<Integer> pageList;
-	private List<String> pageIssueIdList;
 
  // TIME_LOG 조회용
     private Integer hours;
