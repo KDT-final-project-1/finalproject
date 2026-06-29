@@ -113,13 +113,19 @@
                         ? @{/project/{projectId}/repository(projectId=${projectId}, page=${repositoryPage.page - 1}, startDate=${param.startDate}, endDate=${param.endDate}, originalName=${param.originalName}, uploadUserId=${param.uploadUserId})}
                         : 'javascript:void(0)'">이전</a>
 					</li>
-					<li
-						th:each="pageNum : ${#numbers.sequence(1, repositoryPage.totalPage)}">
-						<a
-						th:href="@{/project/{projectId}/repository(projectId=${projectId}, page=${pageNum}, startDate=${param.startDate}, endDate=${param.endDate}, originalName=${param.originalName}, uploadUserId=${param.uploadUserId})}"
-						th:text="${pageNum}"
-						th:classappend="${pageNum == repositoryPage.page} ? 'active'">1</a>
-					</li>
+					<!-- totalPage가 1 이상일 때만 페이지 번호 렌더링 (0이면 sequence(1,0) → [1,0] 버그 방지) -->
+					<th:block th:if="${repositoryPage.totalPage >= 1}">
+						<li
+							th:each="pageNum : ${#numbers.sequence(1, repositoryPage.totalPage)}">
+							<a
+							th:href="@{/project/{projectId}/repository(projectId=${projectId}, page=${pageNum}, startDate=${param.startDate}, endDate=${param.endDate}, originalName=${param.originalName}, uploadUserId=${param.uploadUserId})}"
+							th:text="${pageNum}"
+							th:classappend="${pageNum == repositoryPage.page} ? 'active'">1</a>
+						</li>
+					</th:block>
+					<!-- 데이터가 없을 때 1페이지 고정 표시 -->
+					<li th:if="${repositoryPage.totalPage == 0}"><a class="active"
+						href="javascript:void(0)">1</a></li>
 					<li th:classappend="${!repositoryPage.hasNext} ? 'disabled'">
 						<a
 						th:href="${repositoryPage.hasNext}
