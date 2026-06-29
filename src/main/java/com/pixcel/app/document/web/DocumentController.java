@@ -28,6 +28,8 @@ import com.pixcel.app.file.service.FileVO;
 import com.pixcel.app.milestones.service.MilestoneSearchVO;
 import com.pixcel.app.milestones.service.MilestonesService;
 import com.pixcel.app.milestones.service.MilestonesVO;
+import com.pixcel.app.roadmap.service.RoadmapService;
+import com.pixcel.app.roadmap.service.RoadmapVO;
 import com.pixcel.app.web.AllProjectController;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -43,6 +45,7 @@ public class DocumentController {
 	private final DocumentService documentService;
 	private final FileService fileService;
 	private final MilestonesService milestonesService;
+	private final RoadmapService roadmapService;
 	private final CodeValueService codeValueService;
 	
 	@GetMapping("/list")
@@ -73,23 +76,32 @@ public class DocumentController {
 	    List<DocumentVO> categorydocList = documentService.selectCategorydoc(categoryId);
 	    System.out.println(categorydocList.size());
 	    model.addAttribute("categorydocList",categorydocList);
+	    int noTotal = 0;
+
+	    if (categorydocList != null && !categorydocList.isEmpty()) {
+	    	noTotal = categorydocList.get(0).getTotalCnt();
+	    }
+	    model.addAttribute("noTotal",noTotal);
+	    model.addAttribute("projectId",projectId);
         return "document/documentCategoryList";
     }
 	
 	@GetMapping("/add")
     public String documentAdd(Model model,@PathVariable("projectId") String projectId, @CookieValue(value="userId", required =false)String userId) {
 		MilestoneSearchVO vo = new MilestoneSearchVO();
-		vo.setProjectId("PROJECT_ID_2606_0001");
+		vo.setProjectId(projectId);
 		List<MilestonesVO> milestoneList = milestonesService.getMilestoneList(vo.getProjectId());
-
 	    model.addAttribute("milestoneList", milestoneList);
 	    
 	    List<CodeValueVO> codeValueList = codeValueService.getCodeValueListByGroup(userId,"g003");
 	    model.addAttribute("codeValueList", codeValueList);
 	    
+	    List<RoadmapVO> roadmapList = roadmapService.getVersionId(projectId);
+	    model.addAttribute("roadmapList", roadmapList);
+	    
 	    List<DocumentCategoryVO> categoryList = documentService.selectCategoryAll(projectId);
 	    model.addAttribute("categoryList",categoryList);
-	    
+	    model.addAttribute("projectId",projectId);
 	    
 	    
         return "document/documentAdd";
@@ -138,16 +150,19 @@ public class DocumentController {
 	    model.addAttribute("docDetail",docDetail);
 	    List<FileVO> fileList = fileService.selectAll(documentId);
 	    model.addAttribute("fileList",fileList);
+	    model.addAttribute("projectId",projectId);
         return "document/documentDetail";
     }
 	
 	@GetMapping("/detail/{documentId}/download")
 	public void downloadFileAll(@PathVariable String documentId,HttpServletResponse response, @PathVariable("projectId") String projectId,@CookieValue(value="userId", required =false)String userId) throws IOException{
+		System.out.println(documentId);
 		fileService.downloadAll(documentId, response, userId);
 	}
 	
 	@GetMapping("/detail/{documentId}/{fileId}/download")
 	public void downloadFile(@PathVariable String fileId,HttpServletResponse response, @PathVariable("projectId") String projectId,@CookieValue(value="userId", required =false)String userId) throws IOException{
+		System.out.println(fileId);
 		fileService.downloadOne(fileId, response, userId);
 	}
 	
@@ -161,6 +176,7 @@ public class DocumentController {
 	    model.addAttribute("documentVersionId",documentVersionId);
 	    List<FileVO> fileList = fileService.selectAll(documentId);
 	    model.addAttribute("fileList",fileList);
+	    model.addAttribute("projectId",projectId);
         return "document/documentUpdate";
     }
 	
@@ -207,6 +223,13 @@ public class DocumentController {
 	    List<DocumentHistoryVO> historydocList = documentService.selectHistoryAll(documentId);
 	    System.out.println(historydocList.size());
 	    model.addAttribute("historydocList",historydocList);
+	    int noTotal = 0;
+
+	    if (historydocList != null && !historydocList.isEmpty()) {
+	    	noTotal = historydocList.get(0).getTotalCnt();
+	    }
+	    
+	    model.addAttribute("projectId",projectId);
         return "document/documentHistoryList";
     }
 
@@ -219,6 +242,7 @@ public class DocumentController {
 	    model.addAttribute("docDetail",docDetail);
 	    List<FileVO> fileList = fileService.selectAll(documentHistoryId);
 	    model.addAttribute("fileList",fileList);
+	    model.addAttribute("projectId",projectId);
         return "document/documentHistoryDetail";
     }
 	
@@ -237,5 +261,25 @@ public class DocumentController {
 		
         return "redirect:/project/" + projectId +"/document/list";
     }
+	
+	@PostMapping("/deletecategorydocument")
+	public String deleteDocumentCategoryId(@RequestParam("documentCategoryId") String documentCategoryId, @PathVariable("projectId") String projectId) {
+		documentService.deleteDocumentCategory(documentCategoryId);
+		return "redirect:/project/" + projectId + "/document/list";
+	}
+	
+	@PostMapping("/deletedocument/{documentId}")
+	public String deleteDocument(@PathVariable("documentId") String documentId, @PathVariable("projectId") String projectId, @CookieValue(value="userId", required =false)String userId) {
+		DocumentVO docHistoryId = documentService.selectHistoryLastDetail(documentId);
+		documentService.deleteDocumentHistory(docHistoryId.getDocumentHistoryId());
+		DocumentVO docDetail = documentService.selectHistoryLastDetail(documentId);
+//		if (docDetail == null) {
+//			documentService.deleteDocument(documentId);
+//		}
+		if (docDetail != null) {
+			documentService.updateDocument(docDetail);
+		}
+		return "redirect:/project/" + projectId + "/document/list";
+	}
 
 }

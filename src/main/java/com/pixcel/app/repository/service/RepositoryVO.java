@@ -51,7 +51,7 @@ public class RepositoryVO {
 	@Builder.Default
 	private String fileVersion = "1";
 	@Builder.Default
-	private String fileUseYn = "g001";
+	private String fileUseYn = "n001";
 	@Builder.Default
 	private String connectAddress = "-";
 	
@@ -65,6 +65,16 @@ public class RepositoryVO {
 	private int endPage;
 	private boolean hasPrevious;
 	private boolean hasNext;
+	
+	private boolean first;
+	
+	public boolean isFirst() {
+	    return first;
+	}
+
+	public void setFirst(boolean first) {
+	    this.first = first;
+	}
 	
 	private String startDate;
 	private String endDate;
