@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pixcel.app.project.service.ProjectMemberVO;
+import com.pixcel.app.project.service.ProjectModulesVO;
 import com.pixcel.app.project.service.ProjectRoleVO;
 import com.pixcel.app.project.service.ProjectService;
 import com.pixcel.app.project.service.ProjectVO;
@@ -29,14 +30,14 @@ public class ProjectController {
 	private ProjectService projectService;
 
 	/* 프로젝트 등록 폼 */
-	@GetMapping("/project/register")
+	@GetMapping("/myproject/register")
 	public String registerForm(Model model, @CookieValue(value = "userId", required = false) String userId) {
 		model.addAttribute("userId", userId);
 		return "project/project";
 	}
 
 	/* 프로젝트 등록 처리 */
-	@PostMapping("/project/register")
+	@PostMapping("/myproject/register")
 	public String registerProject(ProjectVO projectVO, @CookieValue(value = "userId", required = false) String userId) {
 		if (projectVO.getOwnerId() == null || projectVO.getOwnerId().isEmpty()) {
 			projectVO.setOwnerId(userId);
@@ -52,7 +53,7 @@ public class ProjectController {
 	// 일반이용자일 경우 - 본인이 소속된 프로젝트가 조회된다. 프로젝트 생성 및 관리 버튼은 미노출된다.
 
 	/* 프로젝트 목록 (검색 + 페이징) */
-	@GetMapping("/project/list")
+	@GetMapping("/myproject/list")
 	public String projectListForm(Model model, @CookieValue(value = "userId", required = false) String userId,
 			@CookieValue(value = "subscribeYn", required = false) String subscribeYn,
 			// 검색 파라미터
@@ -98,7 +99,14 @@ public class ProjectController {
 
 		ProjectVO project = projectService.selectProjectDetail(projectId);
 		List<ProjectMemberVO> projectMemberList = projectService.selectProjectMemberList(projectId);
+		
+		// 류송지 추가
+		List<ProjectModulesVO> projectModule = projectService.selectAllModuleProjects(projectId);
+		List<String> moduleCodes = projectModule.stream()
+			    .map(ProjectModulesVO::getModuleCode)
+			    .toList();
 
+		model.addAttribute("moduleCodes", moduleCodes);
 		model.addAttribute("project", project);
 		model.addAttribute("projectId", projectId);
 		model.addAttribute("subscribeYn", subscribeYn);

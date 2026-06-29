@@ -10,7 +10,7 @@ public interface ProjectService {
 	
 	// 류송지 추가
 	// 프로젝트 모듈 관련
-	public List<ProjectModulesVO> selectAllModuleProjects();
+	public List<ProjectModulesVO> selectAllModuleProjects(String projectId);
 
 	//260623 고동현 추가 프로젝트 리스트관련
 	// 관리자 (검색+페이징 적용)
