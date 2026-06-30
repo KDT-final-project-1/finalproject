@@ -57,7 +57,6 @@ public class DocumentController {
 	    	total = categoryList.get(0).getTotalCnt();
 	    }
 	    model.addAttribute("total",total);
-	    System.out.println(projectId);
 	    List<DocumentVO> categoryNoList = documentService.selectNoCategory(projectId);
 	    model.addAttribute("categoryNoList",categoryNoList);
 	    int noTotal = 0;
@@ -72,9 +71,8 @@ public class DocumentController {
 	
 	@GetMapping("/list/{categoryId}")
     public String documentCategoryList(Model model, @CookieValue(value="userId", required =false)String userId,@PathVariable("projectId") String projectId, @PathVariable("categoryId") String categoryId) {
-		System.out.println(categoryId);
+		
 	    List<DocumentVO> categorydocList = documentService.selectCategorydoc(categoryId);
-	    System.out.println(categorydocList.size());
 	    model.addAttribute("categorydocList",categorydocList);
 	    int noTotal = 0;
 
@@ -91,7 +89,6 @@ public class DocumentController {
 		MilestoneSearchVO vo = new MilestoneSearchVO();
 		vo.setProjectId(projectId);
 		List<MilestonesVO> milestoneList = milestonesService.getMilestoneList(vo.getProjectId());
-		System.out.println(milestoneList);
 	    model.addAttribute("milestoneList", milestoneList);
 	    
 	    List<CodeValueVO> codeValueList = codeValueService.getCodeValueListByGroup(userId,"g003");
@@ -114,12 +111,8 @@ public class DocumentController {
 		
 		int versionId = documentService.selectNextDocumentVersion(documentVO.getDocumentId());
 		logger.debug(documentVO.toString());
-		System.out.print(documentVO);
 		documentVO.setCreatedBy(userId);
 		documentService.addDocument(documentVO);
-		System.out.println(documentVO.getDocumentId());
-		
-		
 		
 		DocumentHistoryVO documentHistoryVO = new DocumentHistoryVO();
 		documentHistoryVO.setDocumentId(documentVO.getDocumentId());
@@ -140,42 +133,41 @@ public class DocumentController {
 
 		fileService.uploadFile(files, uploadDTO);
 		
-		System.out.print(documentVO.getDocumentId() + "문서 등록");
         return "redirect:/project/" + projectId +"/document/list";
     }
 	
 	@GetMapping("/detail/{documentId}")
     public String documentDetail(Model model,@PathVariable("projectId") String projectId, @CookieValue(value="userId", required =false)String userId, @PathVariable String documentId) {
 		
-		System.out.println(documentId);
 	    DocumentVO docDetail = documentService.selectDetail(documentId);
 	    model.addAttribute("docDetail",docDetail);
 	    int documentVersionId = docDetail.getDocumentVersionId();
-	    System.out.println(documentVersionId);
 	    List<FileVO> fileList = fileService.selectAll(documentId, documentVersionId);
-	    System.out.println(fileList);
 	    model.addAttribute("fileList",fileList);
+	    String writer = docDetail.getCreatedBy();
+	    model.addAttribute("writer",writer);
+	    model.addAttribute("userId",userId);
 	    model.addAttribute("projectId",projectId);
         return "document/documentDetail";
     }
 	
 	@GetMapping("/detail/{documentId}/download")
 	public void downloadFileAll(@PathVariable String documentId,HttpServletResponse response, @PathVariable("projectId") String projectId,@CookieValue(value="userId", required =false)String userId) throws IOException{
-		System.out.println(documentId);
+
 		int documentVersion = documentService.selectNextDocumentVersion(documentId) - 1;
 		fileService.downloadAll(documentId, response, userId, documentVersion);
 	}
 	
 	@GetMapping("/detail/{documentId}/{fileId}/download")
 	public void downloadFile(@PathVariable String fileId,HttpServletResponse response, @PathVariable("projectId") String projectId,@CookieValue(value="userId", required =false)String userId) throws IOException{
-		System.out.println(fileId);
+
 		fileService.downloadOne(fileId, response, userId);
 	}
 	
 	
 	@GetMapping("/update/{documentId}")
     public String documentUpdate(Model model, @PathVariable("projectId") String projectId, @CookieValue(value="userId", required =false)String userId, @PathVariable String documentId) {
-		System.out.println(documentId);
+
 	    DocumentVO docDetail = documentService.selectDetail(documentId);
 	    model.addAttribute("docDetail",docDetail);
 	    int documentVersion = docDetail.getDocumentVersionId();
@@ -195,11 +187,9 @@ public class DocumentController {
 		int oldVersionId = versionId - 1;
 		DocumentVO document = documentService.selectDetail(documentId);
 		logger.debug(documentVO.toString());
-		System.out.print(documentVO);
 		documentVO.setCreatedBy(userId);
 		documentVO.setDocumentVersionId(versionId);
 		documentService.updateDocument(documentVO);
-		System.out.println(documentVO.getDocumentId());
 		
 		
 		DocumentHistoryVO documentHistoryVO = new DocumentHistoryVO();
@@ -223,15 +213,13 @@ public class DocumentController {
 
 		fileService.uploadFile(files, uploadDTO);
 		
-		System.out.print(documentVO.getDocumentId() + "문서 등록");
 		return "redirect:/project/" + projectId +"/document/detail/" + documentId;
     }
 	
 	@GetMapping("/historylist/{documentId}")
     public String documentHistoryList(Model model,@PathVariable("projectId") String projectId, @CookieValue(value="userId", required =false)String userId, @PathVariable String documentId) {
-		System.out.println(documentId);
+		
 	    List<DocumentHistoryVO> historydocList = documentService.selectHistoryAll(documentId);
-	    System.out.println(historydocList.size());
 	    model.addAttribute("historydocList",historydocList);
 	    int noTotal = 0;
 
@@ -247,7 +235,6 @@ public class DocumentController {
 	@GetMapping("/historydetail/{documentHistoryId}")
     public String documenthistoryDetail(Model model,@PathVariable("projectId") String projectId,@CookieValue(value="userId", required =false)String userId, @PathVariable String documentHistoryId) {
 		
-		System.out.println(documentHistoryId);
 	    DocumentVO docDetail = documentService.selectHistoryDetail(documentHistoryId);
 	    model.addAttribute("docDetail",docDetail);
 	    int documentVersionId = docDetail.getDocumentVersionId();
@@ -284,9 +271,6 @@ public class DocumentController {
 		DocumentVO docHistoryId = documentService.selectHistoryLastDetail(documentId);
 		documentService.deleteDocumentHistory(docHistoryId.getDocumentHistoryId());
 		DocumentVO docDetail = documentService.selectHistoryLastDetail(documentId);
-//		if (docDetail == null) {
-//			documentService.deleteDocument(documentId);
-//		}
 		if (docDetail != null) {
 			documentService.updateDocument(docDetail);
 		}

@@ -84,7 +84,6 @@ public class FileServiceImpl implements FileService{
 					vo.setFileVersion(nextVersion);
 					vo.setConnectAddress(connectAddress);
 					vo.setDocumentVersionId(req.getDocumentVersionId());
-					System.out.print(vo);
 					fileMapper.insertFile(vo);
 					
 					count++;
@@ -193,16 +192,13 @@ public class FileServiceImpl implements FileService{
 	@Override
 	public void copyOldFiles(int oldDocumentVersionId, int newDocumentVersionId, List<MultipartFile> uploadFiles) {
 		
-		System.out.println("oldVersion = " + oldDocumentVersionId);
-	    System.out.println("newVersion = " + newDocumentVersionId);
 
-		
 		List<FileVO> oldFiles = fileMapper.selectByDocumentVersion(oldDocumentVersionId);
 		List<String> uplaodNames = uploadFiles.stream()
 											.filter(f -> !f.isEmpty())
 											.map(MultipartFile::getOriginalFilename)
 											.toList();
-		System.out.println(oldFiles);
+
 		for(FileVO file : oldFiles) {
 			if(uplaodNames.contains(file.getOriginalName())) {
 				continue;

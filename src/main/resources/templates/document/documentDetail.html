@@ -118,6 +118,7 @@
             <a th:href="@{/project/{projectId}/document/list(projectId=${projectId})}" class="btn btn-default btn-custon-three btn-custon-rounded-four" style="font-size:13px; padding:6px 16px;">
                 <i class="fa fa-list" style="margin-right:5px;"></i> 목록
             </a>
+            <div th:if="${userId == writer}">
             <!-- ⑦ 수정 -->
             <a th:href="@{/project/{projectId}/document/update/{id}(projectId=${projectId},id=${docDetail.documentId})}" class="btn btn-primary btn-custon-three btn-custon-rounded-four" style="font-size:13px; padding:6px 16px;">
                 <i class="fa fa-pencil" style="margin-right:5px;"></i> 수정
@@ -135,6 +136,7 @@
     		</button>
 
 			</form>
+			</div>
         </div>
  
     </div>
