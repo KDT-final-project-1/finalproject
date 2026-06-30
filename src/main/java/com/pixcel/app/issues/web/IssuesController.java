@@ -157,7 +157,7 @@ public class IssuesController {
 		String loginUserId = getLoginUserId(userId);
 		issuesService.validateIssueAccess(projectId, issueId, loginUserId);
 
-		List<FileVO> fileList = fileService.selectAll(issueId);
+		List<FileVO> fileList = fileService.selectAll(issueId, null);
 
 		if (fileList == null) {
 			return java.util.Collections.emptyList();
@@ -176,7 +176,7 @@ public class IssuesController {
 
 		String loginUserId = getLoginUserId(userId);
 		issuesService.validateIssueAccess(projectId, issueId, loginUserId);
-		fileService.downloadAll(issueId, response, loginUserId);
+		fileService.downloadAll(issueId, response, loginUserId, null);
 	}
 
 	@GetMapping("/project/{projectId}/issues/{issueId}/files/{fileId}/download")
@@ -434,7 +434,7 @@ public class IssuesController {
 	}
 
 	private boolean isIssueFile(String issueId, String fileId) {
-		List<FileVO> fileList = fileService.selectAll(issueId);
+		List<FileVO> fileList = fileService.selectAll(issueId, null);
 
 		if (fileList == null || fileList.isEmpty()) {
 			return false;

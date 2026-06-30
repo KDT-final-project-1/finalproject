@@ -76,7 +76,7 @@ public class TestcasesController {
     		response.sendRedirect("/login");
     		return;
     	}
-    	fileService.downloadAll(testCaseId, response, loginUserId);
+    	fileService.downloadAll(testCaseId, response, loginUserId, null);
     }
     
     //다운로드 one
@@ -150,7 +150,7 @@ public class TestcasesController {
     	TestCaseVO testCaseVO = testCaseService.selectTestCaseDetail(projectId, testCaseId);
 
         if (testCaseVO != null) {
-            testCaseVO.setFileList(fileService.selectAll(testCaseId));
+            testCaseVO.setFileList(fileService.selectAll(testCaseId, null));
         }
 
         return testCaseVO;
@@ -236,7 +236,7 @@ public class TestcasesController {
 		}
 		
 		List<TestVO> versionList = testService.selectProjectVersionList(projectId);
-		List<FileVO> fileList = fileService.selectAll(testCaseId);
+		List<FileVO> fileList = fileService.selectAll(testCaseId, null);
 		
 		model.addAttribute("projectId", projectId);
 		model.addAttribute("loginId", loginId);

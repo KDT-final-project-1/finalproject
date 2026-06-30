@@ -24,7 +24,7 @@ public class GlobalControllerAdvice {
 	
     // admin 사이드바 URL 목록
     private static final List<String> ADMIN_URIS = List.of(
-        "/admin", "/codevalue", "/issuetype", "/issuestatus","/workflow"
+        "/admin", "/codevalue", "/issuetype", "/issuestatus","/workflow", "/roles"
     );
 
     // project 사이드바 URL 목록
