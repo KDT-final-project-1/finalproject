@@ -4,7 +4,7 @@
       layout:decorate="~{common/layouts/default_layout}">
 <head>
 <meta charset="UTF-8">
-<title>테스트 생성</title>
+<title>테스트 수정</title>
 
 <link rel="stylesheet" th:href="@{/css/test/testAdd.css}">
 </head>
@@ -15,13 +15,18 @@
     <div class="test-create-wrap">
 
         <div class="page-title-area">
-            <h2>테스트 생성</h2>
+            <h2>테스트 수정</h2>
         </div>
 
-        <form th:action="@{/project/{projectId}/tests/add(projectId=${projectId})}"
+        <form th:action="@{/project/{projectId}/tests/{testId}/update(
+                    projectId=${projectId},
+                    testId=${testVO.testId}
+              )}"
               method="post"
               th:object="${testVO}"
-              id="testCreateForm">
+              id="testEditForm">
+
+            <input type="hidden" th:field="*{testId}">
 
             <!-- =========================
                  기본 정보
@@ -78,17 +83,17 @@
                             </option>
                         </select>
 
-						<label for="teamName">그룹</label>
-						<select id="teamName"
-        							th:field="*{teamName}"
-        							required>
-    						<option value="">그룹 선택</option>
-    						<option th:each="group : ${groupList}"
-            						th:value="${group.groupName}"
-            						th:text="${group.groupName}">
-        							그룹명
-    						</option>
-						</select>
+                        <label for="teamName">그룹</label>
+                        <select id="teamName"
+                                th:field="*{teamName}"
+                                required>
+                            <option value="">그룹 선택</option>
+                            <option th:each="group : ${groupList}"
+                                    th:value="${group.groupName}"
+                                    th:text="${group.groupName}">
+                                그룹명
+                            </option>
+                        </select>
 						<!-- 
                         <label for="retryNo">재수행차수</label>
                         <input type="number"
@@ -130,7 +135,7 @@
 
                         <label for="caseStatusCode">상태</label>
                         <select id="caseStatusCode">
-                        	<option value="g001" th:selected="${testCaseSearchVO.statusCode == 'g001'}">활성</option>
+                            <option value="g001" th:selected="${testCaseSearchVO.statusCode == 'g001'}">활성</option>
                             <option value="g002" th:selected="${testCaseSearchVO.statusCode == 'g002'}">비활성</option>
                         </select>
 
@@ -200,14 +205,14 @@
                         </table>
                     </div>
 
-                    <!-- 실제 페이징 -->
-                    <div class="paging-area"
-                         th:if="${testCaseSearchVO != null and testCaseSearchVO.totalPage > 0}">
+                    <!-- COUNT 제거용 이전/다음 페이징 -->
+                    <div class="paging-area">
 
                         <a class="page-btn"
-                           th:classappend="${testCaseSearchVO.page <= 1} ? ' disabled'"
-                           th:href="@{/project/{projectId}/tests/new(
+                           th:if="${testCaseSearchVO.page > 1}"
+                           th:href="@{/project/{projectId}/tests/{testId}/edit(
                                 projectId=${projectId},
+                                testId=${testVO.testId},
                                 page=${testCaseSearchVO.page - 1},
                                 size=${testCaseSearchVO.size},
                                 versionId=${testCaseSearchVO.versionId},
@@ -219,27 +224,16 @@
                             이전
                         </a>
 
-                        <a th:each="pageNo : ${#numbers.sequence(1, testCaseSearchVO.totalPage)}"
-                           class="page-btn"
-                           th:classappend="${pageNo == testCaseSearchVO.page} ? ' active'"
-                           th:href="@{/project/{projectId}/tests/new(
-                                projectId=${projectId},
-                                page=${pageNo},
-                                size=${testCaseSearchVO.size},
-                                versionId=${testCaseSearchVO.versionId},
-                                testTypeCode=${testCaseSearchVO.testTypeCode},
-                                statusCode=${testCaseSearchVO.statusCode},
-                                priorityCode=${testCaseSearchVO.priorityCode},
-                                title=${testCaseSearchVO.title}
-                           )}"
-                           th:text="${pageNo}">
+                        <span class="page-btn active"
+                              th:text="${testCaseSearchVO.page}">
                             1
-                        </a>
+                        </span>
 
                         <a class="page-btn"
-                           th:classappend="${testCaseSearchVO.page >= testCaseSearchVO.totalPage} ? ' disabled'"
-                           th:href="@{/project/{projectId}/tests/new(
+                           th:if="${testCaseSearchVO.hasNext}"
+                           th:href="@{/project/{projectId}/tests/{testId}/edit(
                                 projectId=${projectId},
+                                testId=${testVO.testId},
                                 page=${testCaseSearchVO.page + 1},
                                 size=${testCaseSearchVO.size},
                                 versionId=${testCaseSearchVO.versionId},
@@ -288,7 +282,7 @@
 
                     <!-- 요약 -->
                     <section class="box-section summary-section">
-                        <div class="box-title">테스트 생성 요약</div>
+                        <div class="box-title">테스트 수정 요약</div>
 
                         <div class="summary-card-row">
                             <div class="summary-item">
@@ -297,7 +291,7 @@
                             </div>
 
                             <div class="summary-item">
-                                <span>생성 대상 그룹</span>
+                                <span>수정 대상 그룹</span>
                                 <strong id="summaryTeam">-</strong>
                             </div>
 
@@ -313,7 +307,8 @@
                                   placeholder="테스트의 목적, 범위, 특이사항 등을 입력하세요(선택)"></textarea>
                     </section>
 
-					<div id="selectedHiddenInputs"></div>
+                    <div id="selectedHiddenInputs"></div>
+
                     <div class="btn-area">
                         <a th:href="@{/project/{projectId}/tests(projectId=${projectId})}"
                            class="btn-cancel">
@@ -321,7 +316,7 @@
                         </a>
 
                         <button type="submit" class="btn-save">
-                            저장
+                            수정
                         </button>
                     </div>
 
@@ -331,14 +326,35 @@
 
         </form>
 
+        <!-- 기존 선택 테스트케이스 데이터 -->
+        <div id="initialSelectedData" style="display:none;">
+            <div class="initial-case"
+                 th:each="testCase : ${selectedCaseList}"
+                 th:data-case-id="${testCase.testCaseId}"
+                 th:data-title="${testCase.title}"
+                 th:data-type="${testCase.testTypeName}"
+                 th:data-priority="${testCase.priorityName}"
+                 th:data-status="${testCase.statusName}"
+                 th:data-version="${testCase.versionName}"
+                 th:data-expected="${testCase.expectedResult}">
+            </div>
+        </div>
+
     </div>
 
     <script th:inline="javascript">
     document.addEventListener('DOMContentLoaded', function () {
 
         const projectId = /*[[${projectId}]]*/ '';
+        const testId = /*[[${testVO.testId}]]*/ '';
 
-        const storageKey = 'selectedTestCases_' + projectId;
+        const message = /*[[${message}]]*/ null;
+
+        if (message != null) {
+            alert(message);
+        }
+
+        const storageKey = 'selectedEditTestCases_' + projectId + '_' + testId;
 
         const caseSearchBtn = document.getElementById('caseSearchBtn');
         const caseTypeCode = document.getElementById('caseTypeCode');
@@ -358,7 +374,7 @@
         const summaryTeam = document.getElementById('summaryTeam');
         const summaryAssignee = document.getElementById('summaryAssignee');
 
-        const testCreateForm = document.getElementById('testCreateForm');
+        const testEditForm = document.getElementById('testEditForm');
 
         function getSelectedCases() {
             const saved = sessionStorage.getItem(storageKey);
@@ -382,6 +398,37 @@
             sessionStorage.removeItem(storageKey);
         }
 
+        function initSelectedCases() {
+            const saved = sessionStorage.getItem(storageKey);
+
+            if (saved != null && saved !== '') {
+                return;
+            }
+
+            const selectedCases = {};
+            const initialCases = document.querySelectorAll('.initial-case');
+
+            initialCases.forEach(function (item) {
+                const caseId = item.dataset.caseId;
+
+                if (caseId == null || caseId === '') {
+                    return;
+                }
+
+                selectedCases[caseId] = {
+                    caseId: caseId,
+                    title: item.dataset.title || '-',
+                    type: item.dataset.type || '-',
+                    priority: item.dataset.priority || '-',
+                    status: item.dataset.status || '-',
+                    version: item.dataset.version || '-',
+                    expected: item.dataset.expected || '-'
+                };
+            });
+
+            saveSelectedCases(selectedCases);
+        }
+
         function moveSearchPage() {
             const params = new URLSearchParams();
 
@@ -400,7 +447,7 @@
                 params.set('title', caseTitle.value.trim());
             }
 
-            location.href = '/project/' + projectId + '/tests/new?' + params.toString();
+            location.href = '/project/' + projectId + '/tests/' + testId + '/edit?' + params.toString();
         }
 
         function updateSummaryText() {
@@ -498,11 +545,11 @@
                     const tr = document.createElement('tr');
 
                     tr.innerHTML =
-                        '<td title="' + title + '">' + title + '</td>' +
-                        '<td title="' + type + '">' + type + '</td>' +
-                        '<td class="' + getPriorityClass(priority) + '" title="' + priority + '">' + priority + '</td>' +
-                        '<td title="' + expected + '">' + expected + '</td>' +
-                        '<td><button type="button" class="delete-selected-btn" data-case-id="' + caseId + '">삭제</button></td>';
+                        '<td title="' + escapeHtml(title) + '">' + escapeHtml(title) + '</td>' +
+                        '<td title="' + escapeHtml(type) + '">' + escapeHtml(type) + '</td>' +
+                        '<td class="' + getPriorityClass(priority) + '" title="' + escapeHtml(priority) + '">' + escapeHtml(priority) + '</td>' +
+                        '<td title="' + escapeHtml(expected) + '">' + escapeHtml(expected) + '</td>' +
+                        '<td><button type="button" class="delete-selected-btn" data-case-id="' + escapeHtml(caseId) + '">삭제</button></td>';
 
                     selectedCaseBody.appendChild(tr);
                 });
@@ -607,7 +654,7 @@
         teamName.addEventListener('change', updateSummaryText);
         assigneeId.addEventListener('change', updateSummaryText);
 
-        testCreateForm.addEventListener('submit', function () {
+        testEditForm.addEventListener('submit', function (event) {
             updateHiddenInputs();
 
             const selectedCases = getSelectedCases();
@@ -621,11 +668,21 @@
             clearSelectedCases();
         });
 
+        function escapeHtml(value) {
+            return String(value)
+                .replaceAll('&', '&amp;')
+                .replaceAll('<', '&lt;')
+                .replaceAll('>', '&gt;')
+                .replaceAll('"', '&quot;')
+                .replaceAll("'", '&#039;');
+        }
+
+        initSelectedCases();
         syncCurrentPageCheckboxes();
         updateSelectedTable();
         updateSummaryText();
     });
-</script>
+    </script>
 
 </div>
 </body>

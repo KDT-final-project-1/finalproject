@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.pixcel.app.file.service.FileDTO;
 import com.pixcel.app.file.service.FileService;
@@ -197,10 +198,6 @@ public class TestcasesController {
 	    testCaseVO.setProjectId(projectId);
 	    testCaseVO.setCreatedBy(loginUserId);
 
-	    if (testCaseVO.getExeEnviroment() == null || testCaseVO.getExeEnviroment().equals("")) {
-	        testCaseVO.setExeEnviroment("기본 환경");
-	    }
-
 	    testCaseService.insertTestCaseWithSteps(testCaseVO);
 
 	    if (hasUploadFiles(files)) {
@@ -256,20 +253,35 @@ public class TestcasesController {
 	                             TestCaseVO testCaseVO,
 	                             @RequestParam(value = "files", required = false) List<MultipartFile> files,
 	                             @CookieValue(value = "userId", required = false) String userId,
-	                             @CookieValue(value = "user_pk", required = false) String userPk) {
+	                             @CookieValue(value = "user_pk", required = false) String userPk,
+	                             @CookieValue(value = "subscribeYn", required = false) String subscribeYn,
+	                             RedirectAttributes redirectAttributes) {
 
 	    String loginUserId = getLoginUserId(userId, userPk);
 
 	    if (loginUserId == null || loginUserId.equals("")) {
 	        return "redirect:/login";
 	    }
+	    
+	    
+	    //관리자 여부 확인
+	    boolean isAdmin = subscribeYn != null && subscribeYn.equalsIgnoreCase("Y");
+	    
+	    if(!isAdmin) {
+	    	TestCaseVO ownerCheckVO = new TestCaseVO();
+	    	ownerCheckVO.setTestCaseId(testCaseId);
+	    	ownerCheckVO.setCreatedBy(loginUserId);
+	    	
+	    	int ownerCount = testCaseService.checkTestCaseOwner(ownerCheckVO);
+	    	
+	    	if(ownerCount == 0) {
+	    		redirectAttributes.addFlashAttribute("message","수정권한이 없습니다.");
+	    		return "redirect:/project/" + projectId + "/testcases";
+	    	}
+	    }
 
 	    testCaseVO.setProjectId(projectId);
 	    testCaseVO.setTestCaseId(testCaseId);
-
-	    if (testCaseVO.getExeEnviroment() == null || testCaseVO.getExeEnviroment().equals("")) {
-	        testCaseVO.setExeEnviroment("기본 환경");
-	    }
 
 	    testCaseService.updateTestCaseWithSteps(testCaseVO);
 
