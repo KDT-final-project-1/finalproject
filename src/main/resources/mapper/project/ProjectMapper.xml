@@ -584,6 +584,13 @@
 	<update id="updateProjectStatus">
 		UPDATE project
 		SET status_code = #{statusCode}
+		WHERE
+		project_id = #{projectId}
+	</update>
+
+	<update id="updateProjectGitUrl">
+		UPDATE project
+		SET git_url = #{gitUrl}
 		WHERE project_id = #{projectId}
 	</update>
 

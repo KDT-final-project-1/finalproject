@@ -67,4 +67,6 @@ public interface ProjectMapper {
 	
 	// ✅ 추가: 프로젝트 상태 업데이트
 	public int updateProjectStatus(@Param("projectId") String projectId, @Param("statusCode") String statusCode);
+	
+	void updateProjectGitUrl(@Param("projectId") String projectId, @Param("gitUrl") String gitUrl);
 }
