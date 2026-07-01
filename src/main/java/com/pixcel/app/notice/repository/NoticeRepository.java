@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.pixcel.app.notice.entity.NoticeEntity;
-import com.pixcel.app.notice.service.NoticeRequestDTO;
 
 @Repository
 public interface NoticeRepository extends JpaRepository<NoticeEntity, String> {

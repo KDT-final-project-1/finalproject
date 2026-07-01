@@ -1,0 +1,52 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 등록</title>
+    <!-- CSS 연결 -->
+    <link rel="stylesheet" th:href="@{/css/notice/post_create.css}">
+</head>
+<body>
+<div layout:fragment="Content">
+    <div class="post-create-card">
+        <h1>게시판 글쓰기</h1>
+        
+        <!-- 컨트롤러의 @ModelAttribute 이름과 동일하게 설정 -->
+        <form th:action="@{/project/{projectId}/notice/PostCreate(projectId=${projectId})}" th:object="${postRequestDTO}" method="post">
+            				
+            <!-- 백엔드 boardId와 매핑 -->
+            <input type="hidden" name="boardId" th:value="${boardId}" />
+
+            <div class="form-group">
+                <label class="form-label">제목</label>
+                <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">설명</label>
+                <textarea th:field="*{content}" class="form-control" rows="10" placeholder="내용을 입력하세요"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">첨부파일</label>
+                <div class="file-mockup" id="fileBox">
+                    <span class="file-name" id="fileName">파일을 선택하세요</span>
+                    <span class="file-icon">📁</span>
+                    <!-- 실제 파일 전송 시 name 속성 추가 예정 -->
+                    <input type="file" id="realFile" style="display:none;">
+                </div>
+            </div>
+
+            <div class="btn-area">
+                <button type="submit" class="btn-submit">등록</button>
+            </div>
+        </form>
+    </div>
+    
+    <!-- JS 연결 -->
+    <script th:src="@{/js/notice/post_create.js}"></script>
+</div>
+</body>
+</html>
