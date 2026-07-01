@@ -43,7 +43,7 @@
                         <tbody>
                             <tr th:each="board : ${boardList}">
                                 <td>
-                                    <a th:href="@{/board/{id}/posts(id=${board.boardId})}" class="board-name-link">
+                                    <a th:href="@{/project/{projectId}/notice/BoardDetail(projectId=${projectId}, boardId=${board.boardId})}"class="board-name-link">
                                    
                                         <span th:text="${board.boardName}">자유게시판</span>
                                     </a>

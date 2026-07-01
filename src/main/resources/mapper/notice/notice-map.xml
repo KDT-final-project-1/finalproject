@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pixcel.app.notice.mapper.PostMapper">
+
+	<select id = "selectPostList" resultType="PostRequestDTO">
+		SELECT * FROM (
+        SELECT a.*, ROWNUM as rnum FROM (
+            SELECT 
+                POST_ID,
+                BOARD_ID,
+                TITLE,
+                CONTENT,
+                CREATED_AT,
+                CREATED_BY,
+                VIEW_COUNT
+            FROM POST 
+            WHERE BOARD_ID = #{boardId}
+            <if test="searchDTO.keyword != null and searchDTO.keyword != ''">
+                <choose>
+                    <when test="searchDTO.searchType == 'title'">
+                        AND TITLE LIKE '%' || #{searchDTO.keyword} || '%'
+                    </when>
+                    <when test="searchDTO.searchType == 'author'">
+                        AND CREATED_BY LIKE '%' || #{searchDTO.keyword} || '%'
+                    </when>
+                </choose>
+            </if>
+            ORDER BY CREATED_AT DESC
+        ) a WHERE ROWNUM &lt;= #{end}
+    ) WHERE rnum &gt;= #{start}
+		
+	</select>
+	
+	<select id="countPostList" resultType="long">
+        SELECT COUNT(*) 
+        FROM POST 
+        WHERE BOARD_ID = #{boardId}
+        <if test="searchDTO.keyword != null and searchDTO.keyword != ''">
+            <choose>
+                <when test="searchDTO.searchType == 'title'">
+                    AND TITLE LIKE '%' || #{searchDTO.keyword} || '%'
+                </when>
+                <when test="searchDTO.searchType == 'author'">
+                    AND CREATED_BY LIKE '%' || #{searchDTO.keyword} || '%'
+                </when>
+            </choose>
+        </if>
+    </select>
+	
+</mapper>

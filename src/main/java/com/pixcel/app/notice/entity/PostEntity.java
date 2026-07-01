@@ -37,12 +37,12 @@ public class PostEntity {
 	private String title;
 	
 	@Column(name = "CONTENT")
-	private String contnet;
+	private String content;
 	
 	@Column(name = "VIEW_COUNT")
 	private Integer viewCount;
 	
-	@Column(name = "CREATE_BY")
+	@Column(name = "CREATED_BY")
 	private String createdBy;
 	
 	@CreatedDate
@@ -52,4 +52,8 @@ public class PostEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID", insertable = false, updatable = false)
     private NoticeEntity notice;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "CREATED_BY", referencedColumnName = "USER_ID", insertable = false, updatable = false)
+    private UserEntity user;
 }
