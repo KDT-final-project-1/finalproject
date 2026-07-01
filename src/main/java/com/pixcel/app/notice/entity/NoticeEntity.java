@@ -1,6 +1,9 @@
 package com.pixcel.app.notice.entity;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 
@@ -10,6 +13,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,4 +50,8 @@ public class NoticeEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CREATED_BY", referencedColumnName = "USER_ID", insertable = false, updatable = false)
     private UserEntity user;
+	
+	@OneToMany(mappedBy = "notice")
+	@Builder.Default
+	private List<PostEntity> posts = new ArrayList<>();
 }
