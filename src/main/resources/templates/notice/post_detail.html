@@ -1,0 +1,49 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{common/layouts/default_layout}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/notice/post_detail.css}">
+</head>
+<body>
+<div layout:fragment="Content">
+    <div class="post-detail-wrapper">
+        <h2 class="board-title" th:text="${boardName}">00 게시판</h2>
+        
+        <div class="post-card">
+            <!-- 1. 제목 및 메타 데이터 -->
+            <div class="post-header">
+                <h1 th:text="${post.title}">제목</h1>
+                <div class="post-meta">
+                    <span>개시일자 <span th:text="${#temporals.format(post.createdAt, 'yyyy.MM.dd')}">2026.07.01</span></span>
+                    <span>작성자 <span th:text="${post.userName}">홍길동</span></span>
+                </div>
+            </div>
+            
+            <hr class="divider">
+            
+            <!-- 2. 본문 내용 -->
+            <div class="post-body">
+                <pre th:text="${post.content}">본문 내용이 여기에 표시됩니다.</pre>
+            </div>
+            
+            <!-- 첨부파일 영역 -->
+            <div class="file-section">
+                <h3>첨부파일</h3>
+                <div class="file-list">파일이름</div>
+            </div>
+        </div>
+
+        <!-- 3, 5. 버튼 영역 -->
+        <div class="button-area">
+            <a th:href="@{/project/{projectId}/notice/BoardDetail(projectId=${projectId}, boardId=${post.boardId})}" class="btn-list">목록</a>
+            <button type="button" class="btn-edit">수정</button>
+            <button type="button" class="btn-delete" onclick="deletePost()">삭제</button>
+        </div>
+    </div>
+    
+    <script th:src="@{/js/notice/post_detail.js}"></script>
+</div>
+</body>
+</html>

@@ -71,4 +71,19 @@ public class PostServiceImpl implements PostService{
         // 4. 저장
         postRepository.save(post);
     }
+	
+	@Override
+	public PostRequestDTO getPostDetail(String postId) {
+		PostEntity post = postRepository.findById(postId).orElseThrow(()-> new RuntimeException("게시글을 찾을 수 없습니다"));
+		
+		return PostRequestDTO.builder()
+	            .postId(post.getPostId())
+	            .title(post.getTitle())
+	            .content(post.getContent())
+	            .createdBy(post.getCreatedBy())
+	            .createdAt(post.getCreatedAt())
+	            .viewCount(post.getViewCount())
+	            .userName(post.getUser() != null ? post.getUser().getUserName() : "알 수 없음")
+	            .build();
+	}
 }

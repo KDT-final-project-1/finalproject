@@ -114,5 +114,25 @@ public class NoticeController {
 	    return "redirect:/project/" + projectId + "/notice/BoardDetail?boardId=" + boardId;
 	}
 	
+	@GetMapping("/post_detail")
+	public String PostDetail(
+			@PathVariable("projectId") String projectId,
+			@RequestParam("boardId") String boardId,
+			@RequestParam("postId") String postId,
+			Model model
+			) {
+		PostRequestDTO postDetail = postService.getPostDetail(postId);
+		
+		model.addAttribute("post", postDetail);
+		model.addAttribute("projectId", projectId);
+		model.addAttribute("boardId", boardId);
+		
+		return "notice/post_detail";
+		
+	}
+	
+	
+	
+	
 	
 }
