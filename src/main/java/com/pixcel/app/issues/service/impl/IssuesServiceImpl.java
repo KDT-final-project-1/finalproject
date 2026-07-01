@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -31,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class IssuesServiceImpl implements IssuesService {
 
 	private final IssuesMapper issuesMapper;
+	private final Map<String, CachedIssueListFilterData> issueListFilterCache = new ConcurrentHashMap<>();
 
 	private static final String FIELD_ISSUE = "ISSUE";
 	private static final String FIELD_TITLE = "TITLE";
@@ -58,17 +60,19 @@ public class IssuesServiceImpl implements IssuesService {
 	private static final String OPTION_REPORT_SOURCE = "REPORT_SOURCE";
 	private static final String REPORT_NONE_KEY = "__NONE__";
 	private static final String REPORT_NONE_NAME = "\uBBF8\uC9C0\uC815";
+	private static final long ISSUE_LIST_FILTER_CACHE_TTL_MILLIS = 120_000L;
+	private static final int ISSUE_HISTORY_GROUP_PAGE_SIZE = 10;
 
-	private static final String PERMISSION_ISSUE_CREATE_CODE = "p008";
+	private static final String PERMISSION_ISSUE_CREATE_CODE = "p005";
 	private static final String PERMISSION_ISSUE_CREATE_NAME = "일감 추가";
 
-	private static final String PERMISSION_ISSUE_UPDATE_CODE = "p009";
-	private static final String PERMISSION_ISSUE_UPDATE_OWN_CODE = "p011";
+	private static final String PERMISSION_ISSUE_UPDATE_CODE = "p007";
+	private static final String PERMISSION_ISSUE_UPDATE_OWN_CODE = "p008";
 
-	private static final String PERMISSION_ISSUE_DELETE_CODE = "p010";
+	private static final String PERMISSION_ISSUE_DELETE_CODE = "p006";
 	private static final String PERMISSION_ISSUE_DELETE_NAME = "일감 삭제";
 
-	private static final String PERMISSION_MILESTONE_CREATE_CODE = "p005";
+	private static final String PERMISSION_MILESTONE_CREATE_CODE = "p002";
 	private static final String PERMISSION_MILESTONE_CREATE_NAME = "마일스톤 생성";
 
 	private static final String CHANGE_TYPE_CREATE_CODE = "M001";
@@ -174,7 +178,15 @@ public class IssuesServiceImpl implements IssuesService {
 	public Map<String, Object> getIssueListFilterData(String projectId, String userId) {
 		validateProjectAccess(projectId, userId);
 
-		return buildIssueListFilterData(projectId);
+		long now = System.currentTimeMillis();
+		CachedIssueListFilterData cachedData = issueListFilterCache.get(projectId);
+		if (cachedData != null && !cachedData.isExpired(now)) {
+			return cachedData.copyData();
+		}
+
+		Map<String, Object> filterData = buildIssueListFilterData(projectId);
+		issueListFilterCache.put(projectId, new CachedIssueListFilterData(filterData, now));
+		return new HashMap<>(filterData);
 	}
 
 	private Map<String, Object> buildIssueListFilterData(String projectId) {
@@ -338,6 +350,28 @@ public class IssuesServiceImpl implements IssuesService {
 	public List<IssueHistoryGroupVO> getIssueHistoryGroupList(String projectId, String issueId, String userId) {
 		validateIssueAccess(projectId, issueId, userId);
 		return buildHistoryGroupList(issuesMapper.selectIssueHistoryRows(issueId));
+	}
+
+	@Override
+	public Map<String, Object> getIssueHistoryGroupPage(String projectId, String issueId, String userId, int offset) {
+		validateUserId(userId);
+
+		int checkedOffset = Math.max(offset, 0);
+		int startGroupRow = checkedOffset + 1;
+		int endGroupRow = checkedOffset + ISSUE_HISTORY_GROUP_PAGE_SIZE + 1;
+
+		List<IssueHistoryGroupVO> groupList = buildHistoryGroupList(
+				issuesMapper.selectIssueHistoryRowsForDetail(projectId, issueId, userId, startGroupRow, endGroupRow));
+		boolean hasMore = groupList.size() > ISSUE_HISTORY_GROUP_PAGE_SIZE;
+		List<IssueHistoryGroupVO> displayGroupList = hasMore
+				? new ArrayList<>(groupList.subList(0, ISSUE_HISTORY_GROUP_PAGE_SIZE))
+				: groupList;
+
+		Map<String, Object> pageData = new HashMap<>();
+		pageData.put("historyGroupList", displayGroupList);
+		pageData.put("hasMore", hasMore);
+		pageData.put("nextOffset", checkedOffset + displayGroupList.size());
+		return pageData;
 	}
 
 	@Override
@@ -1721,5 +1755,23 @@ public class IssuesServiceImpl implements IssuesService {
 
 	private boolean isBlank(String value) {
 		return value == null || value.trim().isEmpty();
+	}
+
+	private static class CachedIssueListFilterData {
+		private final Map<String, Object> data;
+		private final long cachedAt;
+
+		private CachedIssueListFilterData(Map<String, Object> data, long cachedAt) {
+			this.data = new HashMap<>(data);
+			this.cachedAt = cachedAt;
+		}
+
+		private boolean isExpired(long now) {
+			return now - cachedAt > ISSUE_LIST_FILTER_CACHE_TTL_MILLIS;
+		}
+
+		private Map<String, Object> copyData() {
+			return new HashMap<>(data);
+		}
 	}
 }

@@ -54,6 +54,10 @@ public interface IssuesMapper {
 
 	List<IssuesVO> selectIssueHistoryRows(@Param("issueId") String issueId);
 
+	List<IssuesVO> selectIssueHistoryRowsForDetail(@Param("projectId") String projectId,
+			@Param("issueId") String issueId, @Param("userId") String userId,
+			@Param("startGroupRow") int startGroupRow, @Param("endGroupRow") int endGroupRow);
+
 	int countIssueHistory(@Param("issueId") String issueId);
 
 	List<IssuesVO> selectAvailableStatusList(@Param("projectId") String projectId,

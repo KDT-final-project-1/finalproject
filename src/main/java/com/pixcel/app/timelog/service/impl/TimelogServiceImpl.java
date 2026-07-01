@@ -22,8 +22,8 @@ public class TimelogServiceImpl implements TimelogService {
 
 	private final TimelogMapper timelogMapper;
 
-	private static final String PERMISSION_ISSUE_UPDATE_CODE = "p009";
-	private static final String PERMISSION_ISSUE_UPDATE_OWN_CODE = "p011";
+	private static final String PERMISSION_ISSUE_UPDATE_CODE = "p007";
+	private static final String PERMISSION_ISSUE_UPDATE_OWN_CODE = "p008";
 	private static final String OPTION_PROJECT = "PROJECT";
 	private static final String OPTION_WORK_TYPE = "WORK_TYPE";
 	private static final String OPTION_ISSUE = "ISSUE";
@@ -160,19 +160,16 @@ public class TimelogServiceImpl implements TimelogService {
 	}
 
 	@Override
-	public Map<String, Object> getIssueTimelogSummary(String projectId, String issueId) {
-		List<TimelogVO> rows = timelogMapper.selectIssueTimelogSummaryRows(projectId, issueId);
+	public Map<String, Object> getIssueTimelogSummary(String projectId, String issueId, String userId) {
+		validateUserId(userId);
+
+		List<TimelogVO> rows = timelogMapper.selectIssueTimelogSummaryRows(projectId, issueId, userId);
 		if (rows == null) {
 			rows = Collections.emptyList();
 		}
 
-		Integer totalHours = rows.isEmpty() || rows.get(0).getTotalHours() == null ? 0 : rows.get(0).getTotalHours();
-		Integer totalCount = rows.isEmpty() || rows.get(0).getTotalCount() == null ? 0 : rows.get(0).getTotalCount();
-
 		Map<String, Object> summary = new HashMap<>();
 		summary.put("timeLogSummaryList", rows);
-		summary.put("timeLogTotalHours", totalHours);
-		summary.put("timeLogTotalCount", totalCount);
 
 		return summary;
 	}

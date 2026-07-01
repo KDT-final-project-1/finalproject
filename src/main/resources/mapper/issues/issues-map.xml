@@ -1033,6 +1033,68 @@
 		h.history_id asc
 	</select>
 
+	<select id="selectIssueHistoryRowsForDetail" resultType="IssuesVO">
+		with accessible_issue as (
+		select i.issue_id
+		from issue i
+		join project p
+		on i.project_id = p.project_id
+		where i.project_id = #{projectId}
+		and i.issue_id = #{issueId}
+		and (
+		p.owner_id = #{userId}
+		or exists (
+		select 1
+		from project_member pm
+		join team_member tm
+		on pm.team_member_id = tm.team_member_id
+		where pm.project_id = p.project_id
+		and tm.user_id = #{userId}
+		)
+		)
+		),
+		group_page as (
+		select history_group_id, group_row
+		from (
+		select group_base.*,
+		row_number() over (order by group_base.group_changed_at desc, group_base.history_group_id desc) as group_row
+		from (
+		select
+		nvl(h.history_group_id, h.history_id) as history_group_id,
+		max(h.changed_at) as group_changed_at
+		from issue_history h
+		join accessible_issue ai
+		on h.issue_id = ai.issue_id
+		group by nvl(h.history_group_id, h.history_id)
+		) group_base
+		)
+		where group_row between #{startGroupRow} and #{endGroupRow}
+		)
+		select
+		h.history_id,
+		nvl(h.history_group_id, h.history_id) as history_group_id,
+		h.issue_id,
+		h.changed_by,
+		u.user_name as changed_by_name,
+		h.change_type_code,
+		h.field_code,
+		h.field_name,
+		h.reason,
+		h.before_value,
+		h.after_value,
+		h.changed_at
+		from group_page gp
+		join issue_history h
+		on h.issue_id = #{issueId}
+		and nvl(h.history_group_id, h.history_id) = gp.history_group_id
+		left join users u
+		on h.changed_by = u.user_id
+		order by
+		gp.group_row asc,
+		h.changed_at asc,
+		h.history_id asc
+	</select>
+
 	<select id="countIssueHistory" resultType="int">
 		select count(*)
 		from issue_history

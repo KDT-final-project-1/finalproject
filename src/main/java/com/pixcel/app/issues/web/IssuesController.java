@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.pixcel.app.file.service.FileDTO;
 import com.pixcel.app.file.service.FileService;
 import com.pixcel.app.file.service.FileVO;
-import com.pixcel.app.issues.service.IssueHistoryGroupVO;
 import com.pixcel.app.issues.service.IssuesService;
 import com.pixcel.app.issues.service.IssuesVO;
 import com.pixcel.app.timelog.service.TimelogService;
@@ -230,26 +229,24 @@ public class IssuesController {
 			@PathVariable("issueId") String issueId) {
 
 		String loginUserId = getLoginUserId(userId);
-		issuesService.validateIssueAccess(projectId, issueId, loginUserId);
 
-		Map<String, Object> summary = timelogService.getIssueTimelogSummary(projectId, issueId);
+		Map<String, Object> summary = timelogService.getIssueTimelogSummary(projectId, issueId, loginUserId);
 		List<TimelogVO> timeLogList = (List<TimelogVO>) summary.get("timeLogSummaryList");
 
 		Map<String, Object> response = new HashMap<>();
-		response.put("timeLogTotalHours", summary.get("timeLogTotalHours"));
-		response.put("timeLogTotalCount", summary.get("timeLogTotalCount"));
 		response.put("timeLogSummaryList", toTimelogSummaryMapList(timeLogList));
 		return response;
 	}
 
 	@GetMapping("/project/{projectId}/issues/{issueId}/history")
 	@ResponseBody
-	public List<IssueHistoryGroupVO> issueHistoryList(@CookieValue(value = "userId", required = false) String userId,
+	public Map<String, Object> issueHistoryList(@CookieValue(value = "userId", required = false) String userId,
 			@PathVariable("projectId") String projectId,
-			@PathVariable("issueId") String issueId) {
+			@PathVariable("issueId") String issueId,
+			@RequestParam(value = "offset", defaultValue = "0") int offset) {
 
 		String loginUserId = getLoginUserId(userId);
-		return issuesService.getIssueHistoryGroupList(projectId, issueId, loginUserId);
+		return issuesService.getIssueHistoryGroupPage(projectId, issueId, loginUserId, offset);
 	}
 	
 	@PostMapping("/project/{projectId}/issues/{issueId}/delete")

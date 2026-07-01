@@ -47,6 +47,8 @@ public interface IssuesService {
 
 	List<IssueHistoryGroupVO> getIssueHistoryGroupList(String projectId, String issueId, String userId);
 
+	Map<String, Object> getIssueHistoryGroupPage(String projectId, String issueId, String userId, int offset);
+
 	void validateIssueAccess(String projectId, String issueId, String userId);
 
 	void updateIssue(IssuesVO issue, String userId);

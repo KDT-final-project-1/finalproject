@@ -280,6 +280,11 @@
 											th:style="${#lists.isEmpty(historyGroupList)} ? '' : 'display: none;'">
 											변경 이력을 펼치면 불러옵니다.
 										</div>
+										<div class="issues-history-more">
+											<button id="issueHistoryMore" type="button"
+												class="btn btn-default btn-custon-rounded-four btn-xs"
+												style="display: none;">더보기</button>
+										</div>
 									</details>
 								</div>
 
@@ -402,7 +407,11 @@
 				var fileEmpty = document.getElementById('issueFileEmpty');
 				var fileDownloadAll = document.getElementById('issueFileDownloadAll');
 				var historyLoaded = false;
+				var historyLoading = false;
+				var historyHasMore = true;
+				var historyNextOffset = 0;
 				var timelogLoaded = false;
+				var historyMoreButton = document.getElementById('issueHistoryMore');
 				var detailFileInput = document.getElementById('issueDetailFileInput');
 				var detailFileCount = document.getElementById('issueDetailFileCount');
 				var detailFileClear = document.getElementById('issueDetailFileClear');
@@ -632,6 +641,9 @@
 						historyEmpty.textContent = message;
 						historyEmpty.style.display = 'block';
 					}
+					if (historyMoreButton) {
+						historyMoreButton.style.display = 'none';
+					}
 				}
 
 				function formatHistoryDate(value) {
@@ -652,17 +664,20 @@
 					return year + '-' + month + '-' + day + ' ' + hour + ':' + minute;
 				}
 
-				function renderIssueHistoryGroups(groups) {
+				function renderIssueHistoryGroups(pageData, append) {
 					var historyList = document.getElementById('issueHistoryList');
 					var historyEmpty = document.getElementById('issueHistoryEmpty');
+					var groups = pageData && pageData.historyGroupList ? pageData.historyGroupList : [];
 
 					if (!historyList) {
 						return;
 					}
 
-					historyList.innerHTML = '';
+					if (!append) {
+						historyList.innerHTML = '';
+					}
 
-					if (!groups || groups.length === 0) {
+					if ((!groups || groups.length === 0) && !append) {
 						setHistoryMessage('변경 이력이 없습니다.');
 						return;
 					}
@@ -726,17 +741,31 @@
 
 						historyList.appendChild(item);
 					});
+
+					historyHasMore = !!(pageData && pageData.hasMore);
+					historyNextOffset = pageData && pageData.nextOffset != null ? pageData.nextOffset : historyNextOffset;
+					if (historyMoreButton) {
+						historyMoreButton.style.display = historyHasMore ? 'inline-block' : 'none';
+					}
 				}
 
-				function loadIssueHistory() {
-					if (historyLoaded || !historyListUrl || deletedIssue) {
+				function loadIssueHistory(append) {
+					if (historyLoading || (!append && historyLoaded) || !historyListUrl || deletedIssue || (append && !historyHasMore)) {
 						return;
 					}
 
-					historyLoaded = true;
-					setHistoryMessage('변경 이력을 불러오는 중입니다.');
+					historyLoading = true;
+					if (!append) {
+						historyLoaded = true;
+						historyNextOffset = 0;
+						setHistoryMessage('변경 이력을 불러오는 중입니다.');
+					} else if (historyMoreButton) {
+						historyMoreButton.textContent = '불러오는 중';
+						historyMoreButton.disabled = true;
+					}
 
-					fetch(historyListUrl, {
+					var separator = historyListUrl.indexOf('?') === -1 ? '?' : '&';
+					fetch(historyListUrl + separator + 'offset=' + encodeURIComponent(historyNextOffset), {
 						headers: {
 							'Accept': 'application/json'
 						}
@@ -745,9 +774,27 @@
 							throw new Error('history request failed');
 						}
 						return response.json();
-					}).then(renderIssueHistoryGroups).catch(function() {
+					}).then(function(data) {
+						renderIssueHistoryGroups(data, append);
+						historyLoading = false;
+						if (historyMoreButton) {
+							historyMoreButton.textContent = '더보기';
+							historyMoreButton.disabled = false;
+						}
+					}).catch(function() {
 						historyLoaded = false;
+						historyLoading = false;
+						if (historyMoreButton) {
+							historyMoreButton.textContent = '더보기';
+							historyMoreButton.disabled = false;
+						}
 						setHistoryMessage('변경 이력을 불러오지 못했습니다.');
+					});
+				}
+
+				if (historyMoreButton) {
+					historyMoreButton.addEventListener('click', function() {
+						loadIssueHistory(true);
 					});
 				}
 
@@ -781,19 +828,21 @@
 					var tabCount = document.getElementById('issueTimelogTabCount');
 					var summaryCount = document.getElementById('issueTimelogSummaryCount');
 					var rows = summary && summary.timeLogSummaryList ? summary.timeLogSummaryList : [];
-					var count = summary && summary.timeLogTotalCount != null ? summary.timeLogTotalCount : 0;
-					var hours = summary && summary.timeLogTotalHours != null ? summary.timeLogTotalHours : 0;
+					var hasTotalCount = summary && summary.timeLogTotalCount != null;
+					var hasTotalHours = summary && summary.timeLogTotalHours != null;
+					var count = hasTotalCount ? summary.timeLogTotalCount : null;
+					var hours = hasTotalHours ? summary.timeLogTotalHours : null;
 
-					if (totalHours) {
+					if (totalHours && hasTotalHours) {
 						totalHours.textContent = '총 ' + hours + ' 시간';
 					}
-					if (totalCount) {
+					if (totalCount && hasTotalCount) {
 						totalCount.textContent = ' / ' + count + '건';
 					}
-					if (tabCount) {
+					if (tabCount && hasTotalCount) {
 						tabCount.textContent = count;
 					}
-					if (summaryCount) {
+					if (summaryCount && hasTotalCount) {
 						summaryCount.textContent = count + '건';
 					}
 					if (!list) {
