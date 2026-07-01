@@ -23,6 +23,7 @@ import com.pixcel.app.document.service.DocumentHistoryVO;
 import com.pixcel.app.document.service.DocumentService;
 import com.pixcel.app.document.service.DocumentVO;
 import com.pixcel.app.file.service.FileDTO;
+import com.pixcel.app.file.service.FileDownloadHistoryVO;
 import com.pixcel.app.file.service.FileService;
 import com.pixcel.app.file.service.FileVO;
 import com.pixcel.app.milestones.service.MilestoneSearchVO;
@@ -148,6 +149,8 @@ public class DocumentController {
 	    model.addAttribute("writer",writer);
 	    model.addAttribute("userId",userId);
 	    model.addAttribute("projectId",projectId);
+	    List<FileDownloadHistoryVO> downloadHistoryList = fileService.selectDownloadHistory(documentId,documentVersionId);
+	    model.addAttribute("downloadHistoryList", downloadHistoryList);
         return "document/documentDetail";
     }
 	
@@ -237,10 +240,13 @@ public class DocumentController {
 		
 	    DocumentVO docDetail = documentService.selectHistoryDetail(documentHistoryId);
 	    model.addAttribute("docDetail",docDetail);
+	    String documentId = docDetail.getDocumentId();
 	    int documentVersionId = docDetail.getDocumentVersionId();
-	    List<FileVO> fileList = fileService.selectAll(documentHistoryId, documentVersionId);
+	    List<FileVO> fileList = fileService.selectAll(documentId, documentVersionId);
 	    model.addAttribute("fileList",fileList);
 	    model.addAttribute("projectId",projectId);
+	    List<FileDownloadHistoryVO> downloadHistoryList = fileService.selectDownloadHistory(documentId,documentVersionId);
+	    model.addAttribute("downloadHistoryList", downloadHistoryList);
         return "document/documentHistoryDetail";
     }
 	

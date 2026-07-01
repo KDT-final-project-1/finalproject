@@ -14,6 +14,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -208,6 +209,13 @@ public class FileServiceImpl implements FileService{
 			fileMapper.copyFile(file);
 		}
 		
+	}
+
+
+	@Override
+	public List<FileDownloadHistoryVO> selectDownloadHistory(@Param("connectAddress") String connectAddress,@Param("documentVersionId") int documentVersionId) {
+
+		return fileMapper.selectDownloadHistory(connectAddress, documentVersionId);
 	}
 	
 }
