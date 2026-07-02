@@ -14,6 +14,6 @@ jobs:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           JENKINS_USER: ${{ secrets.JENKINS_USER }}
           JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
-          JOB_NAME: "<실행할 Jenkins 프로젝트 이름>"
+          JOB_NAME: "pixcel"
         run: |
           curl -X POST -u "$JENKINS_USER:$JENKINS_TOKEN" "$JENKINS_URL/job/$JOB_NAME/build"
