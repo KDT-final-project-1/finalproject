@@ -1,6 +1,6 @@
 FROM eclipse-temurin:21-jdk
 WORKDIR /app
-ARG JAR_FILE=build/libs/*.jar
+ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} app.jarhttps://github.com/KDT-final-project-1/finalproject/tree/main
 ENV TZ=Asia/Seoul
 EXPOSE 80
