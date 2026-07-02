@@ -12,6 +12,8 @@ public interface userService {
 	
 	//아이디 중복확인
 	public boolean checkLoginId(String loginId);
+	
+	public boolean checkPhone(String phone);
 
 	//김덕모 마이페이지 설정
 	public userServiceVO getUserDetail(String userId);
