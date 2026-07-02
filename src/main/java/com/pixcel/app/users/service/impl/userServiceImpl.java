@@ -122,6 +122,26 @@ public class userServiceImpl implements userService {
 		return updatePasswordMap;
 
 	}
+	
+	@Override
+	public void updateSubscribeStatus(String email) {
+		int result = userMapper.updateSubscribeStatus(email);
+		
+		if(result ==0) {
+			throw new RuntimeException("해당 이메일 [" + email + "]로 가입된 회원 정보를 찾을 수 없습니다.");
+		}
+	}
+	
+	@Override
+    public List<ProjectVO> getFilteredProjects(Map<String, Object> params) {
+        // 여기서 추가적인 비즈니스 로직(데이터 가공 등)이 필요하면 작성합니다.
+        return userMapper.getFilteredProjects(params);
+    }
+	
+	@Override
+	public void unsubscribeUser(String userId) {
+		userMapper.updateUnsubscribeStatus(userId);
+	}
 
 	@Override
 	public boolean checkPhone(String phone) {

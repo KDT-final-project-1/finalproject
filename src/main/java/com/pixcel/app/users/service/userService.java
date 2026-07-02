@@ -19,5 +19,8 @@ public interface userService {
 	public userServiceVO getUserDetail(String userId);
 	public List<ProjectVO> selectMyProjectList(String userId);
 	public Map<String, Object> updateUser(userServiceVO userVO);
-	public Map<String, Object> updatePassword(String userId, String currentPassword, String newPassword); 
+	public Map<String, Object> updatePassword(String userId, String currentPassword, String newPassword);
+	public void updateSubscribeStatus(String email);
+	public List<ProjectVO> getFilteredProjects(Map<String, Object> params);
+	public void unsubscribeUser(String userId);
 }
