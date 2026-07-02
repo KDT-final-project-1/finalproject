@@ -1,6 +1,7 @@
 package com.pixcel.app.users.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,7 @@ public interface userMapper {
 	public List<ProjectVO> selectMyProjectList(@Param("userId") String userId);
 	public int updateUser(userServiceVO userVO);
 	public int updatePassword(@Param("userId") String userId,@Param("password")String password);
+	public int updateSubscribeStatus(String email);
+	public List<ProjectVO> getFilteredProjects(Map<String, Object> params);
+	public int updateUnsubscribeStatus(String userId);
 }
