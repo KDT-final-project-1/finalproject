@@ -83,7 +83,7 @@ public class UsersController {
     }
     
     //김덕모 마이페이지
-    @GetMapping("/mypage")
+    @GetMapping("/usersMypage")
     public String myPage(@AuthenticationPrincipal CustomUserDetails userDetails, Model model){
         String userId = userDetails.getUserId();
         userServiceVO userDetail = userService.getUserDetail(userId);

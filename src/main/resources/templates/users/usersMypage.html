@@ -201,7 +201,7 @@
 							<label>수신 이메일 <span class="required">*</span></label>
 							<div class="input-inline-btn-group">
 								<input type="email" id="subscribeEmail" name="email" class="form-control" 
-									   th:value="${user.email}" placeholder="이메일 주소를 입력하세요" required />
+									   th:value="${user.email}" placeholder="이메일 주소를 입력하세요" readonly required />
 								<button type="button" id="btnSendAuthCode" class="btn btn-primary btn-sm">인증코드 발송</button>
 							</div>
 						</div>
