@@ -141,6 +141,7 @@
             <result property="title" column="ISSUE_TITLE"/>
             <result property="issueStatusName" column="ISSUE_STATUS_NAME"/> 
             <result property="assigneeName" column="ASSIGNEE_NAME"/> 
+            <result property="startDate" column="ISSUE_START_DATE"/>
             <result property="dueDate" column="DUE_DATE"/>
             <result property="progressRate" column="ISSUE_PROGRESS_RATE"/>
         </collection>
@@ -165,6 +166,7 @@
             I.ISSUE_ID,
             I.TITLE AS ISSUE_TITLE,
             I.PROGRESS_RATE AS ISSUE_PROGRESS_RATE,
+            I.START_DATE AS ISSUE_START_DATE,
             I.DUE_DATE,
             G.STATUS_NAME AS ISSUE_STATUS_NAME, 
             U2.USER_NAME AS ASSIGNEE_NAME       
