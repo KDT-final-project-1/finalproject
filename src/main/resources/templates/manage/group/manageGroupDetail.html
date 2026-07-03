@@ -14,7 +14,9 @@
 
 <body>
 <div layout:fragment="Content">
-
+<div class="container-fluid" style="height:calc(100vh - 130px); display:flex; flex-direction:column; padding-bottom:24px;">
+   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px; flex:1; display:flex; flex-direction:column; overflow:auto;">
+	
     <div class="manage-group-detail-page">
 
         <div class="detail-page-header">
@@ -112,11 +114,11 @@
             </div>
 
             <div class="form-btn-area">
-                <a th:href="@{/manage/groups}" class="btn-basic">
+                <a th:href="@{/manage/groups}" class="btn btn-custon-rounded-four btn-primary custom-white-btn">
                     목록
                 </a>
 
-                <button type="submit" class="btn-basic btn-primary">
+                <button type="submit" class="btn btn-custon-rounded-four btn-primary custom-default-btn">
                     그룹 정보 저장
                 </button>
             </div>
@@ -132,7 +134,7 @@
                 </div>
 
                 <a th:href="@{/manage/groups/{projectGroupId}/members(projectGroupId=${manageGroup.projectGroupId})}"
-                   class="btn-basic btn-primary">
+                   class="btn btn-custon-rounded-four btn-primary custom-default-btn">
                     구성원 배정
                 </a>
             </div>
@@ -192,7 +194,7 @@
                                            name="projectMemberId"
                                            th:value="${member.projectMemberId}">
 
-                                    <button type="submit" class="mini-btn delete">
+                                    <button type="submit" class="btn btn-custon-rounded-four btn-danger custom-btn">
                                         제외
                                     </button>
                                 </form>
@@ -202,6 +204,7 @@
                 </table>
             </div>
         </div>
+        <!-- 그룹 삭제 -->
 
         <form th:action="@{/manage/groups/delete}"
               method="post"
@@ -215,10 +218,12 @@
                    name="projectGroupId"
                    th:value="${manageGroup.projectGroupId}">
 
-            <button type="submit" class="btn-delete">
+            <button type="submit" class="btn btn-custon-rounded-four btn-danger custom-btn">
                 그룹 삭제
             </button>
         </form>
+    </div>
+</div>
 
     </div>
 

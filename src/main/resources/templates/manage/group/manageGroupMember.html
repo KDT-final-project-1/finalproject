@@ -14,7 +14,9 @@
 
 <body>
 <div layout:fragment="Content">
-
+<div class="container-fluid" style="height:calc(100vh - 130px); display:flex; flex-direction:column; padding-bottom:24px;">
+   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px; flex:1; display:flex; flex-direction:column; overflow:auto;">
+	
     <div class="manage-group-detail-page">
 
         <div class="detail-page-header">
@@ -122,7 +124,7 @@
 
                                 <td>
                                     <button type="button"
-                                            class="mini-btn"
+                                            class="btn btn-custon-rounded-four btn-primary custom-white-btn"
                                             onclick="addAssignCart(this)">
                                         추가
                                     </button>
@@ -164,12 +166,12 @@
 
             <div class="form-btn-area">
                 <button type="submit"
-                        class="btn-basic primary">
+                        class="btn btn-custon-rounded-four btn-primary custom-default-btn">
                     선택완료
                 </button>
 
                 <a th:href="@{/manage/groups}"
-                   class="btn-basic">
+                   class="btn btn-custon-rounded-four btn-primary custom-white-btn">
                     목록
                 </a>
             </div>
@@ -219,7 +221,7 @@
 
                             <td>
                                 <button type="button"
-                                        class="mini-btn delete"
+                                        class="btn btn-custon-rounded-four btn-danger custom-btn"
                                         th:data-project-member-id="${member.projectMemberId}"
                                         th:data-remove-url="@{/manage/groups/{projectGroupId}/members/remove/ajax(projectGroupId=${manageGroup.projectGroupId})}"
                                         onclick="removeAssignedMember(this)">
@@ -233,6 +235,8 @@
         </div>
 
     </div>
+</div>
+</div>
 
     <script th:inline="javascript">
         const message = /*[[${message}]]*/ null;

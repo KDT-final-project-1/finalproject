@@ -14,7 +14,9 @@
 
 <body>
 	<div layout:fragment="Content">
-
+	<div class="container-fluid" style="height:calc(100vh - 130px); display:flex; flex-direction:column; padding-bottom:24px;">
+   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px; flex:1; display:flex; flex-direction:column; overflow:auto;">
+	
 		<div class="test-detail-wrap">
 
 			<div class="page-title-area">
@@ -25,13 +27,12 @@
 
 				<div class="top-btn-area">
 					<a th:href="@{/project/{projectId}/tests(projectId=${projectId})}"
-						class="btn-basic"> 목록 </a>
-
-					<a th:href="@{/project/{projectId}/tests/{testId}/edit(
+						class="btn btn-custon-rounded-four custom-white-btn"> 목록 </a> <a
+						th:href="@{/project/{projectId}/tests/{testId}/edit(
                         projectId=${projectId},
                         testId=${testId}
                    )}"
-						class="btn-primary"> 테스트 수정 </a>
+						class="btn btn-custon-rounded-four custom-default-btn"> 테스트 수정 </a>
 				</div>
 			</div>
 
@@ -252,6 +253,8 @@
 			</section>
 
 		</div>
+	</div>
+</div>
 
 <script th:inline="javascript">
     const message = /*[[${message}]]*/ null;
