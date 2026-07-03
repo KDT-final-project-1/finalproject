@@ -10,7 +10,9 @@
 
 <body>
 <div layout:fragment="Content">
-
+<div class="container-fluid" style="height:calc(100vh - 130px); display:flex; flex-direction:column; padding-bottom:24px;">
+   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px; flex:1; display:flex; flex-direction:column; overflow:auto;">
+	
     <div class="role-add-page">
 
         <form th:action="@{/roles/add}"
@@ -23,13 +25,13 @@
 
                 <div class="role-top-btn-area">
                     <button type="button"
-                            class="role-btn"
+                            class="btn btn-custon-rounded-four btn-primary custom-white-btn"
                             th:onclick="|location.href='@{/roles}'|">
                         취소
                     </button>
 
                     <button type="button"
-                            class="role-btn primary"
+                            class="btn btn-custon-rounded-four btn-primary custom-default-btn"
                             id="rolePreviewBtn">
                         저장
                     </button>
@@ -61,13 +63,13 @@
 
                         <div class="permission-control">
                             <button type="button"
-                                    class="small-btn"
+                                    class="btn btn-custon-rounded-four btn-primary custom-white-btn"
                                     onclick="checkAllPermissions(true)">
                                 전체 선택
                             </button>
 
                             <button type="button"
-                                    class="small-btn"
+                                    class="btn btn-custon-rounded-four btn-primary custom-white-btn"
                                     onclick="checkAllPermissions(false)">
                                 전체 해제
                             </button>
@@ -271,7 +273,8 @@
         </div>
 
     </div>
-
+</div>
+</div>
     <script>
         function checkAllPermissions(checked) {
             const checkboxes = document.querySelectorAll(".permission-check");

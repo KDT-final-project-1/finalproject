@@ -11,7 +11,9 @@
 
 <body>
 <div layout:fragment="Content">
-
+<div class="container-fluid" style="height:calc(100vh - 130px); display:flex; flex-direction:column; padding-bottom:24px;">
+   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px; flex:1; display:flex; flex-direction:column; overflow:auto;">
+	
     <div class="role-list-page">
 
         <h1 class="role-page-title">역할</h1>
@@ -121,7 +123,7 @@
                                 <td class="role-btn-group">
                                     <!-- 복사 생성 : 역할 추가 화면으로 이동 -->
                                     <button type="button"
-                                            class="mini-btn"
+                                           class="btn btn-custon-rounded-four btn-primary custom-white-btn"
                                             th:data-role-id="${role.roleId}"
                                             onclick="copyRole(this)">
                                         복사 생성
@@ -129,7 +131,7 @@
 
                                     <!-- 삭제 : 담당 인원 있으면 프론트에서 1차 차단 -->
                                     <button type="button"
-                                            class="mini-btn delete"
+                                            class="btn btn-custon-rounded-four btn-danger custom-btn"
                                             th:data-role-id="${role.roleId}"
                                             th:data-role-name="${role.roleName}"
                                             th:data-member-count="${role.memberCount}"
@@ -197,7 +199,8 @@
         </div>
 
     </div>
-
+</div>
+</div>
     <script>
     function selectRole(element) {
         const roleId = element.dataset.roleId;
