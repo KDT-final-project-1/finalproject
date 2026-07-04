@@ -27,17 +27,22 @@
         =========================================== -->
         <div class="header-section">
             <div class="header-title-row">
-                <h2 th:text="${milestone.title}">마일스톤 제목</h2>
-                <!-- 상태 뱃지 -->
-                <span class="status-badge" 
-				th:classappend="${'status-' + (milestone.statusCode == 'L001' ? 'todo' : (milestone.statusCode == 'L002' ? 'inpg' : 'done'))}"
-				th:switch="${milestone.statusCode}">
-    
-    			<th:block th:case="'L001'">진행 예정</th:block>
-   				<th:block th:case="'L002'">진행 중</th:block>
-    			<th:block th:case="'L003'">완료</th:block>
-    			<th:block th:case="*">[[${milestone.statusName}]]</th:block>
-				</span>
+                <div class="title-left" style="display: flex; align-items: center; gap: 12px;">
+                    <h2 th:text="${milestone.title}" style="margin: 0; font-size: 24px; font-weight: 500; color: #303030;">마일스톤 제목</h2>
+                    <!-- 상태 뱃지 -->
+                    <span class="status-badge badge-pill" 
+    				th:classappend="${'status-' + (milestone.statusCode == 'L001' ? 'todo' : (milestone.statusCode == 'L002' ? 'inpg' : 'done'))}"
+    				th:switch="${milestone.statusCode}">
+        
+        			<th:block th:case="'L001'">진행 예정</th:block>
+       				<th:block th:case="'L002'">진행 중</th:block>
+        			<th:block th:case="'L003'">완료</th:block>
+        			<th:block th:case="*">[[${milestone.statusName}]]</th:block>
+    				</span>
+                </div>
+                <!-- 🌟 목록 버튼을 상단 우측으로 이동 및 텍스트 변경 -->
+                <button type="button" class="btn-k btn-default" id="btnList" 
+                        th:data-url="@{/project/{id}/milestones/list(id=${projectId})}">목록</button>
             </div>
             
             <!-- 🌟 요청사항 반영: 진행률 바 (안전하게 0% 고정) -->
@@ -94,13 +99,38 @@
                 </table>
 
                 <!-- 🌟 요청사항 반영: 작업 내역 박스를 왼쪽 일감 밑으로 이동 -->
-                <h3 class="section-title" style="margin-top: 40px;">작업 내역</h3>
-                <div class="history-box">
-                    <div>
-                        <p style="margin-bottom: 5px; color: #555; font-weight: 500;">작업 내역 (로그)</p>
-                        <span style="font-size: 12px; color: #999;">※ 추후 연동될 로그 데이터가 표출됩니다.</span>
+                <h3 class="section-title" style="margin-top: 40px;">관련 일감 작업 내역</h3>
+                <details class="milestone-history-card" open>
+                    <summary class="milestone-history-summary">
+                        작업 내역 (이력)
+                        <strong th:text="${historyList != null ? historyList.size() + ' 건' : '0 건'}">0 건</strong>
+                    </summary>
+                    
+                    <div th:if="${historyList == null or historyList.empty}" class="milestone-empty-box">
+                        기록된 작업 내역이 없습니다.
                     </div>
-                </div>
+                    
+                    <div th:if="${historyList != null and !historyList.empty}" class="milestone-history-list">
+                        <div th:each="hist : ${historyList}" class="milestone-history-item">
+                            <div class="milestone-history-meta">
+                                <strong th:text="${hist.changedByName}">홍길동</strong>
+                                <span>님이</span>
+                                <a th:href="@{/project/{projectId}/issues/{issueId}(projectId=${projectId}, issueId=${hist.issueId})}" class="milestone-history-issue-link" th:text="${hist.title}">일감 제목</a>
+                                <span>항목을 변경했습니다.</span>
+                                <span th:text="${#dates.format(hist.changedAt, 'yyyy-MM-dd HH:mm')}">2026-07-04 10:00</span>
+                            </div>
+                            <div class="milestone-history-change">
+                                <span class="milestone-history-field" th:text="${hist.fieldName}">상태</span>
+                                <span th:text="${hist.beforeValue != null ? hist.beforeValue : '(없음)'}">전</span>
+                                <span class="milestone-history-arrow">→</span>
+                                <span th:text="${hist.afterValue != null ? hist.afterValue : '(없음)'}">후</span>
+                            </div>
+                            <div th:if="${hist.reason != null and hist.reason != ''}" class="milestone-history-reason" th:text="'사유: ' + ${hist.reason}">
+                                사유: 상태 변경
+                            </div>
+                        </div>
+                    </div>
+                </details>
             </div>
 
             <!-- [우측] 정보 요약 -->
@@ -132,10 +162,7 @@
         <!-- ==========================================
              3. 하단 버튼 영역
         =========================================== -->
-		<div class="panel-footer">
-		    <button type="button" class="btn-k btn-default" id="btnList" 
-		            th:data-url="@{/project/{id}/milestones/list(id=${projectId})}">목록으로</button>
-		            
+		<div class="panel-footer" style="justify-content: flex-end;">
 		    <div class="btn-group-right">
 		        <button type="button" class="btn-k btn-primary" id="btnEdit" 
 		                th:data-id="${milestone.milestoneId}"

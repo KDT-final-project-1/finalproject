@@ -6,6 +6,8 @@ import com.pixcel.app.roadmap.service.RoadmapService;
 import com.pixcel.app.roadmap.service.RoadmapVO;
 import com.pixcel.app.user.security.CustomUserDetails;
 import com.pixcel.app.web.AllProjectController;
+import com.pixcel.app.project.service.ProjectService;
+import com.pixcel.app.project.service.ProjectVO;
 
 import com.pixcel.app.issues.service.IssuesVO;
 import com.pixcel.app.milestones.service.MilestonesMemberDTO;
@@ -37,6 +39,7 @@ public class MilestonesController {
 
     private final MilestonesService milestonesService; //서비스를 받아 mybatis와 연결
     private final RoadmapService roadmapService; // 📝 로드맵 서비스 주입 추가
+    private final ProjectService projectService; // 📝 프로젝트 조회 서비스 주입 추가
     
     //마일스톤 생성화면
     @GetMapping("/create")
@@ -53,6 +56,8 @@ public class MilestonesController {
     roadmapVO.setProjectId(projectId);
     List<RoadmapVO> roadmapList = roadmapService.getSettingList(roadmapVO);
     
+    ProjectVO project = projectService.selectProjectDetail(projectId); // 📝 프로젝트 상세 정보(시작일/종료일) 조회
+    model.addAttribute("project", project); // 📝 프로젝트 기간 제한용 모델 전송
     model.addAttribute("managerList", managerList); //화면에 팀원 목록을 넘겨줌
     model.addAttribute("roadmapList", roadmapList); // 📝 로드맵 버전 목록을 화면에 넘겨줌
     model.addAttribute("projectId", projectId);
@@ -94,12 +99,14 @@ public class MilestonesController {
         // SQL JOIN 문을 통해 담당자 이름(managerName)까지 한 번에 바인딩되어 넘어옵니다.
     	MilestonesVO detailVO = milestonesService.getMilestoneDetail(milestoneId, projectId);
     	List<IssuesVO> connectedIssues = milestonesService.selectConnectedIssues(milestoneId);
+        List<IssuesVO> historyList = milestonesService.selectMilestoneHistoryList(milestoneId);
         if (detailVO == null) {
             return "redirect:/project/" + projectId + "/milestones/list"; // 조회 실패 시 메인으로 리다이렉트
         }
         
         model.addAttribute("milestone", detailVO);
         model.addAttribute("issues", connectedIssues);
+        model.addAttribute("historyList", historyList);
         model.addAttribute("projectId", projectId);
         return "milestones/detail"; 
     }
@@ -125,6 +132,9 @@ public class MilestonesController {
         RoadmapVO roadmapVO = new RoadmapVO();
         roadmapVO.setProjectId(projectId);
         List<RoadmapVO> roadmapList = roadmapService.getSettingList(roadmapVO);
+        
+        ProjectVO project = projectService.selectProjectDetail(projectId); // 📝 프로젝트 상세 정보 조회
+        model.addAttribute("project", project); // 📝 프로젝트 기간 제한용 모델 전송
         
         // 3. 뷰(HTML)로 데이터 전달
         model.addAttribute("milestone", milestone);      // 수정 폼에 채워질 기존 데이터

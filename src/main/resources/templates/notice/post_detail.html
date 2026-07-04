@@ -40,7 +40,6 @@
                             <a th:href="@{/project/{projectId}/notice/files/{fileId}/download(projectId=${projectId}, fileId=${file.fileId})}" class="issues-file-download-link">
                                 <span class="issues-file-name-text" th:text="${file.originalName}">파일명.zip</span>
                             </a>
-                            <span class="issues-file-version" th:text="|v${file.fileVersion}|">v1</span>
                         </div>
                     </li>
                 </ul>

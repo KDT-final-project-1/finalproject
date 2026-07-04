@@ -63,3 +63,59 @@
     font-weight: bold;
     color: #007bff;
 }
+
+/* 마일스톤 작업 내역 (일감 히스토리 참고) */
+.milestone-history-card {
+    border: 1px solid #eeeeee;
+    border-radius: 6px;
+    background: #ffffff;
+    margin-top: 15px;
+}
+.milestone-history-summary {
+    min-height: 42px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: #333333;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    list-style: none;
+}
+.milestone-history-summary::-webkit-details-marker { display: none; }
+.milestone-history-summary::after {
+    content: "";
+    flex: 0 0 auto;
+    width: 7px; height: 7px;
+    border-right: 2px solid #777777;
+    border-bottom: 2px solid #777777;
+    transform: rotate(45deg);
+    transition: transform 0.15s ease;
+}
+.milestone-history-card[open] .milestone-history-summary::after { transform: rotate(225deg); }
+.milestone-history-summary strong { margin-left: auto; color: #006DF0; font-size: 12px; font-weight: 700; }
+
+.milestone-history-list {
+    display: grid; gap: 8px; padding: 0 14px 14px;
+    max-height: 400px; overflow-y: auto;
+}
+.milestone-history-item {
+    padding: 10px 12px; border: 1px solid #eeeeee; border-radius: 6px; background: #fafafa;
+}
+.milestone-history-meta {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; font-size: 12px; color: #777777;
+}
+.milestone-history-meta strong { color: #333333; }
+.milestone-history-issue-link {
+    color: #006DF0; font-weight: 600; text-decoration: none; border-radius: 3px; padding: 2px 4px; background: #eef5ff;
+}
+.milestone-history-issue-link:hover { text-decoration: underline; background: #d0e3ff; }
+
+.milestone-history-change { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #444444; }
+.milestone-history-field { flex: 0 0 auto; min-width: 72px; color: #555555; font-weight: 600; }
+.milestone-history-arrow { color: #006DF0; font-weight: 700; }
+.milestone-history-reason { margin: 5px 0 0; color: #777777; font-size: 12px; padding-left: 78px; }
+
+.milestone-empty-box { padding: 20px; text-align: center; color: #999; font-size: 14px; }

@@ -76,4 +76,9 @@ public class MilestonesServiceImpl implements MilestonesService {
     public List<IssuesVO> selectConnectedIssues(String milestoneId) {
         return milestonesMapper.selectConnectedIssues(milestoneId);
     }
+
+    @Override
+    public List<IssuesVO> selectMilestoneHistoryList(String milestoneId){
+        return milestonesMapper.selectMilestoneHistoryList(milestoneId);
+    }
 }
