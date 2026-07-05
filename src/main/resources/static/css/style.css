@@ -315,7 +315,7 @@ body.no-sidebar .all-content-wrapper {
     opacity: .5 !important;
 }
 /* 모달 전체 */
-#categoryModal {
+.modal{
     text-align: center;
 }
 
@@ -330,7 +330,7 @@ body.no-sidebar .all-content-wrapper {
     z-index: 100 !important;
 }
 /* 세로 중앙 정렬 */
-#categoryModal:before {
+.modal:before {
     content: '';
     display: inline-block;
     height: 100%;
@@ -338,7 +338,7 @@ body.no-sidebar .all-content-wrapper {
 }
 
 /* 모달 창 */
-#categoryModal .modal-dialog {
+.modal .modal-dialog {
     display: inline-block;
     vertical-align: middle;
     text-align: left;
@@ -350,7 +350,7 @@ body.no-sidebar .all-content-wrapper {
 }
 
 /* 모달 내용 */
-#categoryModal .modal-content {
+.modal .modal-content {
     border-radius: 20px;
     overflow: hidden;
     border: none;

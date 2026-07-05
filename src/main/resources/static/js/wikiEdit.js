@@ -127,27 +127,51 @@ function insertTable() {
 }
 
 function insertLink() {
-  const url = prompt('링크 URL을 입력하세요')
-  if (!url) return
   const ta = document.getElementById('markdownInput')
   const start = ta.selectionStart
   const end = ta.selectionEnd
-  const selected = ta.value.substring(start, end) || '링크텍스트'
-  const insert = `[${selected}](${url})`
+  const selected = ta.value.substring(start, end)
+  document.getElementById('linkText').value = selected || ''
+  document.getElementById('linkUrl').value = ''
+  $('#insertLinkModal').modal('show')
+}
+
+function confirmInsertLink() {
+  const url = document.getElementById('linkUrl').value.trim()
+  if (!url) return
+
+  const text = document.getElementById('linkText').value.trim() || '링크텍스트'
+  $('#insertLinkModal').modal('hide')
+
+  const ta = document.getElementById('markdownInput')
+  const start = ta.selectionStart
+  const end = ta.selectionEnd
+  const insert = `[${text}](${url})`
   ta.value = ta.value.substring(0, start) + insert + ta.value.substring(end)
   ta.focus()
   ta.dispatchEvent(new Event('input'))
+
+  document.getElementById('linkText').value = ''
+  document.getElementById('linkUrl').value = ''
+}
+function insertWikiLink() {
+  document.getElementById('wikiLinkTitle').value = ''
+  $('#insertWikiLinkModal').modal('show')
 }
 
-function insertWikiLink() {
-  const title = prompt('연결할 위키 제목을 입력하세요')
+function confirmInsertWikiLink() {
+  const title = document.getElementById('wikiLinkTitle').value.trim()
   if (!title) return
+
+  $('#insertWikiLinkModal').modal('hide')
+
   const ta = document.getElementById('markdownInput')
   const start = ta.selectionStart
   const insert = `[[${title}]]`
   ta.value = ta.value.substring(0, start) + insert + ta.value.substring(start)
   ta.focus()
   ta.dispatchEvent(new Event('input'))
+  document.getElementById('wikiLinkTitle').value = ''
 }
 
 function toggleVersionPanel() {
@@ -172,7 +196,7 @@ function loadVersionList() {
         div.innerHTML = `
           <div style="font-size:13px; font-weight:500;">${v.title || '제목없음'}</div>
           <div class="version-no">${v.versionNo}</div>
-          <div class="version-date">${v.createdAt}</div>
+          <div class="version-date">By.${v.userName}</div>
         `
         div.onclick = () => restoreVersion(v.versionId)
         container.appendChild(div)
@@ -181,9 +205,19 @@ function loadVersionList() {
     .catch(err => console.error('버전 목록 로드 실패:', err))
 }
 
+
+let pendingRestoreVersionId = null
+
 function restoreVersion(versionId) {
-  if (!confirm('이 버전으로 복원하시겠습니까?')) return
-  fetch(`/project/${projectId}/wiki/version/${versionId}`)
+  pendingRestoreVersionId = versionId
+  $('#restoreModal').modal('show')
+}
+
+function confirmRestore() {
+  if (!pendingRestoreVersionId) return
+  $('#restoreModal').modal('hide')
+
+  fetch(`/project/${projectId}/wiki/version/${pendingRestoreVersionId}`)
     .then(res => res.json())
     .then(data => {
       if (data && data.content) {
@@ -193,9 +227,14 @@ function restoreVersion(versionId) {
         ta.value = text
         ta.dispatchEvent(new Event('input'))
       }
+      pendingRestoreVersionId = null
     })
     .catch(err => console.error('복원 실패:', err))
 }
+
+// 복원 버튼에 이벤트 연결
+document.getElementById('confirmRestoreBtn').addEventListener('click', confirmRestore)
+
 
 function saveAndView() {
   const textarea = document.getElementById('markdownInput')

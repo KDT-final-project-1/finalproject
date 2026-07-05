@@ -2,7 +2,7 @@ const projectId = document.getElementById('hiddenProjectId').value
 const wikiId = document.getElementById('hiddenWikiId').value
 
 // 링크 설정
-document.getElementById('btnBack').href = `/project/${projectId}/wiki/`
+document.getElementById('btnBack').href = `/project/${projectId}/wiki/list`
 document.getElementById('btnEdit').href = `/project/${projectId}/wiki/${wikiId}/edit`
 document.getElementById('editLink').href = `/project/${projectId}/wiki/${wikiId}/edit`
 
@@ -136,7 +136,7 @@ function loadHistory() {
           <div style="font-size:13px; font-weight:500;">${v.title || '제목없음'}</div>
           <div class="history-item-version">${v.versionNo}</div>
           <div class="history-item-date">${v.createdAt}</div>
-          <div class="history-item-author">by ${v.createdBy || ''}</div>
+          <div class="history-item-author">By.${v.userName || ''}</div>
         `
         div.onclick = () => previewVersion(v.versionId, div)
         container.appendChild(div)

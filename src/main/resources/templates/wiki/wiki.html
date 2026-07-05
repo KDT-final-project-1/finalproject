@@ -30,7 +30,7 @@
           </div>
 
           <!-- 제목 -->
-          <input id="wikiTitle" type="text" class="wiki-title-input" placeholder="제목을 입력하세요"/>
+          <input id="wikiTitle" type="text" class="wiki-title-input" placeholder="편집 버전 제목을 입력하세요"/>
 
           <!-- 에디터 + 버전패널 -->
           <div style="display:flex; gap:16px;">
@@ -89,6 +89,125 @@
   </div>
 </div>
 
+<!-- 링크 삽입 모달 -->
+<div class="modal fade" id="insertLinkModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="border-radius:20px;">
+    <div class="modal-content" style="border-radius:5px; overflow:hidden; border:none;">
+
+      <div style="background:#031225; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+        <h4 style="color:#fff; margin:0; font-size:15px; font-weight:500;">링크 삽입</h4>
+        <span data-dismiss="modal" style="color:#fff; font-size:18px; cursor:pointer;">✕</span>
+      </div>
+
+      <div class="modal-body" style="padding:24px;">
+        <div class="form-group">
+          <label style="font-size:13px; color:#555;">
+            링크 텍스트
+          </label>
+          <input type="text"
+                 id="linkText"
+                 class="form-control"
+                 placeholder="표시할 텍스트 (선택)"
+                 style="border-radius:10px; border:1px solid #ddd; font-size:13px; height:36px; margin-bottom:12px;">
+          <label style="font-size:13px; color:#555;">
+            URL <span style="color:#e24b4a">*</span>
+          </label>
+          <input type="text"
+                 id="linkUrl"
+                 class="form-control"
+                 placeholder="https://..."
+                 style="border-radius:10px; border:1px solid #ddd; font-size:13px; height:36px;">
+        </div>
+      </div>
+
+      <div class="modal-footer" style="border-top:1px solid #f0f0f0; padding:14px 24px 20px;">
+        <button type="button"
+                class="btn btn-custon-rounded-four custom-white-btn"
+                data-dismiss="modal">
+          취소
+        </button>
+        <button type="button"
+                class="btn btn-custon-rounded-four custom-default-btn"
+                onclick="confirmInsertLink()">
+          삽입
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 위키링크 삽입 모달 -->
+<div class="modal fade" id="insertWikiLinkModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="border-radius:20px;">
+    <div class="modal-content" style="border-radius:5px; overflow:hidden; border:none;">
+
+      <div style="background:#031225; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+        <h4 style="color:#fff; margin:0; font-size:15px; font-weight:500;">위키 링크 삽입</h4>
+        <span data-dismiss="modal" style="color:#fff; font-size:18px; cursor:pointer;">✕</span>
+      </div>
+
+      <div class="modal-body" style="padding:24px;">
+        <div class="form-group">
+          <label style="font-size:13px; color:#555;">
+            연결할 위키 제목 <span style="color:#e24b4a">*</span>
+          </label>
+          <input type="text"
+                 id="wikiLinkTitle"
+                 class="form-control"
+                 placeholder="위키 제목을 입력하세요"
+                 style="border-radius:10px; border:1px solid #ddd; font-size:13px; height:36px;">
+        </div>
+      </div>
+
+      <div class="modal-footer" style="border-top:1px solid #f0f0f0; padding:14px 24px 20px;">
+        <button type="button"
+                class="btn btn-custon-rounded-four custom-white-btn"
+                data-dismiss="modal">
+          취소
+        </button>
+        <button type="button"
+                class="btn btn-custon-rounded-four custom-default-btn"
+                onclick="confirmInsertWikiLink()">
+          삽입
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 버전 복원 확인 모달 -->
+<div class="modal fade" id="restoreModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="border-radius:20px;">
+    <div class="modal-content" style="border-radius:5px; overflow:hidden; border:none;">
+
+      <div style="background:#031225; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+        <h4 style="color:#fff; margin:0; font-size:15px; font-weight:500;">버전 복원</h4>
+        <span data-dismiss="modal" style="color:#fff; font-size:18px; cursor:pointer;">✕</span>
+      </div>
+
+      <div class="modal-body" style="padding:24px;">
+        <p style="font-size:14px; color:#333; margin:0;">이 버전으로 복원하시겠습니까?</p>
+        <p style="font-size:13px; color:#aaa; margin-top:8px;">복원하면 현재 내용이 해당 버전으로 변경됩니다.</p>
+      </div>
+
+      <div class="modal-footer" style="border-top:1px solid #f0f0f0; padding:14px 24px 20px;">
+        <button type="button"
+                class="btn btn-custon-rounded-four custom-white-btn"
+                data-dismiss="modal">
+          취소
+        </button>
+        <button type="button"
+                id="confirmRestoreBtn"
+                class="btn btn-custon-rounded-four custom-default-btn">
+          복원
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 <script th:src="@{/js/bundle.js}"></script>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script th:src="@{/js/wikiEdit.js}"></script>

@@ -23,15 +23,15 @@
             <div>
               <h1 class="wiki-view-title" th:text="${page != null ? page.title : '제목없음'}">제목</h1>
               <div class="wiki-view-meta">
-                <span th:text="${page != null ? page.createdBy : ''}">작성자</span>
+                <span th:text="${page != null ? '최초 작성자 : ' + page.userName : ' '}">작성자</span>
                 &nbsp;·&nbsp;
                 <span th:text="${page != null ? #dates.format(page.createdAt, 'yyyy-MM-dd') : ''}">날짜</span>
               </div>
             </div>
             <div style="display:flex; align-items:center; gap:8px;">
-              <a id="btnBack" class="btn-back">← 목록</a>
-              <button class="btn-history" onclick="toggleHistory()">🕐 히스토리</button>
-              <a id="btnEdit" class="btn-edit">✏️ 편집</a>
+              <a id="btnBack" class="btn btn-custon-rounded-four custom-white-btn">← 목록</a>
+              <button class="btn btn-custon-rounded-four custom-white-btn" onclick="toggleHistory()">🕐 히스토리</button>
+              <a id="btnEdit" class="btn btn-custon-rounded-four custom-default-btn">✏️ 편집</a>
             </div>
           </div>
 
