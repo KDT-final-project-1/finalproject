@@ -7,15 +7,21 @@
   <head>
     <meta charset="UTF-8" />
     <title>새 마일스톤 생성</title>
+    <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-create.css}" />
   </head>
   <body>
-    <div layout:fragment="Content" class="milestone-container">
-      <div class="kiaalap-panel">
-        <div class="panel-header">
-          <h2>새 마일스톤 생성</h2>
-        </div>
+    <div layout:fragment="Content">
+      <div class="container-fluid milestone-page-wrapper">
+        <div class="milestone-page-panel">
+          
+          <div class="milestone-page-header">
+            <div>
+              <h3 class="milestone-page-title">새 마일스톤 생성</h3>
+            </div>
+          </div>
+          <div class="milestone-page-body">
 
         <form
           id="milestoneForm"
@@ -168,15 +174,17 @@
             <div class="right-buttons">
               <button
                 type="button"
-                class="btn btn-default"
+                class="btn btn-custon-rounded-four custom-white-btn"
                 onclick="history.back()"
               >
                 취소
               </button>
-              <button type="submit" class="btn btn-primary">저장하기</button>
+              <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">저장하기</button>
             </div>
           </div>
         </form>
+          </div>
+        </div>
       </div>
       <script th:src="@{/js/milestones/milestone-create.js}"></script>
     </div>

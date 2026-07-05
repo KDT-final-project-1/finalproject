@@ -189,6 +189,7 @@
         	,i.title
         	,i.version_id
         	,i.progress_rate
+        	,i.issue_no
         	,u.user_name AS assigneeName
         	,v.version_name
         	,g.status_name AS issueStatusName

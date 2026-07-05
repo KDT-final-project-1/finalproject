@@ -5,16 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <title>마일스톤 수정</title>
+    <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}">
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}">
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-create.css}">
 </head>
 <body>
-    <div layout:fragment="Content" class="milestone-container">
-       <div class="kiaalap-panel">
+    <div layout:fragment="Content">
+       <div class="container-fluid milestone-page-wrapper">
+        <div class="milestone-page-panel">
         
-        <div class="panel-header">
-            <h2>마일스톤 수정</h2>
+        <div class="milestone-page-header">
+            <div>
+                <h3 class="milestone-page-title">마일스톤 수정</h3>
+            </div>
         </div>
+        <div class="milestone-page-body">
         
         <form id="milestoneForm" th:action="@{/project/{projectId}/milestones/update(projectId=${projectId})}" method="post">
             <input type="hidden" id="milestoneId" name="milestoneId" th:value="${milestone.milestoneId}">
@@ -52,7 +57,8 @@
                                             <td style="text-align: center;">
                                                 <input type="checkbox" class="issue-checkbox" 
                                                        th:value="${issue.issueId}" 
-                                                       th:data-version-id="${issue.versionId}" checked>
+                                                       th:data-version-id="${issue.versionId}"
+                                                       th:data-progress-rate="${issue.progressRate}" checked>
                                             </td>
                                             <td th:text="|${issue.title} (${issue.versionName})|">일감 제목</td>
                                             <td style="text-align: center;"><span class="status-badge" th:text="${issue.issueStatusName}">상태</span></td>
@@ -130,13 +136,18 @@
 
             <div class="panel-footer" style="justify-content: flex-end;">
                 <div class="right-buttons">
-                    <button type="button" class="btn btn-default" onclick="history.back()">취소</button>
-                    <button type="submit" id="btnUpdate" class="btn btn-primary">수정 완료</button>
+                    <button type="button" class="btn btn-custon-rounded-four custom-white-btn" onclick="history.back()">취소</button>
+                    <button type="submit" id="btnUpdate" class="btn btn-custon-rounded-four custom-default-btn">수정 완료</button>
                 </div>
             </div>
         </form>
 
+        </div>
+       </div>
     </div>
+    <!-- SweetAlert2 및 공통 다이얼로그 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:src="@{/js/common/pf-confirm.js}"></script>
     <script th:src="@{/js/milestones/milestone-update.js}"></script>
 </div>
 </body>

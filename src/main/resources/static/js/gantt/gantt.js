@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // 데이터가 로드되고 파싱된 직후에 드롭다운 리스트 자동 생성 및 시작일 기준 정렬
     gantt.attachEvent("onParse", function() {
         populateFilterDropdowns();
-        gantt.sort("start_date", true); 
+        gantt.sort("start_date", false); 
     });
 
     // [기술적 이유] 최초 데이터 로드 시점에 '오늘' 날짜가 속한 가로 픽셀 좌표(x)를 역계산하여,
