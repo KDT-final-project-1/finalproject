@@ -138,6 +138,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const emptyRow = document.querySelector("#issueListBody .empty-row");
     if (emptyRow) emptyRow.closest("tr").remove();
 
+    // 📝 [추가]: 버전이 선택되지 않은 상태에서 일감을 추가하면, 해당 일감의 버전으로 자동 연동 및 고정
+    if (versionIdInput && (versionIdInput.value === "" || versionIdInput.value === null)) {
+        versionIdInput.value = issue.versionId;
+        lockedVersionId = issue.versionId;
+    }
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
         <td style="text-align: center;">
