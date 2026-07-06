@@ -138,6 +138,7 @@
 </div>
 
 <!-- 위키링크 삽입 모달 -->
+<!-- 위키링크 삽입 모달 -->
 <div class="modal fade" id="insertWikiLinkModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="border-radius:20px;">
     <div class="modal-content" style="border-radius:5px; overflow:hidden; border:none;">
@@ -149,14 +150,32 @@
 
       <div class="modal-body" style="padding:24px;">
         <div class="form-group">
+
+          <!-- 기존 위키 선택 -->
+          <label style="font-size:13px; color:#555;">기존 위키에서 선택</label>
+          <select id="wikiLinkSelect"
+                  class="form-control"
+                  style="border-radius:10px; border:1px solid #ddd; font-size:13px; height:36px; margin-bottom:16px;">
+            <option value="">-- 위키 선택 --</option>
+          </select>
+
+          <!-- 구분선 -->
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <hr style="flex:1; margin:0;">
+            <span style="font-size:12px; color:#aaa;">또는 직접 입력</span>
+            <hr style="flex:1; margin:0;">
+          </div>
+
+          <!-- 직접 입력 -->
           <label style="font-size:13px; color:#555;">
-            연결할 위키 제목 <span style="color:#e24b4a">*</span>
+            위키 제목 직접 입력
           </label>
           <input type="text"
                  id="wikiLinkTitle"
                  class="form-control"
                  placeholder="위키 제목을 입력하세요"
                  style="border-radius:10px; border:1px solid #ddd; font-size:13px; height:36px;">
+          <small style="color:#aaa; font-size:11px;">존재하지 않는 위키면 새로 생성됩니다.</small>
         </div>
       </div>
 

@@ -6,11 +6,11 @@
 
 /* ② min-height 제거: 전체 스크롤 없음 */
 .project-list-page {
-	max-width: 1400px;
-	margin: 0 auto;
-	padding: 30px 20px;
-	background-color: #f5f7fb;
-	box-sizing: border-box;
+    width: 100%;
+    max-width: none;   /* 또는 삭제 */
+    margin: 0;
+    padding: 30px 40px;
+    box-sizing: border-box;
 }
 
 .project-page-header {
@@ -60,38 +60,7 @@
 	gap: 8px;
 }
 
-.search-action-btn {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	height: 36px;
-	padding: 0 14px;
-	border-radius: 6px;
-	background-color: #2f6fed;
-	border: 1px solid #2f6fed;
-	color: #fff;
-	font-size: 14px;
-	font-weight: 600;
-	text-decoration: none;
-	cursor: pointer;
-	transition: 0.15s;
-}
 
-.search-action-btn:hover {
-	background-color: #245fd0;
-	border-color: #245fd0;
-	color: #fff;
-}
-
-.search-action-btn.manage {
-	background-color: #fff;
-	border-color: #2f6fed;
-	color: #2f6fed;
-}
-
-.search-action-btn.manage:hover {
-	background-color: #eef3ff;
-}
 
 .search-form-row {
 	display: grid;
@@ -228,41 +197,6 @@
 	margin-top: 20px;
 }
 
-.btn-basic, .mini-btn, .page-btn {
-	border: 1px solid #d6dce8;
-	background-color: #fff;
-	color: #333;
-	border-radius: 6px;
-	cursor: pointer;
-	transition: 0.15s;
-	font-size: 14px;
-	text-decoration: none;
-	box-sizing: border-box;
-}
-
-.btn-basic {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	height: 36px;
-	padding: 0 18px;
-}
-
-.btn-basic.btn-primary {
-	background-color: #2f6fed;
-	border-color: #2f6fed;
-	color: #fff;
-}
-
-.btn-basic:hover, .mini-btn:hover {
-	background-color: #eef3ff;
-	border-color: #9bbcff;
-}
-
-.btn-basic.btn-primary:hover {
-	background-color: #245fd0;
-	border-color: #245fd0;
-}
 
 .project-list-section {
 	background-color: #fff;
@@ -403,22 +337,7 @@
 	gap: 6px;
 }
 
-.mini-btn {
-	padding: 7px 12px;
-	font-size: 13px;
-	border-radius: 6px;
-}
 
-.mini-btn.delete {
-	border-color: #f1b8b8;
-	color: #d93025;
-	background-color: #fff;
-}
-
-.mini-btn.delete:hover {
-	background-color: #fff1f1;
-	border-color: #e58a8a;
-}
 
 .empty-row {
 	height: 90px !important;
@@ -451,12 +370,11 @@
 
 .page-btn:hover:not(.disabled):not([disabled]) {
 	background-color: #eef3ff;
-	border-color: #9bbcff;
 }
 
 .page-btn.active {
-	background-color: #2f6fed;
-	border-color: #2f6fed;
+	background-color: #031225;
+	border-color: #031225;
 	color: #fff;
 	font-weight: 700;
 }

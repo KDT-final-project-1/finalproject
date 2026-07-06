@@ -110,7 +110,7 @@ fetch(`/project/${projectId}/wiki/load/${wikiId}`)
     }
   })
   .catch(() => {
-    document.getElementById('wikiContent').innerHTML = '<p style="color:#aaa;">내용을 불러올 수 없습니다.</p>'
+    document.getElementById('wikiContent').innerHTML = '<p style="color:#aaa;">내용이 없습니다.</p>'
   })
 
 function toggleHistory() {

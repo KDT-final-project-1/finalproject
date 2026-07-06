@@ -12,7 +12,10 @@
 
 <body>
 	<div layout:fragment="Content">
-
+	<div class="container-fluid" style="height:calc(100vh - 130px); display:flex; flex-direction:column; padding-bottom:24px;">
+   <div style="background:#fff; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); padding:24px; flex:1; display:flex; flex-direction:column; overflow:auto;">
+      
+	
 		<div class="project-list-page" th:data-subscribe-yn="${subscribeYn}">
 
 			<!-- 상단 제목 -->
@@ -22,16 +25,16 @@
 					<p class="project-page-sub-title">프로젝트 목록을 조회하고 조건별로 검색할 수
 						있습니다.</p>
 				</div>
+					<div class="search-action-area" th:if="${subscribeYn == 'Y'}">
+						<a th:href="@{/myproject/register}" class="btn btn-custon-rounded-four custom-default-btn">프로젝트
+							생성</a>
+					</div>
 			</div>
 
 			<!-- 검색 조건 영역 -->
 			<div class="search-section project-search-class">
 				<div class="search-header">
 					<div class="search-title">검색조건</div>
-					<div class="search-action-area" th:if="${subscribeYn == 'Y'}">
-						<a th:href="@{/myproject/register}" class="search-action-btn">프로젝트
-							생성</a>
-					</div>
 				</div>
 
 				<form id="searchForm" th:action="@{/myproject/list}" method="get">
@@ -81,8 +84,8 @@
 					</div>
 
 					<div class="search-btn-area">
-						<a th:href="@{/myproject/list}" class="btn-basic">초기화</a>
-						<button type="button" class="btn-basic btn-primary"
+						<a th:href="@{/myproject/list}" class="btn btn-custon-rounded-four custom-white-btn">초기화</a>
+						<button type="button" class="btn btn-custon-rounded-four custom-default-btn"
 							onclick="submitSearch()">검색</button>
 					</div>
 				</form>
@@ -149,9 +152,9 @@
 								<td
 									th:text="${project.endDate != null ? #dates.format(project.endDate, 'yyyy/MM/dd') : '-'}">2026/12/31</td>
 								<td th:if="${subscribeYn == 'Y'}" class="project-action-cell"
-									onclick="event.stopPropagation();"><a class="mini-btn"
+									onclick="event.stopPropagation();"><a class="btn btn-custon-rounded-four custom-white-btn"
 									th:href="@{/myproject/update(projectId=${project.projectId})}">수정</a>
-									<button type="button" class="mini-btn delete"
+									<button type="button" class="btn btn-custon-rounded-four btn-danger custom-btn"
 										th:data-project-id="${project.projectId}"
 										th:data-project-name="${project.projectName}"
 										onclick="deleteProject(this)">삭제</button></td>
@@ -184,7 +187,8 @@
 				</div>
 			</div>
 		</div>
-
+	</div>
+</div>
 		<script th:inline="javascript">
 		/* 드롭다운 외부 클릭 시 닫기 */
 		document.addEventListener('click', function(e) {
