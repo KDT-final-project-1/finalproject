@@ -76,6 +76,18 @@ public class UsersController {
     	return map;
     }
     
+    //메일 중복체크
+    @GetMapping("/checkEmail")
+    @ResponseBody
+    public Map<String, Object> checkEmail(@RequestParam String email) {
+        Map<String, Object> map = new HashMap<>();
+
+        boolean duplicated = userService.checkEmail(email);
+        map.put("duplicated", duplicated);
+
+        return map;
+    }
+    
     
     @GetMapping("/")
     public String home() {

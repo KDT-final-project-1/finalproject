@@ -243,30 +243,64 @@ public class ProjectController {
 	}
 
 	/* 구성원 추가 처리 */
+//	@PostMapping("/project/{projectId}/settings/members/add")
+//	public String insertProjectMember(@PathVariable String projectId, ProjectMemberVO projectMemberVO,
+//			@CookieValue(value = "userId", required = false) String userId,
+//			@CookieValue(value = "subscribeYn", required = false) String subscribeYn,
+//			RedirectAttributes redirectAttributes) {
+//
+//		// ✅ 권한 확인: 로그인 + 소유자 확인
+//		if (userId == null || userId.isEmpty()) {
+//			return "redirect:/login";
+//		}
+//
+//		ProjectVO project = projectService.selectProjectDetail(projectId);
+//		if (project == null || !project.getOwnerId().equals(userId)) {
+//			return "redirect:/myproject/list";
+//		}
+//
+//		if (!"Y".equals(subscribeYn))
+//			return "redirect:/projectdetail/" + projectId;
+//
+//		projectMemberVO.setProjectId(projectId);
+//		Map<String, Object> resultMap = projectService.insertProjectMember(projectMemberVO);
+//		redirectAttributes.addFlashAttribute("message", resultMap.get("message"));
+//
+//		return "redirect:/project/" + projectId + "/settings/members";
+//	}
+	/* 구성원 추가 처리 */
 	@PostMapping("/project/{projectId}/settings/members/add")
-	public String insertProjectMember(@PathVariable String projectId, ProjectMemberVO projectMemberVO,
-			@CookieValue(value = "userId", required = false) String userId,
-			@CookieValue(value = "subscribeYn", required = false) String subscribeYn,
-			RedirectAttributes redirectAttributes) {
+	public String insertProjectMember(@PathVariable String projectId,
+	        @RequestParam(value = "teamMemberIds", required = false) List<String> teamMemberIds,
+	        @RequestParam(value = "roleId", required = false) String roleId,
+	        @CookieValue(value = "userId", required = false) String userId,
+	        @CookieValue(value = "subscribeYn", required = false) String subscribeYn,
+	        RedirectAttributes redirectAttributes) {
 
-		// ✅ 권한 확인: 로그인 + 소유자 확인
-		if (userId == null || userId.isEmpty()) {
-			return "redirect:/login";
-		}
+	    if (userId == null || userId.isEmpty()) {
+	        return "redirect:/login";
+	    }
 
-		ProjectVO project = projectService.selectProjectDetail(projectId);
-		if (project == null || !project.getOwnerId().equals(userId)) {
-			return "redirect:/myproject/list";
-		}
+	    ProjectVO project = projectService.selectProjectDetail(projectId);
+	    if (project == null || !project.getOwnerId().equals(userId)) {
+	        return "redirect:/myproject/list";
+	    }
 
-		if (!"Y".equals(subscribeYn))
-			return "redirect:/projectdetail/" + projectId;
+	    if (!"Y".equals(subscribeYn)) {
+	        return "redirect:/projectdetail/" + projectId;
+	    }
 
-		projectMemberVO.setProjectId(projectId);
-		Map<String, Object> resultMap = projectService.insertProjectMember(projectMemberVO);
-		redirectAttributes.addFlashAttribute("message", resultMap.get("message"));
+	    if (teamMemberIds == null || teamMemberIds.isEmpty()) {
+	        redirectAttributes.addFlashAttribute("message", "추가할 구성원을 하나 이상 선택해주세요.");
+	        return "redirect:/project/" + projectId + "/settings/members/new";
+	    }
 
-		return "redirect:/project/" + projectId + "/settings/members";
+	    Map<String, Object> resultMap =
+	            projectService.insertProjectMemberList(projectId, teamMemberIds, roleId);
+
+	    redirectAttributes.addFlashAttribute("message", resultMap.get("message"));
+
+	    return "redirect:/project/" + projectId + "/settings/members";
 	}
 
 	/* 구성원 역할 수정 폼 */

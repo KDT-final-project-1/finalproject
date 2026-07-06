@@ -361,14 +361,26 @@
 		TO_CHAR(SYSDATE, 'YYYYMM') || '_%'
 	</select>
 
-	<!-- 구성원 등록 -->
-	<insert id="insertProjectMember"
-		parameterType="com.pixcel.app.project.service.ProjectMemberVO">
-		INSERT INTO project_member (project_member_id,
-		project_id, team_member_id, project_group_id, role_id, joined_at)
-		VALUES (#{projectMemberId}, #{projectId}, #{teamMemberId},
-		#{projectGroupId, jdbcType=VARCHAR}, #{roleId}, SYSDATE)
-	</insert>
+<!-- 구성원 등록 -->
+<insert id="insertProjectMember"
+    parameterType="com.pixcel.app.project.service.ProjectMemberVO">
+    INSERT INTO project_member (
+        project_member_id,
+        project_id,
+        team_member_id,
+        project_group_id,
+        role_id,
+        joined_at
+    )
+    VALUES (
+        #{projectMemberId},
+        #{projectId},
+        #{teamMemberId},
+        #{projectGroupId, jdbcType=VARCHAR},
+        #{roleId, jdbcType=VARCHAR},
+        SYSDATE
+    )
+</insert>
 
 	<!-- 구성원 단건 조회 -->
 	<select id="selectProjectMemberDetail"
