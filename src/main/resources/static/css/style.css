@@ -2889,7 +2889,7 @@ ul.two-part-sp li {
   color: #303030;
 }
 .custom-pagination ul.pagination li a:focus {
-  background: #006df0;
+  background: #031225;
   color: #fff;
 }
 .custom-pagination .pagination {
@@ -3972,8 +3972,8 @@ td.text-right.mail-date {
 .pagination > .active > span,
 .pagination > .active > span:focus,
 .pagination > .active > span:hover {
-  background-color: #006df0;
-  border-color: #006df0;
+  background-color: #031225;
+  border-color: #031225;
 }
 .fixed-table-pagination {
   padding: 0px 10px;

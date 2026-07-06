@@ -95,7 +95,7 @@ function insertMd(before, after) {
   const selected = ta.value.substring(start, end)
   const newText = before + (selected || '텍스트') + after
   ta.value = ta.value.substring(0, start) + newText + ta.value.substring(end)
-  ta.focus()
+  ta.focus({ preventScroll: true })
   ta.dispatchEvent(new Event('input'))
 }
 
@@ -104,25 +104,29 @@ function insertLine(prefix) {
   const start = ta.selectionStart
   const lineStart = ta.value.lastIndexOf('\n', start - 1) + 1
   ta.value = ta.value.substring(0, lineStart) + prefix + ta.value.substring(lineStart)
-  ta.focus()
+  ta.focus({ preventScroll: true })
   ta.dispatchEvent(new Event('input'))
 }
 
 function insertCodeBlock() {
   const ta = document.getElementById('markdownInput')
+  const scrollY = window.scrollY
   const start = ta.selectionStart
   const insert = '\n```\n코드 입력\n```\n'
   ta.value = ta.value.substring(0, start) + insert + ta.value.substring(start)
-  ta.focus()
+  ta.focus({ preventScroll: true })
+  window.scrollTo(0, scrollY)
   ta.dispatchEvent(new Event('input'))
 }
 
 function insertTable() {
   const ta = document.getElementById('markdownInput')
+  const scrollY = window.scrollY
   const start = ta.selectionStart
   const insert = '\n| 제목1 | 제목2 | 제목3 |\n|---|---|---|\n| 내용 | 내용 | 내용 |\n'
   ta.value = ta.value.substring(0, start) + insert + ta.value.substring(start)
-  ta.focus()
+  ta.focus({ preventScroll: true })
+  window.scrollTo(0, scrollY)
   ta.dispatchEvent(new Event('input'))
 }
 
@@ -148,7 +152,7 @@ function confirmInsertLink() {
   const end = ta.selectionEnd
   const insert = `[${text}](${url})`
   ta.value = ta.value.substring(0, start) + insert + ta.value.substring(end)
-  ta.focus()
+  ta.focus({ preventScroll: true })
   ta.dispatchEvent(new Event('input'))
 
   document.getElementById('linkText').value = ''
@@ -156,6 +160,32 @@ function confirmInsertLink() {
 }
 function insertWikiLink() {
   document.getElementById('wikiLinkTitle').value = ''
+  document.getElementById('wikiLinkSelect').value = ''
+
+  // 위키 목록 불러오기
+  fetch(`/project/${projectId}/wiki/listJson`)
+    .then(res => res.json())
+    .then(list => {
+      const select = document.getElementById('wikiLinkSelect')
+      select.innerHTML = '<option value="">-- 위키 선택 --</option>'
+      if (Array.isArray(list)) {
+        list.forEach(w => {
+          const option = document.createElement('option')
+          option.value = w.title
+          option.textContent = w.title
+          select.appendChild(option)
+        })
+      }
+    })
+    .catch(err => console.error('위키 목록 로드 실패:', err))
+
+  // 셀렉트 선택시 입력창에 자동 반영
+  document.getElementById('wikiLinkSelect').onchange = function() {
+    if (this.value) {
+      document.getElementById('wikiLinkTitle').value = this.value
+    }
+  }
+
   $('#insertWikiLinkModal').modal('show')
 }
 
@@ -165,19 +195,33 @@ function confirmInsertWikiLink() {
 
   $('#insertWikiLinkModal').modal('hide')
 
-  const ta = document.getElementById('markdownInput')
-  const start = ta.selectionStart
-  const insert = `[[${title}]]`
-  ta.value = ta.value.substring(0, start) + insert + ta.value.substring(start)
-  ta.focus()
-  ta.dispatchEvent(new Event('input'))
-  document.getElementById('wikiLinkTitle').value = ''
-}
-
-function toggleVersionPanel() {
-  const panel = document.getElementById('versionPanel')
-  panel.classList.toggle('open')
-  if (panel.classList.contains('open')) loadVersionList()
+  // 위키 존재 여부 확인 후 없으면 생성
+  fetch(`/project/${projectId}/wiki/find?title=${encodeURIComponent(title)}`)
+    .then(res => res.json())
+    .then(page => {
+      if (!page || !page.wikiId) {
+        // 없으면 자동 생성
+        return fetch(`/project/${projectId}/wiki/createJson`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: title, projectId: projectId })
+        }).then(res => res.json())
+      }
+      return page
+    })
+    .then(() => {
+      // 생성 여부 상관없이 [[제목]] 삽입
+      const ta = document.getElementById('markdownInput')
+      const start = ta.selectionStart
+      const insert = `[[${title}]]`
+      ta.value = ta.value.substring(0, start) + insert + ta.value.substring(start)
+      ta.focus({ preventScroll: true })
+      ta.setSelectionRange(start + insert.length, start + insert.length)
+      ta.dispatchEvent(new Event('input'))
+      document.getElementById('wikiLinkTitle').value = ''
+      document.getElementById('wikiLinkSelect').value = ''
+    })
+    .catch(err => console.error('위키 링크 삽입 실패:', err))
 }
 
 function loadVersionList() {
