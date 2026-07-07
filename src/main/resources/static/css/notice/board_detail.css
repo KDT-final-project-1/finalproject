@@ -120,7 +120,7 @@
 
 /* 3. 게시글 테이블 카드 스타일로 통일 */
 .table-container {
-    border: 1px solid #e0e0e0;
+    border: 1px solid #031225;
     border-radius: 6px;
     margin-bottom: 30px;
     background-color: #fff;
@@ -135,14 +135,18 @@
 .board-table th, .board-table td {
     padding: 12px 15px;
     text-align: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #031225;
     font-size: 14px;
 }
 .board-table th {
-    background-color: #f8f9fa;
+    background-color: #031225;
     font-weight: bold;
-    color: #333;
-    border-bottom: 1px solid #e0e0e0;
+    color: #ffffff;
+    border-bottom: 1px solid #031225;
+}
+.board-table td {
+    background-color: #ffffff;
+    color: #333333;
 }
 .text-left { text-align: left !important; }
 .text-left a { text-decoration: none; color: #333; }
