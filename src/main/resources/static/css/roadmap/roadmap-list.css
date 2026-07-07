@@ -75,7 +75,7 @@
 }
 
 .roadmap-item { 
-    background-color: #ffffff; border: 1px solid #e2e8f0; 
+    background-color: #ffffff; border: 1px solid #031225; 
     border-radius: 8px; margin-bottom: 20px; overflow: hidden; 
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -86,7 +86,7 @@
     border-bottom: 1px solid transparent; transition: background 0.2s;
 }
 .roadmap-item-header:hover { background-color: #f8fafc; }
-.roadmap-item.open .roadmap-item-header { border-bottom: 1px solid #e2e8f0; background-color: #fff; }
+.roadmap-item.open .roadmap-item-header { border-bottom: 1px solid #031225; background-color: #fff; }
 
 .title-area { display: flex; align-items: center; gap: 12px; }
 .toggle-icon { font-size: 14px; color: #888; transition: transform 0.3s; width: 15px; }

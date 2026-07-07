@@ -9,7 +9,7 @@
   background: #fff;
   padding: 20px 24px;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #031225;
   margin-bottom: 24px;
 }
 
@@ -44,7 +44,7 @@
 .left-panel {
   flex: 7;
   background: #fff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #031225;
   border-radius: 8px;
   padding: 20px;
 }
@@ -63,7 +63,7 @@
 
 /* 마일스톤 아코디언 디자인 */
 .milestone-item {
-  border: 1px solid #eee;
+  border: 1px solid #031225;
   border-radius: 6px;
   margin-bottom: 12px;
   overflow: hidden;
@@ -74,7 +74,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background-color: #f9f9f9;
+  background-color: #fff;
   cursor: pointer;
   transition: background-color 0.2s;
 }
@@ -137,19 +137,26 @@
   border-collapse: collapse;
   margin-top: 12px;
   font-size: 13px;
+  border: 1px solid #031225;
 }
 
 .issue-table th,
 .issue-table td {
   padding: 12px 8px;
-  border-bottom: 1px solid #f0f0f0;
+  border: none;
   text-align: left;
 }
 
 .issue-table th {
-  color: #666;
+  color: #ffffff;
   font-weight: 500;
-  background: #fafafa;
+  background: #031225;
+  border-bottom: 1px solid #031225;
+}
+
+.issue-table td {
+  background-color: #ffffff;
+  color: #333333;
 }
 
 .issue-status {
@@ -167,7 +174,7 @@
 /* 차트 카드 디자인 */
 .chart-card {
   background: #fff;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #031225;
   border-radius: 8px;
   padding: 16px 20px;
 }
@@ -399,7 +406,7 @@
   background: #fff;
   padding: 20px 24px;
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #031225;
   margin-bottom: 24px;
 }
 
@@ -414,7 +421,7 @@
   background: #f8f9fa; /* 약간 회색 배경으로 구분감 부여 */
   padding: 16px 24px;
   border-radius: 8px;
-  border: 1px solid #eee;
+  border: 1px solid #031225;
 }
 
 .summary-item {

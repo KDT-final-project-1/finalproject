@@ -46,7 +46,7 @@
                             <span class="issues-file-name-text" th:text="${file.originalName}">파일명.zip</span>
                         </div>
                         <div>
-                            <button type="button" class="btn-delete-file" th:onclick="removeExistingFile([[${file.fileId}]])" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-weight: bold;">X</button>
+                            <button type="button" class="btn-delete-file" th:onclick="|removeExistingFile('${file.fileId}')|" style="background: none; border: none; color: #e74c3c; cursor: pointer; font-weight: bold;">X</button>
                         </div>
                     </li>
                 </ul>
