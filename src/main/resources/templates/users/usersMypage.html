@@ -77,7 +77,7 @@
                             <div class="action-buttons">
                                 <button type="button" id="btnEdit" class="btn btn-primary">수정</button>
                                 <button type="submit" id="btnSave" class="btn btn-success" style="display: none;">수정 완료</button>
-                                <button type="button" class="btn btn-danger">탈퇴</button>
+                                <button type="submit" class="btn btn-custon-rounded-four btn-danger custom-btn">탈퇴</button>
                             </div>
                         </form>
                     </div>
@@ -175,7 +175,7 @@
             <div class="modal-content" style="border-radius:20px; overflow:hidden; border:none;">
                 <form id="passwordForm" th:action="@{/updatePassword}" method="post">
                     <!-- 헤더 -->
-                    <div style="background:#1a6fe8; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+                    <div style="background:#031225; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
                         <h4 style="color:#fff; margin:0; font-size:15px; font-weight:500;">
                             비밀번호 변경하기
                         </h4>
@@ -215,7 +215,7 @@
             <div class="modal-content" style="border-radius:20px; overflow:hidden; border:none;">
                 <form id="subscribeForm" th:action="@{/subscribe/verify}" method="post">
                     <!-- 헤더 -->
-                    <div style="background:#1a6fe8; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+                    <div style="background:#031225; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
                         <h4 style="color:#fff; margin:0; font-size:15px; font-weight:500;">
                             구독 신청 (이메일 인증)
                         </h4>
@@ -256,9 +256,14 @@
     <div class="modal fade" id="unsubscribeModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document" style="border-radius:20px;">
             <div class="modal-content" style="border-radius:20px; overflow:hidden; border:none;">
-                <form id="unsubscribeForm" th:action="@{/subscribe/unsubscribe}" method="post">
+                <form id="unsubscribeForm" th:action="@{/subscribe/unsubscribe}" method="post"
+                      class="js-pf-confirm-submit"
+                      data-confirm-title="구독 해지 확인"
+                      data-confirm-message="정말로 구독을 해지하시겠습니까?"
+                      data-confirm-confirm-text="해지"
+                      data-confirm-icon="warning">
                     <!-- 헤더 -->
-                    <div style="background:#1a6fe8; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
+                     <div style="background:#031225; padding:18px 24px; display:flex; align-items:center; justify-content:space-between;">
                         <h4 style="color:#fff; margin:0; font-size:15px; font-weight:500;">
                             구독 해지
                         </h4>
@@ -278,6 +283,8 @@
         </div>
     </div>
     
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script th:src="@{/js/common/pf-confirm.js}"></script>
     <script th:src="@{/js/users/userMypage.js}"></script>
 </div>
 </body>

@@ -10,7 +10,7 @@
 }
 .form-group { margin-bottom: 20px; }
 .form-label { font-weight: bold; margin-bottom: 8px; display: block; color: #333; }
-.form-control { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+.form-control, textarea.form-control { width: 100%; padding: 10px; border: 1px solid #031225 !important; border-radius: 4px; box-sizing: border-box; }
 
 .file-mockup {
     display: flex;
@@ -56,4 +56,9 @@
     cursor: pointer;
     font-size: 14px;
     box-sizing: border-box;
+}
+
+/* 첨부파일 박스 테두리선 남색 변경 */
+.issues-file-box {
+    border: 1px solid #031225 !important;
 }

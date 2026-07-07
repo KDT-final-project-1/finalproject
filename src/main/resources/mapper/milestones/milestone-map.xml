@@ -49,6 +49,7 @@
     LEFT JOIN ISSUE_STATUS g ON i.ISSUE_STATUS_ID = g.ISSUE_STATUS_ID
     WHERE i.PROJECT_ID = #{projectId}
       AND i.MILESTONE_ID IS NULL
+      AND NVL(g.closed_yn, 'N') != 'Y'
 
     <if test="keyword != null and keyword != ''">
         AND (

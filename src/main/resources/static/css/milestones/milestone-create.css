@@ -10,7 +10,7 @@
 .form-group { margin-bottom: 20px; }
 .form-group label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 8px; color: #333333; }
 .required { color: #e12503; }
-.form-control { width: 100%; padding: 10px 15px; font-size: 14px; line-height: 1.5; color: #555555; background-color: #fff; border: 1px solid #cccccc; border-radius: 3px; box-sizing: border-box; transition: border-color 0.15s; }
+.form-control, textarea.form-control { width: 100%; padding: 10px 15px; font-size: 14px; line-height: 1.5; color: #555555; background-color: #fff; border: 1px solid #031225 !important; border-radius: 3px; box-sizing: border-box; transition: border-color 0.15s; }
 .form-control:focus { border-color: #006df0; outline: 0; }
 textarea.form-control { height: 160px; resize: vertical; }
 
@@ -19,9 +19,9 @@ textarea.form-control { height: 160px; resize: vertical; }
 .error-text { color: #e12503; font-size: 12px; margin-top: 5px; }
 
 /* 일감 섹션 */
-.issue-section { margin-top: 30px; padding: 20px; background-color: #f9f9f9; border: 1px solid #eeeeee; border-radius: 3px; }
+.issue-section { margin-top: 30px; padding: 20px; background-color: #f9f9f9; border: 1px solid #031225; border-radius: 3px; }
 .issue-section h3 { margin-top: 0; margin-bottom: 15px; font-size: 16px; color: #333333; font-weight: 600; }
-.issue-list-container { margin-top: 10px; min-height: 180px; max-height: 220px; overflow-y: auto; background: white; border: 1px solid #eeeeee; border-radius: 3px; }
+.issue-list-container { margin-top: 10px; min-height: 180px; max-height: 220px; overflow-y: auto; background: white; border: 1px solid #031225; border-radius: 3px; }
 
 .panel-footer { padding: 15px 20px; background-color: #f9f9f9; border-top: 1px solid #eeeeee; display: flex; justify-content: space-between; align-items: center; border-radius: 0 0 3px 3px; }
 .right-buttons { display: flex; gap: 10px; }
@@ -37,7 +37,7 @@ textarea.form-control { height: 160px; resize: vertical; }
     max-height: 250px;
     overflow-y: auto;
     background-color: #ffffff;
-    border: 1px solid #cccccc;
+    border: 1px solid #031225;
     border-top: none;
     border-radius: 0 0 5px 5px; /* 아래쪽만 둥글게 */
     box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 살짝 그림자 */

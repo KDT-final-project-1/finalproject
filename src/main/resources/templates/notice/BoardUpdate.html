@@ -62,6 +62,11 @@
                         </div>
 
                         <div class="board-page-footer">
+                            <a href="javascript:void(0)" 
+                               id="btnSubmit" 
+                               class="btn btn-custon-rounded-four custom-default-btn">
+                                수정
+                            </a>
                             <a th:href="@{/project/{projectId}/notice/BoardDelete(projectId=${projectId}, boardId=${board.boardId})}"
                                class="btn btn-custon-rounded-four btn-danger custom-btn"
                                id="btnDeleteBoard"
@@ -72,11 +77,6 @@
                                class="btn btn-custon-rounded-four custom-white-btn"
                                id="btnCancelBoard">
                                 취소
-                            </a>
-                            <a href="javascript:void(0)" 
-                               id="btnSubmit" 
-                               class="btn btn-custon-rounded-four custom-default-btn">
-                                수정
                             </a>
                         </div>
                     </form>

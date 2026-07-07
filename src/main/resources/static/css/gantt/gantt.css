@@ -6,9 +6,17 @@
 #gantt_container {
     width: 100%;
     /* height는 dhtmlxGantt의 autosize="y" 설정에 의해 동적으로 자동 계산 및 부여됩니다. */
-    border: 1px solid #e2e8f0;
+    border: 1px solid #031225;
     border-radius: 6px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    /* dhtmlxGantt 내부 선 색상 테마(#031225) 변수 오버라이드 */
+    --dhx-gantt-base-colors-border: #031225;
+    --dhx-gantt-base-colors-border-light: #031225;
+    --dhx-gantt-default-border: 1px solid #031225;
+    --dhx-gantt-task-row-border: 1px solid #031225;
+    --dhx-gantt-scale-border-horizontal: 1px solid #031225;
+    --dhx-gantt-scale-border-vertical: 1px solid #031225;
 }
 
 /* ==========================================================================
@@ -233,4 +241,19 @@
     background-color: #f0f0f0 !important;
     border-color: #555555 !important;
     color: #222222 !important;
+}
+
+/* ==========================================================================
+   간트차트 상단 헤더(표 헤더 & 타임라인 헤더) 남색 테마 적용
+   ========================================================================== */
+.gantt_grid_scale, 
+.gantt_task_scale {
+    background-color: #031225 !important;
+    color: #ffffff !important;
+}
+
+.gantt_grid_scale .gantt_grid_head_cell,
+.gantt_task_scale .gantt_scale_cell {
+    color: #ffffff !important;
+    font-weight: 600 !important;
 }
