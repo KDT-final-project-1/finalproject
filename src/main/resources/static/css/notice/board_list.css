@@ -48,7 +48,7 @@
 /* 게시판 목록 테이블 영역 */
 .dashboard-section {
     background: #fff;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #031225;
     border-radius: 8px;
     margin-bottom: 0;
     overflow: hidden;
@@ -57,10 +57,10 @@
 .section-title {
     margin: 0;
     padding: 15px 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #e0e0e0;
+    background-color: #031225;
+    border-bottom: 1px solid #031225;
     font-size: 16px;
-    color: #333;
+    color: #ffffff;
 }
 
 .table-responsive {
@@ -78,15 +78,16 @@
     text-align: left;
     font-weight: 600;
     font-size: 13px;
-    color: #555;
-    border-bottom: 1px solid #eee;
+    color: #333333;
+    border-bottom: 1px solid #031225;
 }
 
 .board-table td {
     padding: 15px 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #031225;
     font-size: 14px;
     vertical-align: middle;
+    background-color: #ffffff;
 }
 
 .board-table tbody tr:hover {
@@ -143,7 +144,7 @@
 
 .widget-card {
     background: #fff;
-    border: 1px solid #e0e0e0;
+    border: 1px solid #031225;
     border-radius: 8px;
     overflow: hidden;
 }

@@ -34,14 +34,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 
                 // 상태별 갯수 누적
                 const statusName = issue.issueStatusName || '미지정';
-                if (statusName.includes('완료') || issue.progressRate === 100) {
-                    statusStats['완료']++;
-                } else if (statusName.includes('진행') || statusName.includes('진행중')) {
-                    statusStats['진행중']++;
-                } else if (statusName.includes('예정') || statusName.includes('대기')) {
+                if (issue.progressRate === 100) {
+                    statusStats['완료']++; 
+                } else if (issue.progressRate === 0) {
                     statusStats['진행예정']++;
                 } else {
-                    statusStats['기타']++;
+                    statusStats['진행중']++;
                 }
             });
         }
@@ -128,9 +126,9 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // --- [5] 두 번째 차트 (일감 상태별 분포) ---
-    const statusLabels = ['진행예정', '진행중', '완료', '기타'];
-    const statusData = [statusStats['진행예정'], statusStats['진행중'], statusStats['완료'], statusStats['기타']];
-    const colors = ['#94a3b8', '#6366f1', '#22c55e', '#a855f7']; // 파스텔 뱃지색에 일치하도록 보정
+    const statusLabels = ['진행예정', '진행중', '완료'];
+    const statusData = [statusStats['진행예정'], statusStats['진행중'], statusStats['완료']];
+    const colors = ['#94a3b8', '#6366f1', '#22c55e']; // 파스텔 뱃지색에 일치하도록 보정
 
     const ctxStatus = document.getElementById('statusChart').getContext('2d');
     new Chart(ctxStatus, {
