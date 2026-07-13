@@ -16,7 +16,7 @@
     </td>
    <td align="center"><a href=https://github.com/ryusongji><img src="https://avatars.githubusercontent.com/u/53076307?v=4" width="100px;" alt=""/><br /><sub><b>류송지</b></sub></a><br />
      </td>
-    <td align="center"><a href=https://github.com/tjdtn7897-commits><img src="https://avatars.githubusercontent.com/u/258706359?v=4" width="100px;" alt=""/><br /><sub><b>김태</b></sub></a><br />
+    <td align="center"><a href=https://github.com/tjdtn7897-commits><img src="https://avatars.githubusercontent.com/u/258706359?v=4" width="100px;" alt=""/><br /><sub><b>김태윤</b></sub></a><br />
     </td>
     <td align="center"><a href=https://github.com/kdm9244><img src="https://avatars.githubusercontent.com/u/86937594?v=4" width="100px;" alt=""/><br /><sub><b>김덕모</b></sub></a><br />
     </td>
