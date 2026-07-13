@@ -39,8 +39,22 @@
 </table>
 
 ---
+## 프로젝트 미리보기
 
-## 📌 프로젝트 소개
+### 메인 화면
+
+
+### 시스템 구성도
+
+
+### 자료 흐름도
+
+
+### ERD
+
+---
+
+## 프로젝트 개요
 
 ### 개발 동기
 기존 Redmine을 사용하며 겪었던 오래된 UI, 번거로운 프로젝트 설정 과정, 부족한 실시간 협업 기능 등의 불편함을 해결하기 위해 시작된 프로젝트입니다.
@@ -58,87 +72,7 @@ http://pixcel.cloud/
 
 ### 프로젝트 기간
 2026.06.08 ~ 2026.07.14
----
-
-## 👥 팀원 및 역할
-
-| 이름 | 역할 | 담당 기능 |
-|------|------|-----------|
-| 고동현 | 팀장, 운영 | 회원가입 및 로그인, 역할 및 권한 관리, 구성원/그룹 관리, 테스트 케이스 및 버그 관리 |
-| 신재성 | 부팀장, 배포 | 기존 정보(코드 값·일감상태·일감유형) 설정, 업무 흐름, 일감(작업내역·소요시간·보고서) |
-| 김태윤 | GitHub | 프로젝트, 자료실, 저장소(Git 연동) |
-| 김덕모 | DB | 마이페이지, 로드맵, 마일스톤, 간트차트, 게시판 |
-| 류송지 | 개발환경 | 헤더/사이드바, 문서 관리, 위키, 달력 |
-
----
-
-## 🛠 기술 스택
-
-### Backend
-- Java
-- Spring Boot
-- Spring Security
-- Spring MVC
-- MyBatis
-
-### Frontend
-- HTML / CSS / JavaScript
-- Thymeleaf
-
-### Database
-- Oracle
-
-### 형상관리 / 협업
-- Git / GitHub
-- GitHub REST API 연동 (저장소 동기화 등)
-
-> ⚠️ 기획·디자인 툴, IDE, 배포 환경 등은 발표자료의 아이콘을 기준으로 추정한 항목이 포함되어 있어 실제 사용 도구와 다를 수 있습니다. 정확한 목록으로 업데이트해 주세요.
-
----
-
-## ⚙️ 주요 기능
-
-### 1. 회원/권한 관리
-- 로그인 인증, 쿠키/세션 기반 사용자 정보 관리
-- 역할(Role) 생성/삭제/복사, 역할별 권한 관리
-- 구성원 및 그룹 관리 (추가/수정/삭제, 그룹 배정)
-
-### 2. 일감(이슈) 관리
-- 공통 코드값 · 일감 상태 · 일감 유형 관리
-- 업무 흐름(상태 전환) 설정
-- 일감 생성/조회/수정, 소요시간 및 작업내역 등록, 일감 보고서
-
-### 3. 프로젝트 관리
-- 프로젝트 생성/조회/모듈 설정
-- 자료실 (파일 등록 및 조회)
-- 저장소(Repository) Git 연동, 커밋 내역 조회, 코드 다운로드
-
-### 4. 일정 관리
-- 마일스톤 생성/수정/완료 처리
-- 로드맵 생성 및 진행 관리
-- 간트차트 조회
-- 달력을 통한 일정 확인
-
-### 5. 협업 도구
-- 게시판
-- 실시간 위키 (생성/편집/히스토리/버전 복원)
-- 문서 관리 (카테고리, 버전 관리, 다운로드 이력)
-- 헤더/사이드바 (구독 여부 및 프로젝트 모듈에 따른 동적 변화)
-
-### 6. 테스트 관리
-- 테스트 케이스 생성/조회
-- 테스트 수행 결과 관리
-- 버그 등록 및 목록 관리
-
----
-
-## 🗄 데이터베이스 구성
-
-프로젝트(Project)를 중심으로 사용자(User), 일감(Issue), 위키(Wiki), 게시판(Board), 문서(Document), 파일(File), 테스트(Test) 등의 도메인이 연결되는 구조입니다. (상세 ERD는 발표자료 참고)
-
----
-
-## 🚀 개발 절차
+### 개발 절차
 
 | 단계 | 기간 | 주요 활동 |
 |------|------|-----------|
@@ -150,38 +84,364 @@ http://pixcel.cloud/
 | 배포 | 07.08 - 07.13 | 배포 프로세스 최적화, 통합 시나리오 작성 |
 
 ---
+## 주요 기능
 
-## 🎥 시연 영상
+### 관리자
+- 로그인
+- 구독 인증
+- 코드값 생성 / 관리
+- 일감 유형 / 상태 생성 / 관리
+- 역할 생성 / 관리
+- 업무흐름 관리
 
-> 링크를 추가해 주세요.
+### 프로젝트
+- 프로젝트 생성 / 관리
+- 구성원 등록 / 관리
+- 그룹 생성 / 관리
+- 로드맵 생성 / 관리
+
+### 일감
+- 일감 생성 / 관리
+- 작업내역
+- 소요시간 생성 / 관리
+- 하위일감 생성 / 관리
+- 마일스톤 생성 / 관리
+
+### 현황 보고
+- 일감보고서
+- 달력
+- 간트차트
+
+### 보조 기능
+- 위키
+- 문서
+- 저장소 동기화
+- 게시판
+- 테스트 / 버그
+- 자료실
 
 ---
 
-## 📝 자체 평가
+## 업무 흐름
 
-**총점: 90점**
+### 관리자
+1. 관리자가 로그인 후 구독 인증을 진행합니다.
+2. 관리 메뉴를 생성 및 관리합니다.
+3. 프로젝트를 생성 및 관리합니다.
+4. 로드맵을 생성 및 관리합니다.
 
-레드마인이라는 참고 툴이 있음에도 어떤 기능을 참고하고 어떤 부분을 개선할지 설계하는 단계에서 많은 어려움이 있었고, 실제 개발 과정에서도 설계 관련 문제가 다수 발생했습니다. 하지만 팀원들과 지속적으로 소통하고 협업하며 문제를 하나씩 해결해 나갔고, 최종적으로 만족스러운 완성도의 결과물을 완성했습니다.
+### 팀장
+1. 팀장이 로그인 후 일감을 생성합니다.
+2. 마일스톤 적용 여부에 따라 분기됩니다.
+   - **미적용** 시 바로 일감 관리로 이동합니다.
+   - **적용** 시 마일스톤을 생성 및 관리한 후 일감 관리로 이동합니다.
 
----
-
-## ✅ 커밋 메시지 규칙
-
-```
-이름/작업내역/YYYYmmdd
-```
-
-- **이름**: 작업자 이름 (예: 고동현, 신재성, 김태윤, 김덕모, 류송지)
-- **작업내역**: 이번 커밋에서 수행한 작업을 간단히 요약
-- **YYYYmmdd**: 커밋(작업) 날짜 8자리 (예: 20260713)
-
-### 예시
-```
-김태윤/저장소Git연동오류수정/20260702
-```
+### 팀원
+1. 팀원이 로그인 후 일감 보고서를 확인합니다.
+2. 나의 일감을 관리합니다.
+3. 소요시간을 등록 및 관리합니다.
 
 ---
 
-## 📄 라이선스
+## 기술 스택
 
-라이선스 정보를 추가해 주세요.
+### 기획 & 디자인
+- Google Sheets / Google Docs / Google Drive
+- Figma
+- ERD Cloud
+
+### IDE
+- Eclipse
+- DBeaver
+
+### 형상관리
+- GitHub
+
+### 배포
+- Jenkins
+- Docker
+- AWS
+
+### DB
+- Oracle
+
+### 프론트엔드
+- HTML / CSS / JavaScript
+- Bootstrap
+- SweetAlert2
+
+### 백엔드
+- Java
+- Spring
+- JPA
+- MyBatis
+
+### 외부 라이브러리
+- FullCalendar
+- Tiptap
+- Websockets
+- Y.js
+- DHX Gantt
+- Webpack
+---
+
+## 기술 스택 시각화
+
+| 구분 | 사용 기술 |
+|------|----------|
+| Frontend | ![Vue](https://img.shields.io/badge/Vue%203-4FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white),![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white),![PrimeVue](https://img.shields.io/badge/PrimeVue-3B82F6?style=for-the-badge&logo=vue.js&logoColor=white),![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white) |
+| Backend | ![Node.js](https://img.shields.io/badge/Node.js-5FA04E?style=for-the-badge&logo=nodedotjs&logoColor=white),![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white) |
+| Database | ![MariaDB](https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white) |
+| Dev Tools | <img src="https://img.shields.io/badge/아이콘내용-바탕색?style=flat&logo=vscode&logoColor=white"/>, MySQL Workbench |
+| Collaboration | ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white),![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)|
+| Deployment | ![Naver Cloud](https://img.shields.io/badge/NCP-03C75A?style=for-the-badge&logo=naver&logoColor=white),![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white),![PM2](https://img.shields.io/badge/PM2-2B037A?style=for-the-badge&logo=pm2&logoColor=white),![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white) |
+
+
+---
+
+## 프로젝트 구조
+
+```bash
+finalproject/
+├── src/main/java/com/pixcel/app/
+│   ├── bug/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── calendar/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── categories/
+│   │   └── web/
+│   ├── codevalue/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── common/
+│   │   └── web/
+│   ├── config/
+│   ├── dashboard/
+│   │   └── web/
+│   ├── document/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── file/
+│   │   ├── config/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   └── service/impl/
+│   ├── gantt/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── group/
+│   │   └── web/
+│   ├── issues/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── issuestatus/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── issuetype/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── kanban/
+│   │   └── web/
+│   ├── manage/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── members/
+│   │   └── web/
+│   ├── milestones/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── notice/
+│   │   ├── entity/
+│   │   ├── mapper/
+│   │   ├── repository/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── permissions/
+│   │   └── web/
+│   ├── priorities/
+│   │   └── web/
+│   ├── project/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── repository/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── roadmap/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── roles/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── sourcerepository/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── team/
+│   │   ├── service/
+│   │   └── web/
+│   ├── test/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── testcase/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── testexecution/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── timelog/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── user/
+│   │   └── security/
+│   ├── users/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── version/
+│   │   └── web/
+│   ├── websocket/
+│   ├── wiki/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   ├── workflow/
+│   │   ├── mapper/
+│   │   ├── service/
+│   │   ├── service/impl/
+│   │   └── web/
+│   └── workhistory/
+│       ├── mapper/
+│       ├── service/
+│       ├── service/impl/
+│       └── web/
+│
+├── src/main/resources/
+│   ├── mapper/
+│   │   ├── bug/
+│   │   ├── calendar/
+│   │   ├── categories/
+│   │   ├── codevalue/
+│   │   ├── dashboard/
+│   │   ├── document/
+│   │   ├── file/
+│   │   ├── gantt/
+│   │   ├── group/
+│   │   ├── issues/
+│   │   ├── issuestatus/
+│   │   ├── issuetype/
+│   │   ├── kanban/
+│   │   ├── manage/
+│   │   ├── members/
+│   │   ├── milestones/
+│   │   ├── notice/
+│   │   ├── permissions/
+│   │   ├── priorities/
+│   │   ├── project/
+│   │   ├── repository/
+│   │   ├── roadmap/
+│   │   ├── roles/
+│   │   ├── sourcerepository/
+│   │   ├── team/
+│   │   ├── test/
+│   │   ├── testcases/
+│   │   ├── testexecution/
+│   │   ├── timelog/
+│   │   ├── timetracking/
+│   │   ├── users/
+│   │   ├── version/
+│   │   ├── wiki/
+│   │   ├── workflow/
+│   │   ├── workflows/
+│   │   └── workhistory/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── fonts/
+│   │   ├── img/
+│   │   ├── js/
+│   │   └── pdf/
+│   ├── templates/
+│   │   ├── bug/
+│   │   ├── calendar/
+│   │   ├── categories/
+│   │   ├── codevalue/
+│   │   ├── common/
+│   │   │   ├── configs/
+│   │   │   ├── fragments/
+│   │   │   └── layouts/
+│   │   ├── dashboard/
+│   │   ├── document/
+│   │   ├── gantt/
+│   │   ├── group/
+│   │   ├── issues/
+│   │   ├── issuestatus/
+│   │   ├── issuetype/
+│   │   ├── kanban/
+│   │   ├── manage/
+│   │   ├── members/
+│   │   ├── milestones/
+│   │   ├── notice/
+│   │   ├── permissions/
+│   │   ├── priorities/
+│   │   ├── project/
+│   │   ├── repository/
+│   │   ├── roadmap/
+│   │   ├── roles/
+│   │   ├── sourcerepository/
+│   │   ├── team/
+│   │   ├── test/
+│   │   ├── testcase/
+│   │   ├── timelog/
+│   │   ├── timetracking/
+│   │   ├── users/
+│   │   ├── version/
+│   │   ├── wiki/
+│   │   ├── workflow/
+│   │   ├── workflows/
+│   │   └── workhistory/
+│   └── application.properties
+│
+├── Dockerfile
+├── pom.xml
+├── webpack.config.js
+└── README.md
