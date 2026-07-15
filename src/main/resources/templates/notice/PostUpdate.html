@@ -5,7 +5,7 @@
       layout:decorate="~{common/layouts/default_layout}">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 수정</title>
+    <title>投稿編集</title>
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/common-ui.css}">
     <link rel="stylesheet" th:href="@{/css/issues/issues.css}">
@@ -18,7 +18,7 @@
         <div class="board-page-panel">
             <div class="board-page-header">
                 <div>
-                    <h3 class="board-page-title">게시글 수정</h3>
+                    <h3 class="board-page-title">投稿編集</h3>
                 </div>
             </div>
             <div class="board-page-body">
@@ -27,18 +27,18 @@
             <input type="hidden" name="boardId" th:value="${post.boardId}">
             
             <div class="form-group">
-                <label class="form-label">제목 *</label>
-                <input type="text" id="title" name="title" th:value="${post.title}" class="form-control" placeholder="제목을 입력하세요" required>
+                <label class="form-label">タイトル *</label>
+                <input type="text" id="title" name="title" th:value="${post.title}" class="form-control" placeholder="タイトルを入力してください" required>
             </div>
             
             <div class="form-group">
-                <label class="form-label">설명</label>
-                <textarea id="content" name="content" class="form-control" rows="10" th:text="${post.content}" required placeholder="설명을 입력하세요"></textarea>
+                <label class="form-label">内容</label>
+                <textarea id="content" name="content" class="form-control" rows="10" th:text="${post.content}" required placeholder="内容を入力してください"></textarea>
             </div>
             
             <!-- 기존 첨부파일 목록 (일감 스타일 슬림 리스트 유지) -->
             <div class="file-section" th:if="${files != null and not #lists.isEmpty(files)}">
-                <h3>기존 첨부파일</h3>
+                <h3>既存の添付ファイル</h3>
                 <ul class="issues-detail-file-list" id="existingFileList">
                     <li class="issues-file-item" th:each="file : ${files}" th:id="|file-item-${file.fileId}|">
                         <div class="issues-file-name-wrapper">
@@ -54,22 +54,22 @@
             </div>
 
             <div class="form-group">
-                <label class="form-label">신규 첨부파일</label>
+                <label class="form-label">新規添付ファイル</label>
                 <div class="issues-file-box">
                     <div>
                         <label for="fileInput" class="btn btn-custon-rounded-four custom-white-btn issues-file-select">
-                            파일 선택
+                            ファイル選択
                         </label> 
                         <input type="file" id="fileInput" name="files" multiple class="issues-file-input"> 
-                        <span id="fileCount" class="issues-file-count">파일 0개</span>
+                        <span id="fileCount" class="issues-file-count">ファイル 0個</span>
                     </div>
                     <ul id="fileList" class="issues-file-list"></ul>
                 </div>
             </div>
             
             <div class="board-page-footer">
-                <a th:href="@{/project/{projectId}/notice/post_detail(projectId=${projectId}, boardId=${boardId}, postId=${post.postId})}" class="btn btn-custon-rounded-four custom-white-btn">취소</a>
-                <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">수정 등록</button>
+                <a th:href="@{/project/{projectId}/notice/post_detail(projectId=${projectId}, boardId=${boardId}, postId=${post.postId})}" class="btn btn-custon-rounded-four custom-white-btn">キャンセル</a>
+                <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">保存</button>
             </div>
         </form>
             </div>
@@ -85,9 +85,9 @@
         /*<![CDATA[*/
         function removeExistingFile(fileId) {
             window.PFDialog.confirm({
-                title: '파일 삭제 확인',
-                message: '이 첨부파일을 삭제 목록에 추가하시겠습니까? (수정 등록 시 실제 삭제됩니다)',
-                confirmText: '추가',
+                title: 'ファイル削除確認',
+                message: 'この添付ファイルを削除リストに追加しますか？（保存時に実際に削除されます）',
+                confirmText: '追加',
                 icon: 'warning'
             }).then(function(confirmed) {
                 if (confirmed) {
@@ -112,9 +112,9 @@
                     if (editForm.dataset.pfUpdateApproved !== 'true') {
                         e.preventDefault();
                         window.PFDialog.confirm({
-                            title: '수정 확인',
-                            message: '게시글 수정 내용을 저장하시겠습니까?',
-                            confirmText: '저장',
+                            title: '編集確認',
+                            message: '投稿の編集内容を保存しますか？',
+                            confirmText: '保存',
                             icon: 'question'
                         }).then(function(confirmed) {
                             if (confirmed) {

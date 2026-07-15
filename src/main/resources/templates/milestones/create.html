@@ -6,7 +6,7 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <title>새 마일스톤 생성</title>
+    <title>新規マイルストーン作成</title>
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-create.css}" />
@@ -18,7 +18,7 @@
           
           <div class="milestone-page-header">
             <div>
-              <h3 class="milestone-page-title">새 마일스톤 생성</h3>
+              <h3 class="milestone-page-title">新規マイルストーン作成</h3>
             </div>
           </div>
           <div class="milestone-page-body">
@@ -40,35 +40,35 @@
             <div class="content-row">
               <div class="content-left">
                 <div class="form-group">
-                  <label>제목 <span class="required">*</span></label>
+                  <label>タイトル <span class="required">*</span></label>
                   <input
                     type="text"
                     id="title"
                     name="title"
                     class="form-control required-input"
-                    placeholder="마일스톤 제목을 입력하세요"
+                    placeholder="マイルストーンのタイトルを入力してください"
                   />
                 </div>
 
                 <div class="form-group">
-                  <label>설명</label>
+                  <label>説明</label>
                   <textarea
                     id="description"
                     name="description"
                     class="form-control"
-                    placeholder="마일스톤의 목표와 상세 내용을 적어주세요."
+                    placeholder="マイルストーンの目標と詳細な内容を記入してください。"
                   ></textarea>
                 </div>
 
                 <div class="issue-section">
-                  <h3>일감 연결</h3>
+                  <h3>タスクの関連付け</h3>
                   <div class="issue-search-group" style="position: relative">
                     <input
                       type="text"
                       id="issueSearchInput"
                       class="form-control"
                       autocomplete="off"
-                      placeholder="일감 제목 또는 버전 입력..."
+                      placeholder="タスクのタイトルまたはバージョンを入力..."
                     />
 
                     <ul
@@ -90,7 +90,7 @@
                               padding: 30px 10px;
                             "
                           >
-                            상단 검색창을 통해 연결할 일감을 찾아보세요.
+                            上部の検索ウィンドウから関連付けるタスクを検索してください。
                           </td>
                         </tr>
                       </tbody>
@@ -101,13 +101,13 @@
 
               <div class="content-right">
                 <div class="form-group">
-                  <label>담당자 <span class="required">*</span></label>
+                  <label>担当者 <span class="required">*</span></label>
                   <select
                     id="managerId"
                     name="managerId"
                     class="form-control required-input"
                   >
-                    <option value="">담당자 선택</option>
+                    <option value="">担当者を選択</option>
                     <option
                       th:each="manager : ${managerList}"
                       th:value="${manager.userId}"
@@ -118,9 +118,9 @@
 
                 <!-- 📝 버전(로드맵) 선택 필드 신설 (담당자 하단 위치) -->
                 <div class="form-group">
-                  <label>연결할 버전 (로드맵) <span class="required">*</span></label>
+                  <label>関連付けるバージョン (ロードマップ) <span class="required">*</span></label>
                   <select id="versionId" name="versionId" class="form-control required-input">
-                    <option value="">버전 선택</option>
+                    <option value="">バージョンを選択</option>
                     <option th:each="roadmap : ${roadmapList}"
                             th:if="${roadmap.statusCode != 'k003'}"
                             th:value="${roadmap.versionId}"
@@ -129,31 +129,31 @@
                 </div>
 
                 <div class="form-group">
-                  <label>상태 <span class="required">*</span></label>
+                  <label>ステータス <span class="required">*</span></label>
                   <select
                     id="statusCode"
                     name="statusCode"
                     class="form-control required-input"
                   >
-                    <option value="">상태 선택</option>
-                    <option value="L001">진행 예정</option>
-                    <option value="L002">진행 중</option>
+                    <option value="">ステータスを選択</option>
+                    <option value="L001">進行予定</option>
+                    <option value="L002">進行中</option>
                   </select>
                 </div>
 
 				<div class="form-group">
-				    <label>시작일 <span class="required">*</span></label>
+				    <label>開始日 <span class="required">*</span></label>
 				    <input type="date" id="startDate" name="startDate" class="form-control required-input date-input"
 				           th:min="${#dates.format(project.startDate, 'yyyy-MM-dd')}"
 				           th:max="${#dates.format(project.endDate, 'yyyy-MM-dd')}">
 				    
 				    <div id="startDatePastError" class="error-text" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;">
-				        시작일은 오늘 날짜 이전으로 설정할 수 없습니다.
+				        開始日は今日より前の日付に設定することはできません。
 				    </div>
 				</div>
 
                 <div class="form-group">
-                  <label>목표 일자 <span class="required">*</span></label>
+                  <label>目標期限 <span class="required">*</span></label>
                   <input
                     type="date"
                     id="endDate"
@@ -163,7 +163,7 @@
                     th:max="${#dates.format(project.endDate, 'yyyy-MM-dd')}"
                   />
                   <div id="dateError" class="error-text" style="display: none">
-                    시작일은 목표 일자보다 늦을 수 없습니다.
+                    開始日は目標期限より遅くすることはできません。
                   </div>
                 </div>
               </div>
@@ -177,9 +177,9 @@
                 class="btn btn-custon-rounded-four custom-white-btn"
                 onclick="history.back()"
               >
-                취소
+                キャンセル
               </button>
-              <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">저장하기</button>
+              <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">保存</button>
             </div>
           </div>
         </form>

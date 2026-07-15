@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let totalProgressSum = 0;      // 진행률 총합
     let totalEstimateSum = 0;      // 총 예상 소요시간
     let totalHoursSum = 0;         // 총 실제 소요시간
-    const statusStats = { '완료': 0, '진행중': 0, '진행예정': 0, '기타': 0 };
+    const statusStats = { '完了': 0, '進行中': 0, '進行予定': 0, '기타': 0 };
 
     // 로드맵 데이터 루프 돌면서 계산
     roadmapData.milestoneList.forEach(milestone => {
@@ -33,13 +33,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 totalHoursSum += (issue.hours || 0);             // 실제시간 누적
                 
                 // 상태별 갯수 누적
-                const statusName = issue.issueStatusName || '미지정';
+                const statusName = issue.issueStatusName || '未指定';
                 if (issue.progressRate === 100) {
-                    statusStats['완료']++; 
+                    statusStats['完了']++; 
                 } else if (issue.progressRate === 0) {
-                    statusStats['진행예정']++;
+                    statusStats['進行予定']++;
                 } else {
-                    statusStats['진행중']++;
+                    statusStats['進行中']++;
                 }
             });
         }
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- [1] 최상단 헤더 요약 정보 업데이트 ---
     const headerTotalIssues = document.getElementById('headerTotalIssues');
     if (headerTotalIssues) {
-        headerTotalIssues.innerText = totalIssues + '개'; // 전체 일감 갯수 입력
+        headerTotalIssues.innerText = totalIssues + '個'; // 전체 일감 갯수 입력
         document.getElementById('headerTotalEstimate').innerText = totalEstimateSum;
         document.getElementById('headerTotalHours').innerText = totalHoursSum;
     }
@@ -83,9 +83,9 @@ document.addEventListener("DOMContentLoaded", function() {
     if (btnComplete) {
         btnComplete.addEventListener("click", function() {
             window.PFDialog.confirm({
-                title: '로드맵 완료',
-                message: '완료를 누르시면 더 이상 수정이 안됩니다. 계속하시겠습니까?',
-                confirmText: '완료',
+                title: 'ロードマップ完了',
+                message: '完了ボタンを押すと編集できなくなります。続行しますか？',
+                confirmText: '完了',
                 icon: 'warning'
             }).then(function(confirmed) {
                 if (confirmed) {
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // --- [3] 우측 차트 텍스트 업데이트 ---
     document.getElementById('mainProgressText').innerText = avgProgress + '%';
     document.getElementById('progressBreakdownText').innerHTML = 
-        `완료 ${statusStats['완료']}개 | 진행중 ${statusStats['진행중']}개 | 예정 ${statusStats['진행예정']}개`;
+        `完了 ${statusStats['完了']}個 | 進行中 ${statusStats['進行中']}個 | 予定 ${statusStats['進行予定']}個`;
     document.getElementById('totalIssueCount').innerText = totalIssues;
 
     // --- [4] 첫 번째 차트 (로드맵 총 진행률) ---
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
     new Chart(ctxProgress, {
         type: 'doughnut',
         data: {
-            labels: ['완료', '잔여'],
+            labels: ['完了', '残り'],
             datasets: [{
                 data: [avgProgress, 100 - avgProgress],
                 backgroundColor: ['#6366f1', '#e2e8f0'], // 남색 -> Indigo 테마 통일
@@ -126,8 +126,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     // --- [5] 두 번째 차트 (일감 상태별 분포) ---
-    const statusLabels = ['진행예정', '진행중', '완료'];
-    const statusData = [statusStats['진행예정'], statusStats['진행중'], statusStats['완료']];
+    const statusLabels = ['進行予定', '進行中', '完了'];
+    const statusData = [statusStats['進行予定'], statusStats['進行中'], statusStats['完了']];
     const colors = ['#94a3b8', '#6366f1', '#22c55e']; // 파스텔 뱃지색에 일치하도록 보정
 
     const ctxStatus = document.getElementById('statusChart').getContext('2d');
@@ -176,77 +176,77 @@ document.addEventListener("DOMContentLoaded", function() {
 	        // 시간(시/분/초)을 제외하고 오늘 날짜를 00:00:00으로 세팅 (순수 날짜 비교용)
 	        const todayDate = new Date();
 	        todayDate.setHours(0, 0, 0, 0);
-
-	        // 1. 완료되지 않은 일감 수집 및 D-Day 계산
-	        roadmapData.milestoneList.forEach(milestone => {
-	            if(milestone.issueList) {
-	                milestone.issueList.forEach(issue => {
-	                    if (!issue.issueId) return; // 📝 수정: 빈 일감 객체 필터링
-	                    const statusName = issue.issueStatusName || '';
-	                    
-	                    // 완료 상태거나 진척도가 100%면 제외, 목표일자가 없으면 제외
-	                    if (!statusName.includes('완료') && issue.progressRate !== 100 && issue.dueDate) {
-	                        
-	                        const targetDate = new Date(issue.dueDate);
-	                        targetDate.setHours(0, 0, 0, 0);
-
-	                        // 밀리초(ms) 단위 차이를 일(day) 단위로 변환
-	                        const diffTime = targetDate.getTime() - todayDate.getTime();
-	                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-	                        pendingIssues.push({
-	                            title: issue.title,
-	                            dueDate: issue.dueDate,
-	                            status: statusName,
-	                            dDay: diffDays
-	                        });
-	                    }
-	                });
-	            }
-	        });
-
-	        // 2. D-Day 오름차순 정렬 (마감일이 제일 가까운 순, 지연된 과거 날짜 포함)
-	        pendingIssues.sort((a, b) => a.dDay - b.dDay);
-
-	        // 3. 상위 3개만 추출 (Top 3)
-	        const topIssues = pendingIssues.slice(0, 3);
-
-	        // 4. 화면에 그리기 (렌더링)
-	        if (topIssues.length === 0) {
-	            upcomingContainer.innerHTML = '<div style="text-align:center; color:#999; padding: 30px 0;">진행 중인 일감이 없습니다.</div>';
-	        } else {
-	            let htmlStr = '';
-	            topIssues.forEach(item => {
-	                let dDayText = '';
-	                let colorClass = '';
-
-	                if (item.dDay < 0) {
-	                    dDayText = `지연 (D+${Math.abs(item.dDay)})`; 
-	                    colorClass = 'red'; // 이미 지남 (위험)
-	                } else if (item.dDay === 0) {
-	                    dDayText = 'D-Day';
-	                    colorClass = 'red'; // 오늘 당장 (위험)
-	                } else if (item.dDay <= 3) {
-	                    dDayText = `D-${item.dDay}`;
-	                    colorClass = 'red'; // 3일 이내도 빨간색으로 통일하여 위험 강조
-	                } else {
-	                    dDayText = `D-${item.dDay}`;
-	                    colorClass = 'orange'; // 그 외 (안전/주의)
-	                }
-
-	                htmlStr += `
-	                    <div class="upcoming-item border-${colorClass}">
-	                        <div class="upcoming-info">
-	                            <span class="upcoming-title" title="${item.title}">${item.title}</span>
-	                            <span class="upcoming-date">${item.dueDate} (${item.status})</span>
-	                        </div>
-	                        <div class="d-day-badge badge-${colorClass}">${dDayText}</div>
-	                    </div>
-	                `;
-	            });
-	            upcomingContainer.innerHTML = htmlStr;
-	        }
-	    }
+ 
+ 	        // 1. 완료되지 않은 일감 수집 및 D-Day 계산
+ 	        roadmapData.milestoneList.forEach(milestone => {
+ 	            if(milestone.issueList) {
+ 	                milestone.issueList.forEach(issue => {
+ 	                    if (!issue.issueId) return; // 📝 수정: 빈 일감 객체 필터링
+ 	                    const statusName = issue.issueStatusName || '';
+ 	                    
+ 	                    // 완료 상태거나 진척도가 100%면 제외, 목표일자가 없으면 제외
+ 	                    if (!statusName.includes('완료') && !statusName.includes('完了') && issue.progressRate !== 100 && issue.dueDate) {
+ 	                        
+ 	                        const targetDate = new Date(issue.dueDate);
+ 	                        targetDate.setHours(0, 0, 0, 0);
+ 
+ 	                        // 밀리초(ms) 단위 차이를 일(day) 단위로 변환
+ 	                        const diffTime = targetDate.getTime() - todayDate.getTime();
+ 	                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+ 
+ 	                        pendingIssues.push({
+ 	                            title: issue.title,
+ 	                            dueDate: issue.dueDate,
+ 	                            status: statusName,
+ 	                            dDay: diffDays
+ 	                        });
+ 	                    }
+ 	                });
+ 	            }
+ 	        });
+ 
+ 	        // 2. D-Day 오름차순 정렬 (마감일이 제일 가까운 순, 지연된 과거 날짜 포함)
+ 	        pendingIssues.sort((a, b) => a.dDay - b.dDay);
+ 
+ 	        // 3. 상위 3개만 추출 (Top 3)
+ 	        const topIssues = pendingIssues.slice(0, 3);
+ 
+ 	        // 4. 화면에 그리기 (렌더링)
+ 	        if (topIssues.length === 0) {
+ 	            upcomingContainer.innerHTML = '<div style="text-align:center; color:#999; padding: 30px 0;">進行中のタスクがありません。</div>';
+ 	        } else {
+ 	            let htmlStr = '';
+ 	            topIssues.forEach(item => {
+ 	                let dDayText = '';
+ 	                let colorClass = '';
+ 
+ 	                if (item.dDay < 0) {
+ 	                    dDayText = `遅延 (D+${Math.abs(item.dDay)})`; 
+ 	                    colorClass = 'red'; // 이미 지남 (위험)
+ 	                } else if (item.dDay === 0) {
+ 	                    dDayText = 'D-Day';
+ 	                    colorClass = 'red'; // 오늘 당장 (위험)
+ 	                } else if (item.dDay <= 3) {
+ 	                    dDayText = `D-${item.dDay}`;
+ 	                    colorClass = 'red'; // 3일 이내도 빨간색으로 통일하여 위험 강조
+ 	                } else {
+ 	                    dDayText = `D-${item.dDay}`;
+ 	                    colorClass = 'orange'; // 그 외 (안전/주의)
+ 	                }
+ 
+ 	                htmlStr += `
+ 	                    <div class="upcoming-item border-${colorClass}">
+ 	                        <div class="upcoming-info">
+ 	                            <span class="upcoming-title" title="${item.title}">${item.title}</span>
+ 	                            <span class="upcoming-date">${item.dueDate} (${item.status})</span>
+ 	                        </div>
+ 	                        <div class="d-day-badge badge-${colorClass}">${dDayText}</div>
+ 	                    </div>
+ 	                `;
+ 	            });
+ 	            upcomingContainer.innerHTML = htmlStr;
+ 	        }
+ 	    }
 	
 	const colorPalette = [
         { bg: '#e0e7ff', text: '#4f46e5', border: '#c7d2fe' }, // Indigo

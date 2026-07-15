@@ -22,14 +22,14 @@ document.addEventListener("DOMContentLoaded", function() {
         versionIdInput.addEventListener('change', function() {
             if (selectedIssueIds.size > 0) {
                 window.PFDialog.confirm({
-                    title: '버전 변경 확인',
-                    message: '버전을 변경하시면 기존에 선택해 둔 일감 목록이 모두 초기화됩니다. 계속하시겠습니까?',
-                    confirmText: '변경',
+                    title: 'バージョン変更確認',
+                    message: 'バージョンを変更すると、すでに選択されているタスクのリストがすべて初期化されます。続行しますか？',
+                    confirmText: '変更',
                     icon: 'warning'
                 }).then((confirmed) => {
                     if (confirmed) {
                         // 일감 목록 테이블 비우기
-                        issueListBody.innerHTML = `<tr><td class="empty-row" style="text-align: center; color: #999; padding: 30px 10px;">상단 검색창을 통해 연결할 일감을 찾아보세요.</td></tr>`;
+                        issueListBody.innerHTML = `<tr><td class="empty-row" style="text-align: center; color: #999; padding: 30px 10px;">上部の検索ウィンドウから関連付けるタスクを検索してください。</td></tr>`;
                         selectedIssueIds.clear();
                         addedHistoryIds.clear();
                         updateHiddenInput();
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	                  if (issueSearchInput) {
 	                      issueSearchInput.disabled = true;
 	                      issueSearchInput.style.backgroundColor = '#e9ecef';
-	                      issueSearchInput.placeholder = '완료된 마일스톤에는 일감을 추가할 수 없습니다.';
+	                      issueSearchInput.placeholder = '完了したマイルストーンにタスクを追加することはできません。';
 	                  }
  
 	                  // C. 기존 연결된 일감 체크박스 해제 잠금 (연동 해제 방지)
@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	                  if (issueSearchInput) {
 	                      issueSearchInput.disabled = false;
 	                      issueSearchInput.style.backgroundColor = '';
-	                      issueSearchInput.placeholder = '일감 제목 또는 버전 입력...';
+	                      issueSearchInput.placeholder = 'タスクのタイトルまたはバージョンを入力...';
 	                  }
 	                  updateCheckboxUI(); // 일반적인 버전 체크박스 UI 잠금 상태로 갱신
  
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	                  if (issueSearchInput) {
 	                      issueSearchInput.disabled = false;
 	                      issueSearchInput.style.backgroundColor = '';
-	                      issueSearchInput.placeholder = '일감 제목 또는 버전 입력...';
+	                      issueSearchInput.placeholder = 'タスクのタイトル 또는 버전 입력...';
 	                  }
 	                  updateCheckboxUI(); // 일반적인 버전 체크박스 UI 잠금 상태로 갱신
 	              }
@@ -147,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	              sum += rate;
 	          });
 	          return Math.round(sum / checked.length);
+	          
 	      }
  
 	      // 1. 페이지가 처음 열렸을 때 기존 상태를 읽어서 즉시 적용
@@ -160,11 +161,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	                  const checkedCount = document.querySelectorAll(".issue-checkbox:checked").length;
 	                  if (checkedCount === 0 || avgProgress < 100) {
 	                      window.PFDialog.alert(
-	                          '연결된 일감이 없거나, 모든 일감의 평균 진행률이 100%가 아닌 마일스톤은 완료할 수 없습니다. (현재 평균 진행률: ' + avgProgress + '%)',
+	                          '関連タスクがないか、またはすべてのタスクの平均進捗率が100%ではないマイルストーンは完了できません。（現在の平均進捗率: ' + avgProgress + '%）',
 	                          {
-	                              title: '상태 변경 불가',
+	                              title: 'ステータス変更不可',
 	                              icon: 'warning',
-	                              confirmText: '확인'
+	                              confirmText: '確認'
 	                          }
 	                      );
 	                      // 완료 불가시 진행 중(L002)으로 임시 복원
@@ -223,7 +224,7 @@ document.addEventListener("DOMContentLoaded", function() {
         searchDropdown.innerHTML = ''; 
 
         if (data.length === 0) {
-            searchDropdown.innerHTML = `<li class="search-dropdown-item" style="color:#999; cursor:default;">조회된 일감이 없습니다.</li>`;
+            searchDropdown.innerHTML = `<li class="search-dropdown-item" style="color:#999; cursor:default;">タスクが見つかりません。</li>`;
             searchDropdown.style.display = "block";
             return;
         }
@@ -240,14 +241,14 @@ document.addEventListener("DOMContentLoaded", function() {
                 li.style.cursor = "not-allowed";
                 
                 if (isUsed) {
-                    li.innerHTML = `<strong>${issue.versionName || '버전 없음'}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(이미 추가됨)</span>`;
+                    li.innerHTML = `<strong>${issue.versionName || 'バージョンなし'}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(追加済み)</span>`;
                 } else {
-                    li.innerHTML = `<strong>${issue.versionName || '버전 없음'}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(버전 불일치)</span>`;
+                    li.innerHTML = `<strong>${issue.versionName || 'バージョンなし'}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(バージョン不一致)</span>`;
                 }
             } else {
                 li.innerHTML = `
-                    <strong>${issue.versionName || '버전 없음'}</strong> - ${issue.title}
-                    <span class="badge badge-right" style="color: #0056b3;">${issue.issueStatusName || '미정'}</span>
+                    <strong>${issue.versionName || 'バージョンなし'}</strong> - ${issue.title}
+                    <span class="badge badge-right" style="color: #0056b3;">${issue.issueStatusName || '未定'}</span>
                 `;
                 
                 li.addEventListener("click", function() {
@@ -283,7 +284,7 @@ document.addEventListener("DOMContentLoaded", function() {
                        data-progress-rate="${issue.progressRate || 0}" checked>
             </td>
             <td>${issue.title} (${issue.versionName})</td>
-            <td style="text-align: center;"><span class="status-badge">${issue.issueStatusName || '미정'}</span></td>
+            <td style="text-align: center;"><span class="status-badge">${issue.issueStatusName || '未定'}</span></td>
         `;
         
         issueListBody.prepend(tr);
@@ -325,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 cb.disabled = true;                
                 tr.style.color = "#ccc";           
                 tr.style.backgroundColor = "#f9f9f9"; 
-                tr.title = "현재 마일스톤에 선택된 버전과 일치하지 않는 일감입니다."; 
+                tr.title = "現在のマイルストーンに選択されたバージョンと一致しないタスクです。"; 
             } else {
                 cb.disabled = false;
                 tr.style.color = "";
@@ -384,11 +385,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const checkedCount = document.querySelectorAll(".issue-checkbox:checked").length;
             if (checkedCount === 0 || avgProgress < 100) {
                 window.PFDialog.alert(
-                    '연결된 일감이 없거나, 모든 일감의 평균 진행률이 100%가 아닌 마일스톤은 완료할 수 없습니다. (현재 평균 진행률: ' + avgProgress + '%)',
+                    '関連タスクがないか、またはすべてのタスクの平均進捗率が100%ではないマイルストーンは完了できません。（現在の平均進捗率: ' + avgProgress + '%）',
                     {
-                        title: '제출 불가능',
+                        title: '提出不可',
                         icon: 'warning',
-                        confirmText: '확인',
+                        confirmText: '確認',
 						iconColor: '#fc0303'
                     }
                 );
@@ -406,9 +407,9 @@ document.addEventListener("DOMContentLoaded", function() {
             event.preventDefault(); // 일단 전송 중단
 
             window.PFDialog.confirm({
-                title: '수정 확인',
-                message: '수정된 내용을 저장하시겠습니까?',
-                confirmText: '저장',
+                title: '編集確認',
+                message: '編集内容を保存しますか？',
+                confirmText: '保存',
                 icon: 'question'
             }).then(function(confirmed) {
                 if (confirmed) {

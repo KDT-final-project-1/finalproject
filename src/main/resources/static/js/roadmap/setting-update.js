@@ -68,9 +68,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 1-5. 최종 확인 후 폼 전송 (PFDialog.confirm 사용 및 더블클릭 방지만 유지)
         window.PFDialog.confirm({
-            title: '수정 확인',
-            message: '수정된 내용을 저장하시겠습니까?',
-            confirmText: '저장',
+            title: '編集確認',
+            message: '編集内容を保存しますか？',
+            confirmText: '保存',
             icon: 'question'
         }).then(function(confirmed) {
             if (confirmed) {
@@ -89,8 +89,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 🛡️ 1차 차단: 기본(Default) 버전 삭제 차단
             if (defaultYn === 'Y') {
-                window.PFDialog.alert("기본(Default) 버전으로 설정된 로드맵은 삭제할 수 없습니다.\n삭제하시려면 다른 로드맵을 기본 버전으로 먼저 변경해 주세요.", {
-                    title: '삭제 불가',
+                window.PFDialog.alert("Defaultバージョンとして設定されているロードマップは削除できません。\n削除するには、他のロードマップを先にDefaultバージョンに変更してください。", {
+                    title: '削除不可',
                     icon: 'error'
                 });
                 return;
@@ -98,8 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 🛡️ 2차 차단: 하위 항목(일감 또는 마일스톤) 잔존 시 삭제 차단
             if (issueCount > 0 || milestoneCount > 0) {
-                window.PFDialog.alert("하위 항목(일감 또는 마일스톤)이 존재하는 로드맵은 삭제할 수 없습니다.\n(현재 연결된 일감: " + issueCount + "개, 마일스톤: " + milestoneCount + "개)", {
-                    title: '삭제 불가',
+                window.PFDialog.alert("下位の項目（タスクまたはマイルストーン）が存在するロードマップは削除できません。\n（現在接続されているタスク: " + issueCount + "個, マイルストーン: " + milestoneCount + "個）", {
+                    title: '削除不可',
                     icon: 'error'
                 });
                 return;
@@ -107,9 +107,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 안전 검사 모두 통과 시에만 최종 확인 후 삭제 진행 (PFDialog.confirm 사용 및 더블클릭 방지)
             window.PFDialog.confirm({
-                title: '삭제 확인',
-                message: '정말 이 로드맵을 삭제하시겠습니까?',
-                confirmText: '삭제',
+                title: '削除確認',
+                message: '本当にこのロードマップを削除しますか？',
+                confirmText: '削除',
                 icon: 'warning'
             }).then(function(confirmed) {
                 if (confirmed) {
@@ -139,8 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 클릭에 의한 체크 해제 동작을 취소합니다.
                 e.preventDefault();
                 
-                window.PFDialog.alert("기본(Default) 버전은 여기서 직접 해제할 수 없습니다.\n다른 버전을 기본으로 설정하면 자동으로 해제됩니다.", {
-                    title: '알림',
+                window.PFDialog.alert("Defaultバージョンはここで直接解除できません。\n他のバージョンをDefaultに設定すると自動的に解除されます。", {
+                    title: 'お知らせ',
                     icon: 'warning'
                 });
             });

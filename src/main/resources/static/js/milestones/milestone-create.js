@@ -22,14 +22,14 @@ document.addEventListener("DOMContentLoaded", function () {
       versionIdInput.addEventListener('change', function() {
           if (selectedIssueIds.size > 0) {
               window.PFDialog.confirm({
-                  title: '버전 변경 확인',
-                  message: '버전을 변경하시면 기존에 선택해 둔 일감 목록이 모두 초기화됩니다. 계속하시겠습니까?',
-                  confirmText: '변경',
+                  title: 'バージョン変更確認',
+                  message: 'バージョンを変更すると、現在選択されているタスクのリストがすべて初期化されます。続行しますか？',
+                  confirmText: '変更',
                   icon: 'warning'
               }).then((confirmed) => {
                   if (confirmed) {
                       // 일감 목록 테이블 비우기
-                      issueListBody.innerHTML = `<tr><td class="empty-row" style="text-align: center; color: #999; padding: 30px 10px;">상단 검색창을 통해 연결할 일감을 찾아보세요.</td></tr>`;
+                      issueListBody.innerHTML = `<tr><td class="empty-row" style="text-align: center; color: #999; padding: 30px 10px;">上部の検索ウィンドウから関連付けるタスクを検索してください。</td></tr>`;
                       selectedIssueIds.clear();
                       addedHistoryIds.clear();
                       updateHiddenInput();
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     searchDropdown.innerHTML = "";
 
     if (data.length === 0) {
-      searchDropdown.innerHTML = `<li class="search-dropdown-item" style="color:#999; cursor:default;">조회된 일감이 없습니다.</li>`;
+      searchDropdown.innerHTML = `<li class="search-dropdown-item" style="color:#999; cursor:default;">タスクが見つかりません。</li>`;
       searchDropdown.style.display = "block";
       return;
     }
@@ -121,14 +121,14 @@ document.addEventListener("DOMContentLoaded", function () {
         li.style.cursor = "not-allowed";
         
         if (isUsed) {
-          li.innerHTML = `<strong>${issue.versionName}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(이미 추가됨)</span>`;
+          li.innerHTML = `<strong>${issue.versionName}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(追加済み)</span>`;
         } else {
-          li.innerHTML = `<strong>${issue.versionName}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(버전 불일치)</span>`;
+          li.innerHTML = `<strong>${issue.versionName}</strong> - ${issue.title} <span style="font-size:0.85em; color:#e74c3c; margin-left:5px;">(バージョン不一致)</span>`;
         }
       } else {
         li.innerHTML = `
-            <strong>${issue.versionName || '버전 없음'}</strong> - ${issue.title}
-            <span class="badge badge-right" style="color: #0056b3;">${issue.issueStatusName || "미정"}</span>
+            <strong>${issue.versionName || 'バージョンなし'}</strong> - ${issue.title}
+            <span class="badge badge-right" style="color: #0056b3;">${issue.issueStatusName || "未定"}</span>
         `;
 
         li.addEventListener("click", function () {
@@ -163,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    data-version-id="${issue.versionId}" checked>
         </td>
         <td>${issue.title} (${issue.versionName})</td>
-        <td style="text-align: center;"><span class="status-badge">${issue.issueStatusName || "상태"}</span></td>
+        <td style="text-align: center;"><span class="status-badge">${issue.issueStatusName || "ステータス"}</span></td>
     `;
 
     issueListBody.prepend(tr);
@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
         cb.disabled = true;                
         tr.style.color = "#ccc";           
         tr.style.backgroundColor = "#f9f9f9"; 
-        tr.title = "현재 마일스톤에 선택된 버전과 일치하지 않는 일감입니다."; 
+        tr.title = "現在のマイルストーンに選択されたバージョンと一致しないタスクです。"; 
       } else {
         cb.disabled = false;
         tr.style.color = "";

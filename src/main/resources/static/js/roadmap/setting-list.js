@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 버튼 텍스트 변경
       this.innerHTML = isCompletedHidden
-        ? "🔓 완료된 버전 보기"
-        : "🔒 완료된 버전 닫기";
+        ? "🔓 完了したバージョンを表示"
+        : "🔒 完了したバージョンを非表示";
 
       applyFilters(); // 필터 재적용
     });
@@ -46,12 +46,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 상태 뱃지 확인 (th:if 로직에 의해 생성된 뱃지 텍스트로 판단)
       const statusBadge = row.querySelector(".status-badge");
-      const statusText = statusBadge ? statusBadge.innerText : "";
+      const statusText = statusBadge ? statusBadge.innerText.trim() : "";
 
       let rowStatusCode = "";
-      if (statusText === "진행 예정") rowStatusCode = "a001";
-      else if (statusText === "진행 중") rowStatusCode = "a002";
-      else if (statusText === "완료") rowStatusCode = "a003";
+      if (statusText === "진행 예정" || statusText === "進行予定") rowStatusCode = "a001";
+      else if (statusText === "진행 중" || statusText === "진행중" || statusText === "進行中") rowStatusCode = "a002";
+      else if (statusText === "완료" || statusText === "完了") rowStatusCode = "a003";
 
       // 조건 검사
       // 1) 완료된 버전 닫기 버튼이 켜져 있는데, 이 행이 완료(a003) 상태인가?

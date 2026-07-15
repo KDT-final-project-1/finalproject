@@ -5,7 +5,7 @@
       layout:decorate="~{common/layouts/default_layout}">
 <head>
     <meta charset="UTF-8">
-    <title>게시판 정보 수정</title>
+    <title>掲示板情報編集</title>
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/notice/board_create.css}" />
 </head>
@@ -15,7 +15,7 @@
             <div class="board-page-panel">
                 <div class="board-page-header">
                     <div>
-                        <h3 class="board-page-title">게시판 정보 수정</h3>
+                        <h3 class="board-page-title">掲示板情報編集</h3>
                     </div>
                 </div>
                 <div class="board-page-body">
@@ -33,31 +33,31 @@
 
                         <div class="form-group">
                             <label class="form-label" for="boardName">
-                                게시판 이름 <span class="required">*</span>
+                                掲示板名 <span class="required">*</span>
                             </label>
                             <input type="text"
                                    id="boardName"
                                    th:field="*{boardName}"
                                    class="form-control"
-                                   placeholder="예: 공지사항, 자유게시판" />
+                                   placeholder="例: お知らせ, 自由掲示板" />
                             
                             <div id="boardNameError" class="error-message" style="display: none">
-                                게시판 이름을 입력해주세요.
+                                掲示板名を入力してください。
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="description">
-                                설명 <span class="required">*</span>
+                                説明 <span class="required">*</span>
                             </label>
                             <textarea id="description"
                                       th:field="*{description}"
                                       class="form-control"
                                       rows="5"
-                                      placeholder="이 게시판의 용도와 상세 설명을 입력하세요."></textarea>
+                                      placeholder="この掲示板の用途と詳細な説明を入力してください。"></textarea>
                             
                             <div id="descError" class="error-message" style="display: none">
-                                게시판 설명을 입력해주세요.
+                                掲示板の説明を入力してください。
                             </div>
                         </div>
 
@@ -65,18 +65,18 @@
                             <a href="javascript:void(0)" 
                                id="btnSubmit" 
                                class="btn btn-custon-rounded-four custom-default-btn">
-                                수정
+                                編集
                             </a>
                             <a th:href="@{/project/{projectId}/notice/BoardDelete(projectId=${projectId}, boardId=${board.boardId})}"
                                class="btn btn-custon-rounded-four btn-danger custom-btn"
                                id="btnDeleteBoard"
                                th:data-post-count="${board.postCount}">
-                                삭제
+                                削除
                             </a>
                             <a th:href="@{/project/{projectId}/notice/BoardList(projectId=${projectId})}" 
                                class="btn btn-custon-rounded-four custom-white-btn"
                                id="btnCancelBoard">
-                                취소
+                                キャンセル
                             </a>
                         </div>
                     </form>

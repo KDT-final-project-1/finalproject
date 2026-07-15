@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const errorMessage = form.getAttribute("data-error-message");
     if (errorMessage && errorMessage !== 'null' && errorMessage.trim() !== '') {
         window.PFDialog.alert(errorMessage, {
-            title: '에러',
+            title: 'エラー',
             icon: 'error'
         });
     }
@@ -56,9 +56,9 @@ document.addEventListener("DOMContentLoaded", function () {
   
         // 성공 시 제출 (SweetAlert 수정 컨펌 적용)
         window.PFDialog.confirm({
-            title: '수정 확인',
-            message: '게시판 수정 내용을 저장하시겠습니까?',
-            confirmText: '저장',
+            title: '編集確認',
+            message: '掲示板の編集内容を保存しますか？',
+            confirmText: '保存',
             icon: 'question'
         }).then(function(confirmed) {
             if (confirmed) {
@@ -77,15 +77,15 @@ document.addEventListener("DOMContentLoaded", function () {
             const deleteUrl = this.getAttribute('href');
             
             if (postCount > 0) {
-                window.PFDialog.alert("게시글이 존재하는 게시판은 삭제할 수 없습니다. (현재 등록된 글: " + postCount + "개)", {
-                    title: '삭제 불가',
+                window.PFDialog.alert("投稿が存在する掲示板は削除できません。（現在登録されている投稿: " + postCount + "件）", {
+                    title: '削除不可',
                     icon: 'warning'
                 });
             } else {
                 window.PFDialog.confirm({
-                    title: '삭제 확인',
-                    message: '정말로 이 게시판을 삭제하시겠습니까?\n삭제 시 복구할 수 없습니다.',
-                    confirmText: '삭제',
+                    title: '削除確認',
+                    message: '本当にこの掲示板を削除しますか？\n削除後は復旧できません。',
+                    confirmText: '削除',
                     icon: 'warning'
                 }).then(function(confirmed) {
                     if (confirmed) {

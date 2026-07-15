@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", function () {
         profileForm.addEventListener("submit", function (e) {
             e.preventDefault(); 
             window.PFDialog.confirm({
-                title: '프로필 수정 확인',
-                message: '입력하신 정보로 프로필을 수정하시겠습니까?',
-                confirmText: '수정',
+                title: 'プロフィール更新確認',
+                message: '入力された情報でプロフィールを更新しますか？',
+                confirmText: '更新',
                 icon: 'question'
             }).then(function(confirmed) {
                 if (!confirmed) return;
@@ -44,22 +44,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     if (data.update === true) {
                         window.PFDialog.alert(data.message, {
-                            title: '수정 완료',
+                            title: '更新完了',
                             icon: 'success'
                         }).then(function() {
                             location.href = "/usersMypage"; 
                         });
                     } else {
                         window.PFDialog.alert(data.message, {
-                            title: '수정 실패',
+                            title: '更新失敗',
                             icon: 'error'
                         });
                     }
                 })
                 .catch(err => {
                     console.error(err);
-                    window.PFDialog.alert("프로필 수정 중 오류가 발생했습니다.", {
-                        title: '오류',
+                    window.PFDialog.alert("プロフィールの更新中にエラーが発生しました。", {
+                        title: 'エラー',
                         icon: 'error'
                     });
                 });
@@ -79,8 +79,8 @@ document.addEventListener("DOMContentLoaded", function () {
             e.preventDefault(); 
 
             if (newPassword.value !== confirmPassword.value) {
-                window.PFDialog.alert("새로 입력하신 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.", {
-                    title: '비밀번호 확인',
+                window.PFDialog.alert("新しく入力したパスワードが一致しません。もう一度ご確認ください。", {
+                    title: 'パスワード確認',
                     icon: 'warning'
                 }).then(function() {
                     confirmPassword.focus();
@@ -101,22 +101,22 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 if (data.result === true) {
                     window.PFDialog.alert(data.message, {
-                        title: '비밀번호 변경 완료',
+                        title: 'パスワード変更完了',
                         icon: 'success'
                     }).then(function() {
                         location.href = "/usersMypage"; 
                     });
                 } else {
                     window.PFDialog.alert(data.message, {
-                        title: '변경 실패',
+                        title: '変更失敗',
                         icon: 'error'
                     }); 
                 }
             })
             .catch(err => {
                 console.error(err);
-                window.PFDialog.alert("비밀번호 변경 중 오류가 발생했습니다.", {
-                    title: '오류',
+                window.PFDialog.alert("パスワード変更中にエラーが発生しました。", {
+                    title: 'エラー',
                     icon: 'error'
                 });
             });
@@ -140,8 +140,8 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         if (params.startDate && params.endDate && params.startDate > params.endDate) {
-            window.PFDialog.alert('완료기한은 시작일보다 빠를 수 없습니다.', {
-                title: '검색 조건 확인',
+            window.PFDialog.alert('完了期限は開始日より早くすることはできません。', {
+                title: '検索条件の確認',
                 icon: 'warning'
             });
             return;
@@ -158,7 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
             tableBody.innerHTML = "";
 
             if (list.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" class="no-data">검색 결과가 없습니다.</td></tr>';
+                tableBody.innerHTML = '<tr><td colspan="8" class="no-data">検索結果がありません。</td></tr>';
                 return;
             }
 
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <td><a href="${p.projectUrl || '#'}" target="_blank">${p.projectUrl || ''}</a></td>
                         <td>
                             <span class="status-badge ${p.statusCode == 'a001' ? 'status-ready' : (p.statusCode == 'a002' ? 'status-ing' : 'status-done')}">
-                                ${p.statusCode == 'a001' ? '예정' : (p.statusCode == 'a002' ? '진행중' : '종료')}
+                                ${p.statusCode == 'a001' ? '予定' : (p.statusCode == 'a002' ? '進行中' : '終了')}
                             </span>
                         </td>
                         <td>${formattedCreateDate}</td>
@@ -233,8 +233,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const emailVal = subscribeEmail.value.trim();
             
             if (!emailVal) {
-                window.PFDialog.alert("이메일 주소를 입력해 주세요.", {
-                    title: '이메일 확인',
+                window.PFDialog.alert("メールアドレスを入力してください。", {
+                    title: 'メールアドレス確認',
                     icon: 'warning'
                 }).then(function() {
                     subscribeEmail.focus();
@@ -250,8 +250,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(res => res.json())
             .then(data => {
                 if (data.result === true) {
-                    window.PFDialog.alert("입력하신 이메일로 인증코드가 발송되었습니다. 3분 내에 입력해 주세요.", {
-                        title: '인증코드 발송 완료',
+                    window.PFDialog.alert("入力されたメールアドレスに認証コードが送信されました。3分以内に入力してください。", {
+                        title: '認証コード送信完了',
                         icon: 'success'
                     }).then(function() {
                         authCode.disabled = false;
@@ -260,16 +260,16 @@ document.addEventListener("DOMContentLoaded", function () {
                         startAuthTimer(180); 
                     });
                 } else {
-                    window.PFDialog.alert(data.message || "인증코드 발송에 실패했습니다.", {
-                        title: '발송 실패',
+                    window.PFDialog.alert(data.message || "認証コードの送信に失敗しました。", {
+                        title: '送信失敗',
                         icon: 'error'
                     });
                 }
             })
             .catch(err => {
                 console.error(err);
-                window.PFDialog.alert("메일 전송 요청 중 오류가 발생했습니다.", {
-                    title: '오류',
+                window.PFDialog.alert("メール送信リクエスト中にエラーが発生しました。", {
+                    title: 'エラー',
                     icon: 'error'
                 });
             });
@@ -288,11 +288,11 @@ document.addEventListener("DOMContentLoaded", function () {
             authTimer.textContent = `${minutes}:${seconds}`;
             if (--timeRemaining < 0) {
                 clearInterval(timerInterval);
-                authTimer.textContent = "만료됨";
+                authTimer.textContent = "期限切れ";
                 authCode.disabled = true; 
                 btnSubmitSubscribe.disabled = true;
-                window.PFDialog.alert("인증 시간이 만료되었습니다. 인증코드를 다시 발송해 주세요.", {
-                    title: '인증 시간 만료',
+                window.PFDialog.alert("認証期限が切れました。認証コードを再送信してください。", {
+                    title: '認証期限切れ',
                     icon: 'warning'
                 });
             }
@@ -308,8 +308,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const inputCode = authCode.value.trim();
             if (!inputCode) {
-                window.PFDialog.alert("인증코드를 입력해 주세요.", {
-                    title: '인증코드 확인',
+                window.PFDialog.alert("認証コードを入力してください。", {
+                    title: '認証コード確認',
                     icon: 'warning'
                 }).then(function() {
                     authCode.focus();
@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(data => {
                 if (data.result === true) {
                     window.PFDialog.alert(data.message, {
-                        title: '구독 완료',
+                        title: '購読完了',
                         icon: 'success'
                     }).then(function() {
                         if (timerInterval) clearInterval(timerInterval);
@@ -335,7 +335,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     });
                 } else {
                     window.PFDialog.alert(data.message, {
-                        title: '인증 실패',
+                        title: '認証失敗',
                         icon: 'error'
                     }).then(function() {
                         authCode.focus();
@@ -344,8 +344,8 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(err => {
                 console.error(err);
-                window.PFDialog.alert("인증 처리 중 오류가 발생했습니다.", {
-                    title: '오류',
+                window.PFDialog.alert("認証処理中にエラーが発生しました。", {
+                    title: 'エラー',
                     icon: 'error'
                 });
             });

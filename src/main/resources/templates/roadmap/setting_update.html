@@ -6,7 +6,7 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <title>버전(로드맵) 수정</title>
+    <title>バージョン編集</title>
 
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}" />
@@ -18,7 +18,7 @@
         <div class="roadmap-page-panel">
           <div class="roadmap-page-header">
             <div>
-              <h3 class="roadmap-page-title">로드맵 수정</h3>
+              <h3 class="roadmap-page-title">ロードマップ編集</h3>
             </div>
           </div>
           <div class="roadmap-page-body">
@@ -44,7 +44,7 @@
 
               <div class="form-group">
                 <label class="form-label" for="versionName"
-                  >버전명 <span class="required">*</span></label
+                  >バージョン名 <span class="required">*</span></label
                 >
                 <input
                   type="text"
@@ -52,25 +52,25 @@
                   name="versionName"
                   class="form-control"
                   th:value="${roadmap.versionName}"
-                  placeholder="예: v1.0.0 출시 로드맵"
+                  placeholder="例: v1.0.0 リリースロードマップ"
                 />
                 <div id="nameError" class="error-message" style="display: none">
-                  버전명을 입력해주세요.
+                  バージョン名を入力してください。
                 </div>
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="description">설명</label>
+                <label class="form-label" for="description">説明</label>
                 <textarea
                   id="description"
                   name="description"
                   class="form-control"
                   rows="5"
                   th:text="${roadmap.description}"
-                  placeholder="이 버전에 대한 상세 설명을 입력하세요."
+                  placeholder="このバージョンに関する詳細な説明を入力してください。"
                 ></textarea>
                 <div id="descError" class="error-message" style="display: none">
-                  이 버전에 대한 상세 설명을 입력해주세요
+                  このバージョンに関する詳細な説明を入力してください。
                 </div>
               </div>
 
@@ -85,14 +85,14 @@
 				    th:style="${roadmap.defaultYn == 'Y'} ? 'cursor: not-allowed; opacity: 0.6;' : ''"
 				  />
 				  <label for="defaultYn">
-				    이 버전을 프로젝트의 기본(Default) 버전으로 설정합니다.
+				    Defaultに設定
 				  </label>
 				</div>
 
               <div class="roadmap-page-footer" style="border-top: 1px solid #eee; display: flex; justify-content: flex-end; align-items: center; gap: 8px; padding-top: 20px;">
                   <a th:href="@{/project/{projectId}/roadmap/roadmap_list(projectId=${projectId})}"
                      class="btn btn-custon-rounded-four custom-white-btn" id="btnCancel">
-                       목록
+                       一覧
                   </a>
                   <a href="javascript:void(0)"
                      id="btnDelete"
@@ -100,12 +100,12 @@
                      th:data-issue-count="${roadmap.issueCount}"
                      th:data-milestone-count="${roadmap.milestoneCount}"
                      th:data-default-yn="${roadmap.defaultYn}">
-                       삭제
+                       削除
                   </a>
                   <a href="javascript:void(0)"
                      id="btnSubmit"
                      class="btn btn-custon-rounded-four custom-default-btn">
-                       수정
+                       保存
                   </a>
               </div>
             </form>

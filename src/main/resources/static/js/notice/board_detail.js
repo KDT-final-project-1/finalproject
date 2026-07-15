@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (startDate && endDate && startDate > endDate) {
                 e.preventDefault(); // 전송 중단
-                alert('시작 날짜는 종료 날짜보다 클 수 없습니다.');
+                alert('開始日は終了日より遅くすることはできません。');
             }
         });
     }

@@ -4,7 +4,7 @@
       layout:decorate="~{common/layouts/default_layout}">
 <head>
     <meta charset="UTF-8" />
-    <title>로드맵(버전) 목록</title>
+    <title>ロードマップ一覧</title>
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}" />
     <link rel="stylesheet" th:href="@{/css/roadmap/roadmap-list.css(v=2)}" />
@@ -22,8 +22,8 @@
             
             <div class="main-header">
                 <div class="main-header-title-area">
-                    <h2>로드맵</h2>
-                    <p class="main-header-desc">프로젝트 내의 모든 로드맵을 확인할 수 있습니다.</p>
+                    <h2>ロードマップ</h2>
+                    <p class="main-header-desc">プロジェクト内のすべてのロードマップを確認できます。</p>
                 </div>
 				<!-- 권한 처리 -->
 				<button th:if="${isOwner}"
@@ -31,7 +31,7 @@
 				    class="btn btn-custon-rounded-four custom-default-btn" 
 				    id="btnSettings"
 				    th:data-url="@{/project/{projectId}/roadmap/setting_create(projectId=${projectId})}">
-				     버전 생성
+				     ロードマップ作成
 				</button>
 				<!-- 권한 처리 끝 -->
             </div>
@@ -42,40 +42,40 @@
                 <!-- 검색조건 필터 영역 -->
                 <div class="search-section">
                 <div class="search-header">
-                    <div class="search-title">검색조건</div>
+                    <div class="search-title">検索条件</div>
                 </div>
                 <div class="search-form-row">
                     <div class="search-field">
-                        <label>로드맵</label>
+                        <label>ロードマップ</label>
                         <select id="roadmapFilter">
-                            <option value="">전체 로드맵</option>
+                            <option value="">すべてのロードマップ</option>
                         </select>
                     </div>
                     <div class="search-field">
-                        <label>마일스톤</label>
+                        <label>マイルストーン</label>
                         <select id="milestoneFilter">
-                            <option value="">전체 마일스톤</option>
+                            <option value="">すべてのマイルストーン</option>
                         </select>
                     </div>
                     <div class="search-field">
-                        <label>일감 검색</label>
-                        <input type="text" id="issueSearch" placeholder="일감 제목 입력..." autocomplete="off" />
+                        <label>タスク検索</label>
+                        <input type="text" id="issueSearch" placeholder="タスクのタイトルを入力..." autocomplete="off" />
                     </div>
                 </div>
                 
                 <div class="search-btn-area">
-                    <button type="button" id="btnFilterReset" class="btn btn-custon-rounded-four custom-white-btn filter-btn">초기화</button>
-                    <button type="button" id="btnFilterSearch" class="btn btn-custon-rounded-four custom-default-btn filter-btn">검색</button>
+                    <button type="button" id="btnFilterReset" class="btn btn-custon-rounded-four custom-white-btn filter-btn">リセット</button>
+                    <button type="button" id="btnFilterSearch" class="btn btn-custon-rounded-four custom-default-btn filter-btn">検索</button>
                 </div>
             </div>
 
             <hr class="section-divider" />
 
             <div class="list-section">
-                <h3>로드맵 목록</h3>
+                <h3>ロードマップ一覧</h3>
                 <div class="roadmap-list-area" id="roadmapListArea">
                     <div th:if="${#lists.isEmpty(roadmapList)}" class="empty-msg">
-                        생성된 로드맵(버전)이 없습니다.
+                        作成されたロードマップ（バージョン）がありません。
                     </div>
 
                     <div class="roadmap-item" 
@@ -86,7 +86,7 @@
 							
                             <div class="title-area">
                                 <span class="toggle-icon"><i class="fas fa-chevron-down"></i></span>
-                                <span th:if="${roadmap.defaultYn == 'Y'}" class="badge-default">★ 기본</span>
+                                <span th:if="${roadmap.defaultYn == 'Y'}" class="badge-default">★ Default</span>
                                 <h4 style="margin:0; font-size: 17px; font-weight: 500;">
 									<a th:href="@{/project/{id}/roadmap/roadmap_detail(id=${projectId}, versionId=${roadmap.versionId})}" 
 									   class="title-link no-accordion" 
@@ -96,7 +96,7 @@
                                 </h4>
 								<span class="status-badge"
 								      th:classappend="${roadmap.statusCode == 'k001' ? 'status-k001' : (roadmap.statusCode == 'k002' ? 'status-k002' : 'status-k003')}"
-								      th:text="${roadmap.statusCode == 'k001' ? '진행 예정' : (roadmap.statusCode == 'k002' ? '진행 중' : '완료')}">
+								      th:text="${roadmap.statusCode == 'k001' ? '進行予定' : (roadmap.statusCode == 'k002' ? '進行中' : '完了')}">
 								</span>
                             </div>
                             </div>
@@ -112,7 +112,7 @@
 							                <span class="status-badge" style="margin-left:12px;"
 							                      th:if="${milestone.statusCode != null}"
 							                      th:classappend="${milestone.statusCode == 'L001' ? 'status-l001' : (milestone.statusCode == 'L002' ? 'status-l002' : (milestone.statusCode == 'L003' ? 'status-l003' : ''))}"
-							                      th:text="${milestone.statusCode == 'L001' ? '진행예정' : (milestone.statusCode == 'L002' ? '진행중' : (milestone.statusCode == 'L003' ? '완료' : milestone.statusCode))}">
+							                      th:text="${milestone.statusCode == 'L001' ? '進行予定' : (milestone.statusCode == 'L002' ? '進行中' : (milestone.statusCode == 'L003' ? '完了' : milestone.statusCode))}">
 							                </span>
 							            </div>
 							            <div class="m-date-area" th:if="${milestone.startDate != null}">
@@ -125,7 +125,7 @@
 							             style="background-color: #f1f3f5; border: 1px border #ccc;">
 							            <div class="m-title-area">
 							                <i class="fas fa-inbox" style="color:#888; margin-right:8px;"></i>
-							                <span style="color: #555; font-weight: bold;">미지정 일감</span>
+							                <span style="color: #555; font-weight: bold;">未割り当てタスク</span>
 							            </div>
 							        </div>
 
@@ -142,7 +142,7 @@
 									        
 									        <div class="issue-meta" style="display: flex; gap: 15px; font-size: 13px; color: #777;">
 									            <span class="meta-item"><i class="fas fa-user"></i> [[${issue.assigneeName}]]</span>
-									            <span class="meta-item"><i class="far fa-calendar-alt"></i> [[${issue.startDate ?: '미정'}]] ~ [[${issue.dueDate ?: '미정'}]]</span>
+									            <span class="meta-item"><i class="far fa-calendar-alt"></i> [[${issue.startDate ?: '未定'}]] ~ [[${issue.dueDate ?: '未定'}]]</span>
 									            <span class="meta-item progress-rate" style="font-weight:bold;">[[${issue.progressRate}]]%</span>
 									        </div>
 									    </div>

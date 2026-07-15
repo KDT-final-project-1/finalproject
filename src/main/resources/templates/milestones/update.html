@@ -4,7 +4,7 @@
       layout:decorate="~{common/layouts/default_layout}">
 <head>
     <meta charset="UTF-8">
-    <title>마일스톤 수정</title>
+    <title>マイルストーン編集</title>
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}">
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}">
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-create.css}">
@@ -16,7 +16,7 @@
         
         <div class="milestone-page-header">
             <div>
-                <h3 class="milestone-page-title">마일스톤 수정</h3>
+                <h3 class="milestone-page-title">マイルストーン編集</h3>
             </div>
         </div>
         <div class="milestone-page-body">
@@ -31,21 +31,21 @@
                     
                     <div class="content-left">
                         <div class="form-group">
-                            <label>제목 <span class="required">*</span></label>
+                            <label>タイトル <span class="required">*</span></label>
                             <input type="text" id="title" name="title" class="form-control required-input" 
-                                   th:value="${milestone.title}" placeholder="마일스톤 제목을 입력하세요">
+                                   th:value="${milestone.title}" placeholder="マイルストーンのタイトルを入力してください">
                         </div>
 
                         <div class="form-group">
-                            <label>설명</label>
+                            <label>説明</label>
                             <textarea id="description" name="description" class="form-control" 
-                                      th:text="${milestone.description}" placeholder="마일스톤의 목표와 상세 내용을 적어주세요."></textarea>
+                                      th:text="${milestone.description}" placeholder="マイルストーンの目標と詳細な内容を記入してください。"></textarea>
                         </div>
 
                         <div class="issue-section">
-                            <h3>일감 연결</h3>
+                            <h3>タスクの関連付け</h3>
                             <div class="issue-search-group" style="position: relative;">
-                                <input type="text" id="issueSearchInput" class="form-control" autocomplete="off" placeholder="일감 제목 또는 버전 입력...">
+                                <input type="text" id="issueSearchInput" class="form-control" autocomplete="off" placeholder="タスクのタイトルまたはバージョンを入力...">
                                 
                                 <ul id="searchDropdown" class="search-dropdown-menu" style="display: none;"></ul>
                             </div>
@@ -61,12 +61,12 @@
                                                        th:data-progress-rate="${issue.progressRate}" checked>
                                             </td>
                                             <td th:text="|${issue.title} (${issue.versionName})|">일감 제목</td>
-                                            <td style="text-align: center;"><span class="status-badge" th:text="${issue.issueStatusName}">상태</span></td>
+                                            <td style="text-align: center;"><span class="status-badge" th:text="${issue.issueStatusName}">ステータス</span></td>
                                         </tr>
                                         
                                         <tr th:if="${#lists.isEmpty(connectedIssues)}">
                                             <td colspan="3" class="empty-row" style="text-align: center; color: #999; padding: 30px 10px;">
-                                                현재 연결된 일감이 없습니다. 검색을 통해 추가하세요.
+                                                現在関連付けられているタスクはありません。検索して追加してください。
                                             </td>
                                         </tr>
                                     </tbody>
@@ -77,9 +77,9 @@
 
                     <div class="content-right">
                         <div class="form-group">
-                            <label>담당자 <span class="required">*</span></label>
+                            <label>担当者 <span class="required">*</span></label>
                             <select id="managerId" name="managerId" class="form-control required-input">
-                                <option value="">담당자 선택</option>
+                                <option value="">担当者を選択</option>
                                 <option th:each="manager : ${managerList}" 
                                         th:value="${manager.userId}" 
                                         th:text="${manager.userName}"
@@ -89,9 +89,9 @@
 
                         <!-- 📝 버전(로드맵) 선택 필드 신설 및 selected 매핑 -->
                         <div class="form-group">
-                            <label>연결할 버전 (로드맵) <span class="required">*</span></label>
+                            <label>関連付けるバージョン (ロードマップ) <span class="required">*</span></label>
                             <select id="versionId" name="versionId" class="form-control required-input">
-                                <option value="">버전 선택</option>
+                                <option value="">バージョンを選択</option>
                                  <option th:each="roadmap : ${roadmapList}"
                                          th:if="${roadmap.versionId == milestone.versionId or roadmap.statusCode != 'k003'}"
                                          th:value="${roadmap.versionId}"
@@ -101,33 +101,33 @@
                         </div>
 
                         <div class="form-group">
-                            <label>상태 <span class="required">*</span></label>
+                            <label>ステータス <span class="required">*</span></label>
                             <select id="statusCode" name="statusCode" class="form-control required-input">
-                                <option value="">상태 선택</option>
-                                <option value="L001" th:selected="${milestone.statusCode == 'L001'}">진행 예정</option>
-                                <option value="L002" th:selected="${milestone.statusCode == 'L002'}">진행 중</option>
-                                <option value="L003" th:selected="${milestone.statusCode == 'L003'}">완료</option>
+                                <option value="">ステータスを選択</option>
+                                <option value="L001" th:selected="${milestone.statusCode == 'L001'}">進行予定</option>
+                                <option value="L002" th:selected="${milestone.statusCode == 'L002'}">進行中</option>
+                                <option value="L003" th:selected="${milestone.statusCode == 'L003'}">完了</option>
                             </select>
                         </div>
 
 						<div class="form-group">
-						    <label>시작일 <span class="required">*</span></label>
+						    <label>開始日 <span class="required">*</span></label>
 						    <input type="date" id="startDate" name="startDate" class="form-control required-input date-input"
 						           th:value="${#temporals.format(milestone.startDate, 'yyyy-MM-dd')}"
 						           th:min="${#dates.format(project.startDate, 'yyyy-MM-dd')}"
 						           th:max="${#dates.format(project.endDate, 'yyyy-MM-dd')}">
 						    <div id="startDatePastError" class="error-text" style="display: none; color: #dc3545; font-size: 12px; margin-top: 5px;">
-						        시작일은 오늘 날짜 이전으로 설정할 수 없습니다.
+						        開始日は今日より前の日付に設定することはできません。
 						    </div>
 						</div>
 
                         <div class="form-group">
-                            <label>목표 일자 <span class="required">*</span></label>
+                            <label>目標期限 <span class="required">*</span></label>
                             <input type="date" id="endDate" name="endDate" class="form-control required-input date-input"
                                    th:value="${#temporals.format(milestone.endDate, 'yyyy-MM-dd')}"
                                    th:min="${#dates.format(project.startDate, 'yyyy-MM-dd')}"
                                    th:max="${#dates.format(project.endDate, 'yyyy-MM-dd')}">
-                            <div id="dateError" class="error-text" style="display: none;">시작일은 목표일자 보다 늦을 수 없습니다.</div>
+                            <div id="dateError" class="error-text" style="display: none;">開始日は目標期限より遅くすることはできません。</div>
                         </div>
                     </div>
                     
@@ -136,8 +136,8 @@
 
             <div class="panel-footer" style="justify-content: flex-end;">
                 <div class="right-buttons">
-                    <button type="button" class="btn btn-custon-rounded-four custom-white-btn" onclick="history.back()">취소</button>
-                    <button type="submit" id="btnUpdate" class="btn btn-custon-rounded-four custom-default-btn">수정 완료</button>
+                    <button type="button" class="btn btn-custon-rounded-four custom-white-btn" onclick="history.back()">キャンセル</button>
+                    <button type="submit" id="btnUpdate" class="btn btn-custon-rounded-four custom-default-btn">保存</button>
                 </div>
             </div>
         </form>

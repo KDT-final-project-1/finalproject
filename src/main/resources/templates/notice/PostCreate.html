@@ -5,7 +5,7 @@
       layout:decorate="~{common/layouts/default_layout}">
 <head>
     <meta charset="UTF-8">
-    <title>게시글 등록</title>
+    <title>新規投稿</title>
     <!-- 일감 첨부파일 UI 디자인 이식을 위한 CSS 연결 -->
     <link rel="stylesheet" th:href="@{/css/common-ui.css}">
     <link rel="stylesheet" th:href="@{/css/issues/issues.css}">
@@ -18,7 +18,7 @@
         <div class="board-page-panel">
             <div class="board-page-header">
                 <div>
-                    <h3 class="board-page-title">게시판 글쓰기</h3>
+                    <h3 class="board-page-title">掲示板新規投稿</h3>
                 </div>
             </div>
             <div class="board-page-body">
@@ -30,33 +30,33 @@
             <input type="hidden" name="boardId" th:value="${boardId}" />
 
             <div class="form-group">
-                <label class="form-label">제목 *</label>
-                <input type="text" th:field="*{title}" class="form-control" placeholder="제목을 입력하세요" required>
+                <label class="form-label">タイトル *</label>
+                <input type="text" th:field="*{title}" class="form-control" placeholder="タイトルを入力してください" required>
             </div>
 
             <div class="form-group">
-                <label class="form-label">설명</label>
-                <textarea th:field="*{content}" class="form-control" rows="10" placeholder="내용을 입력하세요"></textarea>
+                <label class="form-label">内容</label>
+                <textarea th:field="*{content}" class="form-control" rows="10" placeholder="内容を入力してください"></textarea>
             </div>
 
             <!-- 첨부파일 (일감 create.html 마크업 100% 동일 적용) -->
             <div class="form-group">
-                <label class="form-label">첨부파일</label>
+                <label class="form-label">添付ファイル</label>
                 <div class="issues-file-box">
                     <div>
                         <label for="fileInput" class="btn btn-custon-rounded-four custom-white-btn issues-file-select">
-                            파일 선택
+                            ファイル選択
                         </label> 
                         <input type="file" id="fileInput" name="files" multiple class="issues-file-input"> 
-                        <span id="fileCount" class="issues-file-count">파일 0개</span>
+                        <span id="fileCount" class="issues-file-count">ファイル 0個</span>
                     </div>
                     <ul id="fileList" class="issues-file-list"></ul>
                 </div>
             </div>
 
             <div class="board-page-footer">
-                <a th:href="@{/project/{projectId}/notice/BoardDetail(projectId=${projectId}, boardId=${boardId})}" class="btn btn-custon-rounded-four custom-white-btn">취소</a>
-                <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">등록</button>
+                <a th:href="@{/project/{projectId}/notice/BoardDetail(projectId=${projectId}, boardId=${boardId})}" class="btn btn-custon-rounded-four custom-white-btn">キャンセル</a>
+                <button type="submit" class="btn btn-custon-rounded-four custom-default-btn">登録</button>
             </div>
         </form>
             </div>

@@ -284,3 +284,49 @@
     color: #212529;
     border-color: #adb5bd;
 }
+
+/* 설명 영역 말줄임표 처리 */
+.board-table td.description-cell {
+    max-width: 350px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 우측 위젯 2줄 레이아웃 스타일 */
+.flex-column-item {
+    display: flex;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 6px;
+    padding: 12px 0 !important;
+}
+
+.widget-item-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.widget-link-full {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    width: 100%;
+    display: block;
+}
+
+.widget-post-title-full {
+    font-size: 13px;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.2s ease;
+}
+
+.widget-link-full:hover .widget-post-title-full {
+    color: #006df0;
+    text-decoration: underline;
+}

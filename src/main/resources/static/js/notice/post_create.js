@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (realFile.files.length > 0) {
             fileName.innerText = realFile.files[0].name;
         } else {
-            fileName.innerText = "파일을 선택하세요";
+            fileName.innerText = "ファイルを選択してください";
         }
     });
 });

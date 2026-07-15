@@ -52,24 +52,24 @@ document.addEventListener("DOMContentLoaded", function () {
     gantt.config.work_time = false;
     
     gantt.config.columns = [
-        { name : "text", label: "마일스톤 / 일감명", tree : true, width: 200},
-        { name : "assigneeName", label : "담당자", align : "center", width: 80 },
-        { name : "issueStatusName", label : "상태", align : "center", width: 80 },
-        { name : "start_date", label :"시작일" ,align : "center", width: 120},
-        { name : "end_date", label :"종료일" ,align : "center", width: 120},
-        { name : "duration", label : "기간(일)", align: "center", width: 80},
-        { name : "progress", label: "진행률", align: "center", width: 80 , template: function(obj){
+        { name : "text", label: "マイルストーン / タスク名", tree : true, width: 200},
+        { name : "assigneeName", label : "担当者", align : "center", width: 80 },
+        { name : "issueStatusName", label : "ステータス", align : "center", width: 80 },
+        { name : "start_date", label :"開始日" ,align : "center", width: 120},
+        { name : "end_date", label :"終了日" ,align : "center", width: 120},
+        { name : "duration", label : "期間(日)", align: "center", width: 80},
+        { name : "progress", label: "進捗率", align: "center", width: 80 , template: function(obj){
             return Math.round((obj.progress || 0) * 100) +"%";
         }}
     ];
 
     gantt.config.scales = [
-        { unit: "month", step: 1, format: "%Y년 %m월" }, 
+        { unit: "month", step: 1, format: "%Y年%m月" }, 
         { 
             unit: "day", 
             step: 1, 
             format: function(date) {
-                const days = ["일", "월", "화", "수", "목", "금", "토"];
+                const days = ["日", "月", "火", "水", "木", "金", "土"];
                 const dayName = days[date.getDay()]; // 요일 가져오기
                 const dayNumber = gantt.date.date_to_str("%d")(date); 
                 return dayNumber + " (" + dayName + ")"; 
@@ -248,12 +248,12 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             gantt.config.scales = [
-                { unit: "month", step: 1, format: "%Y년 %m월" }, 
+                { unit: "month", step: 1, format: "%Y年%m月" }, 
                 { 
                     unit: "day", 
                     step: 1, 
                     format: function(date) {
-                        const days = ["일", "월", "화", "수", "목", "금", "토"];
+                        const days = ["日", "月", "火", "水", "木", "金", "土"];
                         const dayName = days[date.getDay()];
                         const dayNumber = gantt.date.date_to_str("%d")(date); 
                         return dayNumber + " (" + dayName + ")"; 
@@ -279,13 +279,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             gantt.config.scales = [
-                { unit: "month", step: 1, format: "%Y년 %m월" }, 
+                { unit: "month", step: 1, format: "%Y年%m月" }, 
                 { 
                     unit: "week", 
                     step: 1, 
                     format: function(date) {
                         const dateToStr = gantt.date.date_to_str("%W");
-                        return dateToStr(date) + "주차";
+                        return dateToStr(date) + "週目";
                     } 
                 }
             ];
@@ -308,8 +308,8 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             
             gantt.config.scales = [
-                { unit: "year", step: 1, format: "%Y년" }, 
-                { unit: "month", step: 1, format: "%m월" }
+                { unit: "year", step: 1, format: "%Y年" }, 
+                { unit: "month", step: 1, format: "%m月" }
             ];
             gantt.config.scale_height = 50;
             filterGantt(); // 날짜 필터링 범위 동기화 및 렌더링 호출

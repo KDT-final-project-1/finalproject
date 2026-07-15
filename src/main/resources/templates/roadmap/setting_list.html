@@ -6,7 +6,7 @@
 >
   <head>
     <meta charset="UTF-8" />
-    <title>로드맵(버전) 목록</title>
+    <title>ロードマップ一覧</title>
     <link rel="stylesheet" th:href="@{/css/milestones/common_layout_mile.css}" />
     <link rel="stylesheet" th:href="@{/css/milestones/milestone-common.css}" />
     <link rel="stylesheet" th:href="@{/css/roadmap/setting-list.css}" />
@@ -20,15 +20,15 @@
         <div class="roadmap-page-panel">
           <div class="roadmap-page-header">
             <div>
-              <h3 class="roadmap-page-title">로드맵 설정</h3>
-              <p class="roadmap-page-subtitle">프로젝트 내의 로드맵(버전) 정보를 관리합니다.</p>
+              <h3 class="roadmap-page-title">ロードマップ設定</h3>
+              <p class="roadmap-page-subtitle">プロジェクト内のロードマップ（バージョン）情報を管理します。</p>
             </div>
             <div class="list-header-controls" style="display: flex; gap: 8px;">
               <a th:href="@{/project/{projectId}/roadmap/setting_create(projectId=${projectId})}" class="btn btn-custon-rounded-four custom-default-btn">
-                ➕ 버전 추가
+                ➕ バージョン追加
               </a>
               <button type="button" id="btnToggleCompleted" class="btn btn-custon-rounded-four custom-white-btn">
-                🔒 완료된 버전 닫기
+                🔒 完了したバージョンを非表示
               </button>
             </div>
           </div>
@@ -36,21 +36,21 @@
 
         <div class="kiaalap-panel filter-panel">
           <div class="filter-group">
-            <label for="statusFilter">상태 :</label>
+            <label for="statusFilter">ステータス :</label>
             <select id="statusFilter" class="filter-control">
-              <option value="">전체</option>
-              <option value="k001">진행 예정</option>
-              <option value="k002">진행 중</option>
-              <option value="k003">완료</option>
+              <option value="">すべて</option>
+              <option value="k001">進行予定</option>
+              <option value="k002">進行中</option>
+              <option value="k003">完了</option>
             </select>
           </div>
           <div class="filter-group">
-            <label for="versionSearch">버전 :</label>
+            <label for="versionSearch">バージョン :</label>
             <input
               type="text"
               id="versionSearch"
               class="filter-control"
-              placeholder="검색어 입력"
+              placeholder="検索ワード入力"
             />
           </div>
         </div>
@@ -59,17 +59,17 @@
           <table class="roadmap-table">
             <thead>
               <tr>
-                <th style="width: 20%">버전명</th>
-                <th style="width: 15%">기본 버전</th>
-                <th style="width: 35%">설명</th>
-                <th style="width: 15%">상태</th>
-                <th style="width: 15%">관리</th>
+                <th style="width: 20%">バージョン名</th>
+                <th style="width: 15%">Default</th>
+                <th style="width: 35%">説明</th>
+                <th style="width: 15%">ステータス</th>
+                <th style="width: 15%">管理</th>
               </tr>
             </thead>
             <tbody>
               <tr th:if="${#lists.isEmpty(roadmapList)}">
                 <td colspan="5" class="empty-state">
-                  생성된 로드맵(버전)이 없습니다.
+                  作成されたロードマップ（バージョン）がありません。
                 </td>
               </tr>
 
@@ -88,7 +88,7 @@
                   <span
                     th:if="${roadmap.defaultYn == 'Y'}"
                     class="badge-default"
-                    >★ 기본</span
+                    >★ Default</span
                   >
                   <span
                     th:unless="${roadmap.defaultYn == 'Y'}"
@@ -98,24 +98,24 @@
                 </td>
 
                 <td class="text-ellipsis" th:text="${roadmap.description}">
-                  설명 내용이 들어갑니다.
+                  説明内容が入ります。
                 </td>
 
                 <td>
                   <span
                     th:if="${roadmap.statusCode == 'k001'}"
                     class="status-badge status-todo"
-                    >진행 예정</span
+                    >進行予定</span
                   >
                   <span
                     th:if="${roadmap.statusCode == 'k002'}"
                     class="status-badge"
-                    >진행 중</span
+                    >進行中</span
                   >
                   <span
                     th:if="${roadmap.statusCode == 'k003'}"
                     class="status-badge status-done"
-                    >완료</span
+                    >完了</span
                   >
                 </td>
 
@@ -127,7 +127,7 @@
                     th:attr="onclick=${roadmap.statusCode == 'k003'} ? 'return false;' : ''"
                     th:style="${roadmap.statusCode == 'k003'} ? 'pointer-events: none; background-color: #ccc; border-color: #ccc; color: #fff;' : ''"
                   >
-                    관리
+                    管理
                   </a>
                 </td>
               </tr>

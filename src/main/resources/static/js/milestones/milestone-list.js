@@ -90,8 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 날짜 유효성 검사
         if (valStart && valEnd && valEnd < valStart) {
-            window.PFDialog.alert('완료기한은 시작일보다 빠를 수 없습니다.', {
-                title: '검색 조건 확인',
+            window.PFDialog.alert('完了期限は開始日より早くすることはできません。', {
+                title: '検索条件の確認',
                 icon: 'warning'
             });
             return;
